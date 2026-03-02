@@ -1,0 +1,442 @@
+/* =================================================
+   DESKTOP / LAPTOP (DEFAULT — UNCHANGED)
+================================================= */
+
+/* MAIN CONTAINER */
+.receipt-list-container {
+    max-width: 1480px;
+    padding: 2px 15px;
+    box-sizing: border-box;
+    margin: 10px 30px;
+    background-color: #f1f4f8;
+    border-radius: 15px;
+}
+
+.title1 {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 10px 10px;
+    border-radius: 5px;
+    width: 250px;
+    color: white;
+}
+
+.header-section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0px;
+
+}
+
+.add-btn {
+    background: #3f51b5;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+/* TABLE WRAPPER */
+.table-wrapper {
+    /* background-color: #f1f4f8; */
+    padding: 0px;
+    border-radius: 12px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* TABLE BASE */
+.styled-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.styled-table thead {
+    background-color: blue;
+    color: white;
+}
+
+.styled-table th,
+.styled-table td {
+    padding: 10px 16px;
+    text-align: left;
+    white-space: nowrap;
+    font-size: 20px;
+}
+
+/* NUMERIC RIGHT ALIGN */
+.numeric {
+    text-align: right !important;
+}
+
+/* RECEIPT IMAGE */
+.receipt-img {
+    width: 60px;
+    height: 60px;
+    border-radius: 8px;
+    object-fit: cover;
+    border: 2px solid #3f51b5;
+}
+
+/* ACTION BUTTONS */
+.action-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+.icon-btn {
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+    font-size: 20px;
+    display: flex;
+    align-items: center;
+    transition: transform .2s ease, color .2s ease;
+}
+
+.edit-btn i {
+    color: #1976d2;
+}
+
+.edit-btn:hover i {
+    color: #0b5eb5;
+    transform: scale(1.2);
+}
+
+.delete-btn i {
+    color: #d32f2f;
+}
+
+.delete-btn:hover i {
+    color: #b71c1c;
+    transform: scale(1.2);
+}
+
+/* PAGINATION */
+.beautiful-pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin-top: 20px;
+    padding: 10px 0;
+}
+
+.modal-content {
+    margin-top: 140px;
+}
+
+.pg-btn {
+    background: #3f51b5;
+    color: #fff;
+    border: none;
+    padding: 10px 18px;
+    border-radius: 30px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0px 4px 12px rgba(63, 81, 181, 0.3);
+    transition: 0.2s ease-in-out;
+}
+
+.pg-btn:hover:not([disabled]) {
+    background: #2e3fa0;
+    transform: translateY(-2px);
+}
+
+.pg-btn[disabled] {
+    background: #3f51b5;
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.pg-text {
+    font-size: 20px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* =================================================
+   MOBILE VIEW (≤ 767px)
+================================================= */
+
+@media (max-width: 767px) {
+
+    .receipt-list-container {
+        padding: 10px 12px;
+    }
+
+    .header-section h2 {
+        font-size: 20px;
+    }
+
+    .add-btn {
+        padding: 8px 14px;
+        font-size: 14px;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    .styled-table {
+        min-width: 1100px;
+    }
+
+    .receipt-img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .beautiful-pagination {
+        flex-wrap: wrap;
+        gap: 10px;
+    }
+
+    .pg-btn {
+        padding: 8px 14px;
+        font-size: 16px;
+    }
+
+    .pg-text {
+        font-size: 16px;
+    }
+
+    .header-section {
+        flex-wrap: nowrap;
+        align-items: center;
+        gap: 8px;
+    }
+
+    /* remove fixed width from title */
+    .title1 {
+        width: auto !important;
+        font-size: 18px;
+        padding: 6px 20px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .add-btn {
+        padding: 10px 20px;
+        font-size: 18px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        margin-top: -10px;
+    }
+}
+
+/* =================================================
+   TABLET VIEW (768px – 992px)
+================================================= */
+
+@media (min-width: 768px) and (max-width: 992px) {
+
+    .receipt-list-container {
+        padding: 12px 20px;
+    }
+
+    .header-section h2 {
+        font-size: 22px;
+    }
+
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    .styled-table {
+        min-width: 1200px;
+    }
+
+    .receipt-img {
+        width: 55px;
+        height: 55px;
+    }
+}
+
+/* =================================================
+   MODAL – FINAL FIX (DESKTOP + MOBILE)
+================================================= */
+
+/* MODAL BODY */
+.modal-body {
+    padding: 20px;
+}
+
+/* USER IMAGE + NAME */
+.user-center-side {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 16px;
+    justify-content: flex-start;
+}
+
+.side-user-img,
+.side-placeholder {
+    width: 70px;
+    height: 70px;
+    border-radius: 10%;
+    border: 2px solid #3f51b5;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.side-username {
+    font-size: 20px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+    word-break: break-word;
+}
+
+/* CUSTOMER INFO */
+.customer-info-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 20px;
+    margin-bottom: 16px;
+}
+
+.info-left,
+.info-right {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    font-size: 15px;
+}
+
+/* DIVIDER */
+.section-divider {
+    margin: 16px 0;
+}
+
+/* LEDGER TABLE */
+.premium-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 14px;
+}
+
+.premium-table th {
+    background: #3f51b5;
+    color: white;
+    padding: 8px 10px;
+    white-space: nowrap;
+}
+
+.premium-table td {
+    padding: 8px 10px;
+    border: 1px solid #ddd;
+    white-space: nowrap;
+}
+
+/* =================================================
+   MOBILE MODAL FIX
+================================================= */
+
+@media (max-width: 767px) {
+
+    .modal-dialog-scrollable .modal-body {
+        max-height: 70vh;
+        overflow-y: auto;
+        overflow-x: auto;
+    }
+
+    .user-center-side {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .side-user-img,
+    .side-placeholder {
+        width: 60px;
+        height: 60px;
+    }
+
+    .side-username {
+        font-size: 18px;
+    }
+
+    .customer-info-container {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .premium-table {
+        min-width: 650px;
+    }
+
+    .btn {
+        margin-left: 50px;
+    }
+
+    .user-center-side {
+        flex-direction: row;
+        /* ✅ SIDE BY SIDE */
+        align-items: center;
+        justify-content: center;
+        gap: 12px;
+        text-align: left;
+    }
+
+    .user-center-side {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: flex-start;
+        /* image left */
+        gap: 12px;
+    }
+
+    /* IMAGE ON LEFT */
+    .side-user-img,
+    .side-placeholder {
+        width: 60px;
+        height: 60px;
+        order: 1;
+        /* ✅ IMAGE LEFT */
+    }
+
+    /* NAME ON RIGHT */
+    .side-username {
+        font-size: 18px;
+        order: 2;
+        /* ✅ NAME RIGHT */
+        white-space: nowrap;
+    }
+}
+
+/* ================= RECEIPTS LIST TABLE ================= */
+.receipt-list-container .styled-table tbody tr:nth-child(odd) {
+    background-color: #bfd6edab;
+}
+
+.receipt-list-container .styled-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.receipt-list-container .styled-table tbody tr:hover {
+    background-color: #f1f5f9 !important;
+}
+
+/* ================= LEDGER MODAL TABLE ================= */
+.modal .premium-table tbody tr:nth-child(odd) {
+    background-color: #bfd6edab;
+}
+
+.modal .premium-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.modal .premium-table tbody tr:hover {
+    background-color: #f1f5f9 !important;
+}

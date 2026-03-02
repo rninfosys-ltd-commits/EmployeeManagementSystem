@@ -1,0 +1,65 @@
+<div class="container mt-4" *ngIf="profileForm">
+    <mat-card>
+
+        <mat-card-header>
+            <mat-card-title>My Profile</mat-card-title>
+        </mat-card-header>
+
+        <mat-card-content>
+
+            <!-- IMAGE -->
+            <div class="text-center mb-3">
+                <img [src]="previewImage || 'assets/default-user.png'" class="profile-img" />
+
+                <br />
+                <button mat-stroked-button color="primary" (click)="fileInput.click()">
+                    <mat-icon>upload</mat-icon> Upload Image
+                </button>
+
+                <input type="file" #fileInput hidden accept="image/*" (change)="onImageSelected($event)" />
+            </div>
+
+            <form [formGroup]="profileForm">
+
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                    <mat-label>Username</mat-label>
+                    <input matInput formControlName="username" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                    <mat-label>Email</mat-label>
+                    <input matInput formControlName="email" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                    <mat-label>Mobile</mat-label>
+                    <input matInput formControlName="mobile" />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                    <mat-label>New Password</mat-label>
+                    <input matInput [type]="showPassword ? 'text' : 'password'" formControlName="password" />
+                    <button mat-icon-button matSuffix type="button" (click)="togglePassword()">
+                        <mat-icon>{{ showPassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+                    </button>
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                    <mat-label>Role</mat-label>
+                    <input matInput formControlName="role" readonly />
+                </mat-form-field>
+
+                <mat-form-field appearance="outline" class="w-100 mb-3">
+                    <mat-label>Status</mat-label>
+                    <input matInput [value]="profileForm.get('active')?.value ? 'Active' : 'Inactive'" readonly />
+                </mat-form-field>
+
+                <button mat-raised-button color="primary" (click)="updateProfile()" [disabled]="loading">
+                    {{ loading ? 'Updating...' : 'Update Profile' }}
+                </button>
+
+            </form>
+
+        </mat-card-content>
+    </mat-card>
+</div>

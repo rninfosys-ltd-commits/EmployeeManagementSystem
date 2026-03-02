@@ -1,0 +1,282 @@
+<div class="container">
+
+    <div class="header" *ngIf="!showForm">
+        <h2 class="page-title">Autoclave Cycle</h2>
+
+        <div>
+            <button class="add-btn" (click)="openForm()">
+                + Add Cycle
+            </button>
+
+            <button class="add-btn" style="margin-left:10px" (click)="goToDashboard()">
+                Go To Dashboard
+            </button>
+        </div>
+    </div>
+
+
+
+    <!-- ================= LIST VIEW ================= -->
+    <div class="main" *ngIf="!showForm">
+
+        <div class="filters">
+
+            <div class="date-field top-label">
+                <label>From Date</label>
+                <input type="date" [(ngModel)]="filterFromDate" (change)="onDateChange()" />
+            </div>
+
+            <div class="date-field top-label">
+                <label>To Date</label>
+                <input type="date" [(ngModel)]="filterToDate" (change)="onDateChange()" />
+            </div>
+
+            <select (change)="onExportChange($event)">
+                <option value="">Export</option>
+                <option value="pdf">Export PDF</option>
+                <option value="excel">Export Excel</option>
+                <option value="horizontal">📊 Combined Horizontal</option>
+            </select>
+            <!-- IMPORT SELECT -->
+            <select (change)="onImportSelect($event)">
+                <option value="">Import</option>
+                <option value="excel">Import Excel</option>
+            </select>
+
+            <!-- HIDDEN FILE INPUT -->
+            <input type="file" accept=".xlsx,.xls" hidden #fileInput (change)="onExcelSelect($event)" />
+
+
+            <button class="clear-btn" (click)="clearFilters()">Clear</button>
+        </div>
+
+        <!-- TABLE -->
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th>Autoclave No</th>
+                    <th> Autoclave Run No</th>
+                    <th>Start Date</th>
+                    <th>Completed Date</th>
+                    <th>Remarks</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let r of pagedList">
+                    <td>{{ r.autoclaveNo }}</td>
+                    <td>{{ r.runNo }}</td>
+                    <td>{{ r.startedDate | date:'dd-MM-yyyy' }}</td>
+                    <td>{{ r.completedDate | date:'dd-MM-yyyy' }}</td>
+                    <td>{{ r.remarks || '—' }}</td>
+                    <td>
+                        <button class="link-btn" (click)="edit(r)">Edit</button>
+                        <button class="link-btn danger" (click)="delete(r.id)">Delete</button>
+                        <div class="report-actions">
+                            <button class="report-btn pdf" (click)="downloadAutoclave(r, 'pdf')">PDF</button>
+                            <button class="report-btn excel" (click)="downloadAutoclave(r, 'excel')">XLS</button>
+                            <button class="report-btn" style="background:#2e7d32;color:#fff"
+                                (click)="downloadHorizontalReport(r)"
+                                title="Download Combined Horizontal Report">HZ</button>
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- PAGINATION -->
+        <div class="pagination-bar" *ngIf="totalPages > 1">
+            <button (click)="prevPage()" [disabled]="currentPage === 1">⬅ Prev</button>
+
+            <button *ngFor="let p of [].constructor(totalPages); let i = index" (click)="goToPage(i + 1)"
+                [class.active]="currentPage === i + 1">
+                {{ i + 1 }}
+            </button>
+
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+                Next ➡
+            </button>
+        </div>
+
+    </div>
+
+    <!-- ================= FORM VIEW ================= -->
+    <div *ngIf="showForm">
+
+        <!-- ================= AUTCLAVE FORM ================= -->
+        <form [formGroup]="form" class="card">
+
+            <!-- HEADER -->
+            <div class="row row-header">
+                <h2 class="page-title1">Autoclave Cycle</h2>
+
+                <div class="form-field date">
+                    <input type="date" formControlName="startedDate">
+                    <label>Date</label>
+                </div>
+            </div>
+
+            <hr>
+
+            <!-- ROW 1 -->
+            <div class="row row-3">
+                <!-- <div class="form-field">
+                    <input formControlName="autoclaveNo">
+                    <label>Autoclave No</label>
+                </div> -->
+
+                <div class="form-field">
+                    <input formControlName="runNo">
+                    <label> Autoclave Run No</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="startedAt" readonly>
+                    <label>Cycle Started At time</label>
+                </div>
+
+                <div class="form-field">
+                    <input type="date" formControlName="startedDate">
+                    <label>Start Date</label>
+                </div>
+                <div class="form-field">
+                    <input formControlName="completedAt" readonly>
+                    <label>Cycle Completed At Time</label>
+                </div>
+            </div>
+
+
+            <hr>
+
+            <!-- ROW 2 -->
+            <!-- ROW 2 -->
+            <div class="row row-3">
+
+
+
+                <div class="form-field">
+                    <input type="date" formControlName="completedDate">
+                    <label>Completed Date</label>
+                </div>
+
+                <div class="form-field textarea span-2">
+                    <textarea formControlName="remarks"></textarea>
+                    <label>Remarks</label>
+                </div>
+
+            </div>
+
+
+        </form>
+
+        <!-- ================= ADD WAGON ================= -->
+        <form [formGroup]="wagonForm" class="card mt-3">
+
+            <div class="row row-30">
+
+                <div class="form-field">
+                    <select formControlName="eBatch">
+                        <option [ngValue]="null">Select</option>
+                        <option *ngFor="let b of getAvailableBatchesFor('e')" [ngValue]="b">
+                            {{ b }}
+                        </option>
+                    </select>
+                    <label>E Side Batch</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="eSize">
+                    <label>E Size</label>
+                </div>
+
+                <div class="form-field">
+                    <select formControlName="mBatch">
+                        <option [ngValue]="null">Select</option>
+                        <option *ngFor="let b of getAvailableBatchesFor('m')" [ngValue]="b">
+                            {{ b }}
+                        </option>
+                    </select>
+                    <label>M Side Batch</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="mSize">
+                    <label>M Size</label>
+                </div>
+
+                <div class="form-field">
+                    <select formControlName="wBatch">
+                        <option [ngValue]="null">Select</option>
+                        <option *ngFor="let b of getAvailableBatchesFor('w')" [ngValue]="b">
+                            {{ b }}
+                        </option>
+                    </select>
+                    <label>W Side Batch</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="wSize">
+                    <label>W Size</label>
+                </div>
+                <div class="actions1">
+                    <button type="button" (click)="addWagon()" [disabled]="wagons.length >= 14">
+                        Add Wagon
+                    </button>
+                </div>
+
+            </div>
+
+
+
+        </form>
+
+        <!-- ================= WAGON TABLE ================= -->
+        <table class="table custom-table mt-3" *ngIf="wagons.length">
+
+            <thead>
+                <tr>
+                    <th>Wagon No</th>
+                    <th>E Batch</th>
+                    <th>E Size</th>
+                    <th>M Batch</th>
+                    <th>M Size</th>
+                    <th>W Batch</th>
+                    <th>W Size</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let w of wagons.controls; let i = index">
+                    <td>{{ i + 1 }}</td>
+                    <td>{{ w.value.eBatch }}</td>
+                    <td>{{ w.value.eSize }}</td>
+                    <td>{{ w.value.mBatch }}</td>
+                    <td>{{ w.value.mSize }}</td>
+                    <td>{{ w.value.wBatch }}</td>
+                    <td>{{ w.value.wSize }}</td>
+                    <td>
+                        <button class="link-btn danger" (click)="removeWagon(i)">
+                            Remove
+                        </button>
+                    </td>
+                </tr>
+            </tbody>
+
+        </table>
+
+        <!-- ================= ACTIONS ================= -->
+        <div class="actions">
+            <button type="button" (click)="save()" [disabled]="wagons.length < 1">
+                {{ editId ? 'Update' : 'Submit' }}
+            </button>
+
+            <button type="button" class="cancel" (click)="back()">
+                Cancel
+            </button>
+        </div>
+
+    </div>
+
+</div>

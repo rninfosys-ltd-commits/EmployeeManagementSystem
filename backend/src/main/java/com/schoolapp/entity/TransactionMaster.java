@@ -1,0 +1,42 @@
+package com.schoolapp.entity;
+
+import java.sql.Date;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+@Builder
+@Entity
+public class TransactionMaster {
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private int transactionMasterId;
+	private int srNo;
+	private Date trDate;
+	@jakarta.persistence.Column(name = "s_id")
+	private int sid;
+	private int financeYear;
+	private int recivedAmt;
+	private String description;
+
+	private int userId;
+	private int orgId;
+	private int branchId;
+	private Date createdDate;
+	private int updatedBy;
+	private Date updatedDate;
+	private int isActive;
+
+	@jakarta.persistence.ManyToOne
+	@jakarta.persistence.JoinColumn(name = "s_id", insertable = false, updatable = false)
+	private Admission student;
+}

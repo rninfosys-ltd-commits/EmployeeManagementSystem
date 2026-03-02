@@ -1,0 +1,213 @@
+<div class="lead-wrapper">
+
+    <div class="lead-card" *ngIf="showLeads">
+
+        <div class="header">
+            <h2 class="title">Rejection Data</h2>
+
+            <div>
+                <button class="toggle-btn" (click)="openCreate()">+ Add</button>
+
+                <button class="toggle-btn" style="margin-left:10px" (click)="goToDashboard()">
+                    Go To Dashboard
+                </button>
+            </div>
+        </div>
+
+
+        <div class="filters">
+
+            <div class="date-field top-label">
+                <label>From Date</label>
+                <input type="date" [(ngModel)]="filterFromDate" (change)="onDateChange()" />
+            </div>
+
+            <div class="date-field top-label">
+                <label>To Date</label>
+                <input type="date" [(ngModel)]="filterToDate" (change)="onDateChange()" />
+            </div>
+
+            <select (change)="onExportChange($event)">
+                <option value="">Export</option>
+                <option value="pdf">Export PDF</option>
+                <option value="excel">Export Excel</option>
+                <option value="horizontal">📊 Combined Horizontal</option>
+            </select>
+
+            <!-- <select (change)="onImportSelect($event)">
+                <option value="">Import</option>
+                <option value="excel">Import Excel</option>
+            </select> -->
+
+            <!-- <input type="file" accept=".xlsx,.xls" hidden #fileInput (change)="onExcelSelect($event)" /> -->
+
+            <select [(ngModel)]="filterShift" (change)="applyFilters()">
+                <option value="">All Shifts</option>
+                <option value="1">Shift 1</option>
+                <option value="2">Shift 2</option>
+                <option value="3">Shift 3</option>
+                <option value="G">General</option>
+            </select>
+
+            <button class="clear-btn" (click)="clearFilters()">Clear</button>
+        </div>
+
+        <div class="table-scroll">
+            <table class="lead-table">
+
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Date</th>
+                        <th>Batch</th>
+                        <th>Block Size</th>
+                        <th>Qty</th>
+                        <th>Shift</th>
+                        <th>topSideDamages</th>
+                        <th>Total Break</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let r of paginated">
+                        <td>{{r.id}}</td>
+                        <td>{{r.date | date:'dd-MM-yyyy'}}</td>
+                        <td>{{r.batchNo}}</td>
+                        <td>{{r.blockSize}}</td>
+                        <td>{{r.qty}}</td>
+                        <td>{{r.shift}}</td>
+                        <td>{{r.topSideDamages}}</td>
+                        <td>{{r.totalBreakages}}</td>
+
+                        <td>
+                            <span class="badge" [ngClass]="r.isActive ? 'active':'inactive'">
+                                {{r.isActive?'Active':'Inactive'}}
+                            </span>
+                        </td>
+
+                        <td class="action-cell">
+                            <button class="link-btn" (click)="edit(r)">Edit</button>
+                            <button class="link-btn danger" (click)="delete(r.id)">Delete</button>
+                            <div class="report-actions">
+                                <button class="report-btn pdf" (click)="downloadRejection(r, 'pdf')">PDF</button>
+                                <button class="report-btn excel" (click)="downloadRejection(r, 'excel')">XLS</button>
+                                <button class="report-btn" style="background:#2e7d32;color:#fff"
+                                    (click)="downloadHorizontalReport(r)" title="Combined Horizontal">HZ</button>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button (click)="prevPage()">Prev</button>
+            <span>{{currentPage}} / {{totalPages}}</span>
+            <button (click)="nextPage()">Next</button>
+        </div>
+
+    </div>
+
+    <!-- FORM -->
+
+    <!-- FORM -->
+
+    <div class="lead-card" *ngIf="!showLeads">
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+            <div class="row-header">
+
+                <div class="page-title1">Rejection Data</div>
+
+                <div class="header-right">
+
+                    <div class="form-field date">
+                        <input type="date" formControlName="date">
+                        <label>Date</label>
+                    </div>
+
+                    <div class="form-field shift">
+                        <select formControlName="shift">
+                            <option value="" disabled></option>
+                            <option value="1">Shift 1</option>
+                            <option value="2">Shift 2</option>
+                            <option value="3">Shift 3</option>
+                            <option value="G">General Shift</option>
+                        </select>
+                        <label>Shift</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <div class="grid">
+
+                <div class="form-field">
+                    <select formControlName="batchNo" (change)="onBatchSelect($event)" [disabled]="noBatchAvailable">
+
+                        <!-- when empty -->
+                        <option value="" disabled *ngIf="noBatchAvailable">
+                            No batch available
+                        </option>
+
+                        <!-- when data exists -->
+                        <option value="" disabled *ngIf="!noBatchAvailable">
+                            Select Batch
+                        </option>
+
+                        <option *ngFor="let b of cubeTests" [value]="b.batchNo">
+                            {{ b.batchNo }}
+                        </option>
+
+                    </select>
+                    <label>Batch No</label>
+                </div>
+
+                <div class="form-field"><input formControlName="blockSize"><label>Block Size</label></div>
+                <div class="form-field"><input formControlName="qty"><label>Qty</label></div>
+
+                <div class="form-field"><input type="number" formControlName="cornerDamage"><label>Corner</label></div>
+                <div class="form-field"><input type="number" formControlName="eruptionType"><label>Eruption</label>
+                </div>
+                <div class="form-field"><input type="number" formControlName="topSideDamages"><label>Top Side</label>
+                </div>
+                <div class="form-field"><input type="number" formControlName="sideCrackThermalCrack"><label>Side
+                        Crack</label></div>
+                <div class="form-field"><input type="number" formControlName="risingCrack"><label>Rising</label></div>
+                <div class="form-field"><input type="number" formControlName="centreCrack"><label>Centre</label></div>
+                <div class="form-field"><input type="number" formControlName="bottomUncutBlocks"><label>Bottom
+                        Uncut</label></div>
+
+                <!-- TOTAL -->
+
+                <div class="form-field">
+                    <input type="number" [value]="totalBreakages" readonly>
+                    <label>Total Breakages</label>
+                </div>
+
+
+                <div class="form-field">
+                    <input type="number" [value]="remainingQty" readonly>
+                    <label>Remaining</label>
+                    <small class="text-danger" *ngIf="isRemainingInvalid">
+                        Remaining cannot be less than 0
+                    </small>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button class="submit-btn" type="submit" [disabled]="isRemainingInvalid">Submit</button>
+                <button type="button" (click)="backToList()">Back</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>

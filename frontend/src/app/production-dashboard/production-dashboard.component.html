@@ -1,0 +1,188 @@
+<div class="container">
+
+    <div class="main">
+
+        <!-- TOP BAR -->
+        <div class="top-bar">
+
+            <h2 class="page-title">Production Dashboard</h2>
+
+            <div class="filters">
+
+                <div class="date-field top-label">
+                    <label>From Date</label>
+                    <input type="date" [(ngModel)]="fromDate" (change)="onDateChange()" />
+                </div>
+
+                <div class="date-field top-label">
+                    <label>To Date</label>
+                    <input type="date" [(ngModel)]="toDate" (change)="onDateChange()" />
+                </div>
+
+                <button class="toggle-btn" (click)="toggleHideCompleted()">
+                    {{ hideCompleted ? 'Show All' : 'Hide Completed' }}
+                </button>
+
+                <button class="clear-btn" (click)="clear()">Clear</button>
+
+                <button class="export-all-btn" (click)="exportAllWorkflow('excel')" [disabled]="!fromDate || !toDate">
+                    Export All Batches (Excel)
+                </button>
+
+            </div>
+
+        </div>
+
+
+        <!-- TABLE -->
+        <div class="table-wrapper">
+            <table class="table custom-table">
+
+                <thead>
+                    <tr>
+                        <th>Batch</th>
+                        <th>Progress</th>
+
+                        <th>Production</th>
+                        <th>↓</th>
+
+                        <th>Casting</th>
+                        <th>↓</th>
+
+                        <th>Cutting</th>
+                        <th>↓</th>
+
+                        <th>Autoclave</th>
+                        <th>↓</th>
+
+                        <th>Block</th>
+                        <th>↓</th>
+
+                        <th>Cube Test</th>
+                        <th>↓</th>
+
+                        <th>Rejection</th>
+
+                        <th>Report</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let row of paginatedRows">
+
+                        <!-- BATCH -->
+                        <td>{{ row.batchNo }}</td>
+
+                        <!-- PROGRESS -->
+                        <td>
+                            <div class="progress-bar-wrapper">
+                                <div class="progress-bar-fill" [style.width.%]="getProgress(row)"></div>
+                            </div>
+                            <small>{{ row.completedCount }}/7</small>
+                        </td>
+
+                        <!-- PRODUCTION -->
+                        <td>
+                            <span class="stage-icon">{{ getStageIcon(row, 'PRODUCTION') }}</span>
+                            {{ row.productionTimeObj ? (row.productionTimeObj | date:'hh:mm a') : '-' }}
+                        </td>
+
+                        <!-- PROD → CAST DIFF -->
+                        <td class="diff">
+                            {{ row.prodToCastingDiff !== null ? formatMinutes(row.prodToCastingDiff) : '-' }}
+                        </td>
+
+                        <!-- CASTING -->
+                        <td>
+                            <span class="stage-icon">{{ getStageIcon(row, 'CASTING') }}</span>
+                            {{ row.castingTimeObj ? (row.castingTimeObj | date:'hh:mm a') : '-' }}
+                        </td>
+
+                        <!-- CAST → CUT DIFF -->
+                        <td class="diff">
+                            {{ row.castingToCuttingDiff !== null ? formatMinutes(row.castingToCuttingDiff) : '-' }}
+                        </td>
+
+                        <!-- CUTTING -->
+                        <td>
+                            <span class="stage-icon">{{ getStageIcon(row, 'CUTTING') }}</span>
+                            {{ row.cuttingTimeObj ? (row.cuttingTimeObj | date:'hh:mm a') : '-' }}
+                        </td>
+
+                        <!-- CUT → AUTO DIFF -->
+                        <td class="diff">
+                            {{ row.cuttingToAutoclaveDiff !== null ? formatMinutes(row.cuttingToAutoclaveDiff) : '-' }}
+                        </td>
+
+                        <!-- AUTOCLAVE -->
+                        <td>
+                            <span class="stage-icon">{{ getStageIcon(row, 'AUTOCLAVE') }}</span>
+                            {{ row.autoclaveTimeObj ? (row.autoclaveTimeObj | date:'hh:mm a') : '-' }}
+                        </td>
+
+                        <!-- AUTO → BLOCK DIFF -->
+                        <td class="diff">
+                            {{ row.autoclaveToBlockDiff !== null ? formatMinutes(row.autoclaveToBlockDiff) : '-' }}
+                        </td>
+
+                        <!-- BLOCK -->
+                        <td>
+                            <span class="stage-icon">{{ getStageIcon(row, 'BLOCK_SEPARATING') }}</span>
+                            {{ row.blockTimeObj ? (row.blockTimeObj | date:'hh:mm a') : '-' }}
+                        </td>
+
+                        <!-- BLOCK → CUBE DIFF -->
+                        <td class="diff">
+                            {{ row.blockToCubeDiff !== null ? formatMinutes(row.blockToCubeDiff) : '-' }}
+                        </td>
+
+                        <!-- CUBE TEST -->
+                        <td>
+                            <span class="stage-icon">{{ getStageIcon(row, 'CUBE_TEST') }}</span>
+                            {{ row.cubeTimeObj ? (row.cubeTimeObj | date:'hh:mm a') : '-' }}
+                        </td>
+
+                        <!-- CUBE → REJECTION DIFF -->
+                        <td class="diff">
+                            {{ row.cubeToRejectionDiff !== null ? formatMinutes(row.cubeToRejectionDiff) : '-' }}
+                        </td>
+
+                        <!-- REJECTION -->
+                        <td>
+                            <span class="stage-icon">{{ getStageIcon(row, 'REJECTION') }}</span>
+                            {{ row.rejectionTimeObj ? (row.rejectionTimeObj | date:'hh:mm a') : '-' }}
+                        </td>
+
+                        <!-- DOWNLOAD REPORT -->
+                        <td>
+                            <div class="report-actions">
+                                <button class="report-btn pdf" title="Combined PDF"
+                                    (click)="downloadReport(row.batchNo, 'REJECTION', 'pdf')">
+                                    PDF
+                                </button>
+                                <button class="report-btn excel" title="Combined Excel"
+                                    (click)="downloadReport(row.batchNo, 'REJECTION', 'excel')">
+                                    XLS
+                                </button>
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <div class="pagination">
+            <button (click)="prevPage()" [disabled]="currentPage === 1">
+                ⬅ Prev
+            </button>
+            <span>{{ currentPage }} / {{ totalPages }}</span>
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+                Next ➡
+            </button>
+        </div>
+
+    </div>
+
+</div>

@@ -1,0 +1,309 @@
+/* ================= CONTAINER ================= */
+.party-price-container {
+    width: calc(100% - 40px);
+    margin: 20px;
+    background-color: #f1f4f8;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+
+}
+
+/* ================= TITLE ================= */
+.title {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: 700;
+    font-size: 25px;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 12px 10px;
+    border-radius: 5px;
+    width: 300px;
+    color: white;
+
+}
+
+.parent {
+    display: flex;
+    justify-content: center;
+}
+
+
+/* ================= FORM ================= */
+.price-form {
+    margin-bottom: 30px;
+}
+
+.form-row {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+}
+
+/* ================= FIELD ================= */
+.field {
+    position: relative;
+    width: 100%;
+}
+
+/* ================= INPUT & SELECT BASE ================= */
+.field input,
+.select-input {
+    width: 100%;
+    height: 56px;
+    padding: 16px 14px;
+    font-size: 20px;
+    border: 2px solid #c7c7c7;
+    border-radius: 10px;
+    outline: none;
+    background: transparent;
+}
+
+/* ================= INPUT ================= */
+.field input {
+    background: transparent;
+}
+
+/* ================= SELECT ================= */
+.select-input {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    /* ✅ fixes before-select look */
+    color: #999;
+    /* placeholder-like */
+    background: #fff;
+}
+
+/* ================= LABEL ================= */
+.field label {
+    position: absolute;
+    left: 14px;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0 6px;
+    font-size: 20px;
+    color: #777;
+    background: #f1f4f8;
+    pointer-events: none;
+    transition: 0.25s ease;
+}
+
+/* ================= FLOAT LABEL — INPUT ================= */
+.field input:focus+label,
+.field input:not(:placeholder-shown)+label {
+    top: -8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #6a11cb;
+}
+
+/* ================= FLOAT LABEL — SELECT ================= */
+.select-input.open+label,
+.select-input.filled+label {
+    top: -8px;
+    font-size: 18px;
+    font-weight: 600;
+    color: #6a11cb;
+}
+
+/* ================= BORDER FOCUS ================= */
+.field input:focus,
+.select-input.open {
+    border-color: #6a11cb;
+}
+
+/* ================= DROPDOWN ================= */
+.select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+}
+
+.option {
+    padding: 10px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #f1ecff;
+}
+
+/* ================= BUTTON ================= */
+.btn-submit {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    padding: 14px 32px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+    display: block;
+    margin: 20px auto 0;
+    font-size: 20px;
+}
+
+/* ================= TABLE ================= */
+.table-wrapper {
+    margin-top: 20px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: blue;
+    color: white;
+}
+
+th,
+td {
+    padding: 12px;
+    border-bottom: 1px solid #eee;
+    text-align: center;
+}
+
+/* ================= ROW STRIPES ================= */
+.party-price-container table tbody tr:nth-child(odd) {
+    background-color: #bfd6edab;
+}
+
+.party-price-container table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+}
+
+.party-price-container table tbody tr:hover {
+    background-color: #f1f5f9 !important;
+}
+
+/* ================= EDIT BUTTON ================= */
+.party-price-container .btn-edit {
+    background: #2563eb;
+    color: #ffffff;
+    padding: 6px 18px;
+    border: none;
+    border-radius: 999px;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 767px) {
+    .party-price-container {
+        padding: 15px;
+    }
+
+    .form-row {
+        flex-direction: column;
+        gap: 30px;
+    }
+
+    .btn-submit {
+        width: 100%;
+    }
+
+    table {
+        min-width: 600px;
+    }
+}
+
+/* ================= MOBILE RESPONSIVE FIX (≤ 767px) ================= */
+@media (max-width: 767px) {
+
+    /* ---------- CONTAINER ---------- */
+    .party-price-container {
+        width: calc(100% - 20px);
+        margin: 10px;
+        padding: 14px;
+        border-radius: 10px;
+    }
+
+    /* ---------- TITLE ---------- */
+    .title {
+        font-size: 20px;
+        padding: 8px 10px;
+        width: auto;
+        margin-bottom: 25px;
+        text-align: center;
+    }
+
+    /* ---------- FORM ---------- */
+    .form-row {
+        flex-direction: column;
+        gap: 22px;
+    }
+
+    .field input,
+    .select-input {
+        height: 48px;
+        padding: 12px 12px;
+        font-size: 18px;
+    }
+
+    .field label {
+        font-size: 18px;
+    }
+
+    .field input:focus+label,
+    .field input:not(:placeholder-shown)+label,
+    .select-input.open+label,
+    .select-input.filled+label {
+        font-size: 18px;
+        top: -7px;
+    }
+
+    /* ---------- DROPDOWN ---------- */
+    .select-options {
+        max-height: 160px;
+        border-radius: 8px;
+    }
+
+    .option {
+        padding: 10px 12px;
+        font-size: 18px;
+    }
+
+    /* ---------- SUBMIT BUTTON ---------- */
+    .btn-submit {
+        width: 100%;
+        font-size: 18px;
+        padding: 12px;
+    }
+
+    /* ---------- TABLE SCROLL FIX ---------- */
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 650px;
+        /* 🔥 forces horizontal scroll */
+    }
+
+    th,
+    td {
+        font-size: 18px;
+        padding: 10px;
+        white-space: nowrap;
+    }
+
+    /* ---------- EDIT BUTTON ---------- */
+    .party-price-container .btn-edit {
+        font-size: 18px;
+        padding: 6px 14px;
+        white-space: nowrap;
+    }
+}

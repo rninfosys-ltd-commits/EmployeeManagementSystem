@@ -1,0 +1,630 @@
+.inquiry-wrapper {
+    background-color: white;
+    padding: 20px;
+    min-height: 100vh;
+}
+
+.inquiry-card {
+    max-width: 1450px;
+    margin: auto;
+    background-color: #f1f4f8;
+    border-radius: 15px;
+    padding: 10px 10px;
+    box-shadow: 0 12px 30px rgba(0, 0, 0, .1);
+}
+
+/* HEADER */
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+}
+
+/* FILTER BAR */
+h2 {
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 150px;
+    color: white;
+    font-size: 18px;
+}
+
+/* GRID */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.field {
+    position: relative;
+}
+
+.field.full {
+    grid-column: span 4;
+}
+
+/* INPUTS */
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid #cbd5e1;
+    background: #f8fafc;
+    font-size: 16px;
+}
+
+/* FLOATING LABEL */
+.field.floating label {
+    position: absolute;
+    left: 14px;
+    top: -7%;
+    transform: translateY(-50%);
+    background: #fff;
+    padding: 0 6px;
+    font-size: 18px;
+    color: #64748b;
+    transition: .2s;
+}
+
+.field.floating input:focus+label,
+.field.floating input:not(:placeholder-shown)+label,
+.field.floating textarea:focus+label,
+.field.floating textarea:not(:placeholder-shown)+label,
+.field.floating select:focus+label,
+.field.floating select.ng-valid+label {
+    top: -7px;
+    font-size: 18px;
+    color: #2563eb;
+}
+
+/* TABLE */
+.inquiry-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 16px;
+}
+
+.inquiry-table th,
+.inquiry-table td {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    font-size: 18px;
+}
+
+.inquiry-table th {
+    background: #2563eb;
+    color: white;
+}
+
+/* BADGES */
+.badge {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 14px;
+}
+
+.badge.active {
+    background: #dcfce7;
+    color: #166534;
+}
+
+.badge.inactive {
+    background: #fee2e2;
+    color: #991b1b;
+}
+
+/* BUTTONS */
+.toggle-btn,
+.edit-btn,
+.actions button {
+    background: #2563eb;
+    color: white;
+    border: none;
+    border-radius: 999px;
+    padding: 10px 20px;
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.actions {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+}
+
+/* PAGINATION */
+/* ================= PAGINATION ================= */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin-top: 24px;
+}
+
+.pagination button {
+    padding: 8px 20px;
+    border-radius: 999px;
+    border: none;
+    font-weight: 600;
+    color: white;
+    background-color: #1e40af;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+.pagination span {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    /* tighter & balanced spacing */
+    padding: 14px 18px;
+
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+/* ================= DATE FIELD (LABEL + INPUT) ================= */
+
+.date-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* LABEL */
+.date-field label {
+    font-size: 16px;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* ================= INPUTS & SELECTS ================= */
+
+.filters input[type="date"],
+.filters select {
+    height: 40px;
+    /* ✅ same height everywhere */
+    width: 280px;
+    /* ✅ same width everywhere */
+
+    padding: 0 14px;
+    font-size: 15px;
+
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #374151;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ================= FOCUS (CLEAN & SOFT) ================= */
+
+.filters input:focus,
+.filters select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* ================= SELECT ARROW (CONSISTENT) ================= */
+
+.filters select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%236b7280' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+/* ================= CLEAR BUTTON ================= */
+
+.clear-btn {
+    height: 40px;
+    /* matches inputs */
+    padding: 0 35px;
+
+    border-radius: 999px;
+    border: none;
+
+    font-size: 15px;
+    font-weight: 600;
+
+    background: #ff0000;
+    color: #ffffff;
+
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.clear-btn:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+/* ================= SCROLLBAR (CLEAN) ================= */
+
+.filters::-webkit-scrollbar {
+    height: 4px;
+}
+
+.filters::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 4px;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* margin-bottom: 10px; */
+    margin-bottom: 10px;
+}
+
+.header h2,
+.form-header h2 {
+    margin-bottom: 15px;
+    font-weight: 600;
+    font-size: 20px;
+    color: white;
+}
+
+.field.span-3 {
+    grid-column: span 3;
+}
+
+
+
+
+
+
+
+
+
+
+
+/* ================= TOP LINE LABEL INPUT ================= */
+
+.date-field.top-label {
+    position: relative;
+    min-width: 280px;
+}
+
+/* LABEL ON BORDER LINE */
+.date-field.top-label label {
+    position: absolute;
+    top: -9px;
+    /* 👈 sits on border line */
+    left: 14px;
+    background: #ffffff;
+    /* cuts border behind */
+    padding: 0 6px;
+
+    font-size: 18px;
+    font-weight: 600;
+    color: #2563eb;
+    z-index: 2;
+}
+
+/* INPUT */
+.date-field.top-label input {
+    width: 100%;
+    height: 42px;
+    padding: 0 14px;
+    font-size: 18px;
+
+    border-radius: 12px;
+    border: 1.5px solid #cbd5e1;
+    background: #f8fafc;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* FOCUS */
+.date-field.top-label input:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ===== MODAL FIX ===== */
+
+.modal-backdrop {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.45);
+    z-index: 1000;
+}
+
+.modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1001;
+    /* 🔥 ABOVE BACKDROP */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-card {
+    background: #fff;
+    width: 90%;
+    max-width: 1100px;
+    border-radius: 16px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal-body {
+    overflow-y: auto;
+}
+
+.close-btn {
+    background: transparent;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+/* ================= COMPACT FILTER BAR – INQUIRY LIST ================= */
+
+@media (max-width: 1200px) {
+
+    .filters {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: nowrap;
+        /* stay single row */
+        overflow-x: hidden;
+        /* no scrollbar */
+        justify-content: flex-start;
+        padding: 10px 12px;
+    }
+
+    /* DATE INPUTS */
+    .filters .date-field.top-label {
+        min-width: unset;
+    }
+
+    .filters .date-field.top-label input {
+        width: 150px;
+        /* 🔽 reduced */
+        height: 34px;
+        font-size: 18px;
+        padding: 0 10px;
+    }
+
+    .filters .date-field.top-label label {
+        font-size: 16px;
+        top: -12px;
+    }
+
+    /* ALL SELECT DROPDOWNS */
+    .filters select {
+        width: 140px;
+        /* 🔽 compact width */
+        height: 34px;
+        font-size: 18px;
+        padding: 0 10px;
+    }
+
+    /* CLEAR BUTTON */
+    .filters .clear-btn {
+        height: 34px;
+        padding: 0 18px;
+        font-size: 18px;
+        white-space: nowrap;
+    }
+}
+
+/* ================= TABLE ROW COLORS ================= */
+
+.inquiry-table tbody tr:nth-child(odd) {
+    background-color: #bfd6edab;
+
+}
+
+.inquiry-table tbody tr:nth-child(even) {
+    background-color: white;
+
+}
+
+/* ================= MOBILE RESPONSIVE – INQUIRY ================= */
+
+@media (max-width: 768px) {
+
+    /* ===== FILTERS ===== */
+    .filters {
+        flex-wrap: wrap;
+        /* allow wrapping */
+        gap: 12px;
+        justify-content: flex-start;
+        overflow-x: visible;
+        /* remove horizontal scroll */
+        padding: 12px;
+    }
+
+    /* each filter item full width */
+    .filters>* {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    /* date fields */
+    .filters .date-field.top-label {
+        width: 100%;
+    }
+
+    .filters .date-field.top-label input {
+        width: 100%;
+        height: 40px;
+        font-size: 16px;
+    }
+
+    .filters .date-field.top-label label {
+        font-size: 16px;
+        top: -10px;
+    }
+
+    /* select dropdowns */
+    .filters select {
+        width: 100%;
+        height: 40px;
+        font-size: 15px;
+    }
+
+    /* clear button */
+    .filters .clear-btn {
+        width: 100%;
+        height: 42px;
+        font-size: 18px;
+        justify-content: center;
+    }
+
+    /* ===== TABLE ===== */
+    .inquiry-table {
+        min-width: 900px;
+        /* enable horizontal scroll */
+    }
+
+    .inquiry-card {
+        padding: 16px;
+    }
+
+    .inquiry-wrapper {
+        padding: 10px;
+    }
+}
+
+/* =================== COMMON MOBILE RESPONSIVE =================== */
+@media (max-width: 768px) {
+
+    /* PAGE PADDING */
+    .inquiry-wrapper {
+        padding: 8px;
+    }
+
+    .inquiry-card {
+        padding: 12px;
+        border-radius: 10px;
+        margin-bottom: 80px;
+    }
+
+    /* HEADER + TOGGLE IN ONE LINE */
+    .header-top,
+    .form-header {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+    }
+
+    .header-top h2,
+    .form-header h2 {
+        font-size: 18px;
+        padding: 6px 10px;
+        width: auto;
+        white-space: nowrap;
+    }
+
+    .toggle-btn {
+        font-size: 17px;
+        padding: 12px 14px;
+        white-space: nowrap;
+        border-radius: 10px;
+        margin-top: -18px;
+    }
+
+    /* FORM GRID SINGLE COLUMN */
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+    }
+
+    .field.span-3 {
+        grid-column: span 1;
+    }
+
+    /* INPUTS */
+    input,
+    select,
+    textarea {
+        font-size: 17px;
+        padding: 12px;
+    }
+
+    .field.floating label {
+        font-size: 16px;
+    }
+
+    /* SAVE BUTTON FULL WIDTH */
+    .actions button {
+        width: 100%;
+        padding: 14px;
+        font-size: 18px;
+    }
+
+    /* FILTER BAR STACK */
+    .filters {
+        flex-wrap: wrap;
+        gap: 18px;
+    }
+
+    .filters>* {
+        width: 100%;
+    }
+
+    .filters select,
+    .filters input {
+        width: 100%;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .filters .clear-btn {
+        width: 100%;
+        height: 42px;
+        font-size: 25px;
+    }
+
+    /* TABLE SCROLL */
+    .inquiry-table {
+        min-width: 900px;
+    }
+
+}

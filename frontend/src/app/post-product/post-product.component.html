@@ -1,0 +1,53 @@
+<div class="product-dialog">
+
+    <!-- Header -->
+    <div class="dialog-header">
+        <h2>{{ isEdit ? 'Update Product' : 'Add Product' }}</h2>
+        <button class="close-btn" (click)="closeDialog()">✕</button>
+    </div>
+
+    <div class="dialog-body">
+
+        <!-- LEFT : Image Upload -->
+        <div class="image-section">
+            <div class="image-box">
+                <img *ngIf="imagePreview; else placeholder" [src]="imagePreview" />
+                <ng-template #placeholder>
+                    <div class="image-placeholder">
+                        <span>No Image</span>
+                    </div>
+                </ng-template>
+            </div>
+
+            <label class="upload-btn">
+                Select Image
+                <input type="file" hidden (change)="onFileSelected($event)" />
+            </label>
+        </div>
+
+        <!-- RIGHT : Form -->
+        <form class="form-section" [formGroup]="productForm" (ngSubmit)="submit()">
+
+            <div class="field">
+                <label>Name *</label>
+                <input type="text" formControlName="name" placeholder="Product name" />
+            </div>
+
+            <div class="field">
+                <label>Price *</label>
+                <input type="number" formControlName="price" placeholder="Product price" />
+            </div>
+
+            <div class="field">
+                <label>Description *</label>
+                <textarea rows="4" formControlName="description" placeholder="Short product description"></textarea>
+            </div>
+
+            <button class="submit-btn" type="submit">
+                {{ isEdit ? 'Update Product' : 'Add Product' }}
+            </button>
+
+        </form>
+
+    </div>
+</div>

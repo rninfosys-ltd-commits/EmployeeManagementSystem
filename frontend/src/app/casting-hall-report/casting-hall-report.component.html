@@ -1,0 +1,497 @@
+<div class="container">
+
+    <!-- ================= LIST VIEW ================= -->
+    <div class="main" *ngIf="!showForm">
+
+        <div class="header">
+            <h2 class="page-title">Casting Hall Report</h2>
+
+            <div>
+                <button class="add-btn" (click)="openForm()">+ Add Report</button>
+
+                <button class="add-btn" style="margin-left:10px" (click)="goToDashboard()">
+                    Go To Dashboard
+                </button>
+            </div>
+        </div>
+
+
+        <!-- FILTER BAR -->
+        <div class="filters">
+
+            <div class="date-field top-label">
+                <label>From Date</label>
+                <input type="date" [(ngModel)]="filterFromDate" (change)="onDateChange()" />
+            </div>
+
+            <div class="date-field top-label">
+                <label>To Date</label>
+                <input type="date" [(ngModel)]="filterToDate" (change)="onDateChange()" />
+            </div>
+
+            <select (change)="onExportChange($event)">
+                <option value="">Export</option>
+                <option value="pdf">Export PDF</option>
+                <option value="excel">Export Excel</option>
+                <option value="horizontal">📊 Combined Horizontal</option>
+            </select>
+            <!-- IMPORT SELECT -->
+            <select (change)="onImportSelect($event)">
+                <option value="">Import</option>
+                <option value="excel">Import Excel</option>
+            </select>
+
+            <!-- HIDDEN FILE INPUT -->
+            <input type="file" accept=".xlsx,.xls" hidden #fileInput (change)="onExcelSelect($event)" />
+
+
+            <button class="clear-btn" (click)="clearFilters()">Clear</button>
+        </div>
+
+        <!-- TABLE -->
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th>Batch No</th>
+                    <th>Date</th>
+                    <th>Size</th>
+                    <th>Bed No</th>
+                    <th>Mould No</th>
+                    <th>Casting Time</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <ng-container *ngFor="let r of pagedList">
+
+                    <tr *ngIf="canViewCasting(r)">
+
+
+                        <td class="clickable" (click)="openCastingModal(r)">
+                            {{ r.batchNo }}
+                        </td>
+
+                        <td>{{ r.createdDate | date:'dd-MM-yyyy' }}</td>
+                        <td>{{ r.size }}</td>
+                        <td>{{ r.bedNo }}</td>
+                        <td>{{ r.mouldNo }}</td>
+                        <td>{{ r.castingTime }}</td>
+                        <td>
+                            <button class="link-btn" (click)="edit(r)">Edit</button>
+                            <button class="link-btn danger" (click)="delete(r.id)">Delete</button>
+                            <div class="report-actions">
+                                <button class="report-btn pdf"
+                                    (click)="selectedCasting = r; downloadCasting('pdf')">PDF</button>
+                                <button class="report-btn excel"
+                                    (click)="selectedCasting = r; downloadCasting('excel')">XLS</button>
+                            </div>
+                        </td>
+                    </tr>
+                </ng-container>
+            </tbody>
+
+        </table>
+
+        <!-- ================= PAGINATION ================= -->
+        <div class="pagination-bar" *ngIf="totalPages > 1">
+
+            <button (click)="prevPage()" [disabled]="currentPage === 1">
+                ⬅ Prev
+            </button>
+
+            <button *ngFor="let p of [].constructor(totalPages); let i = index" (click)="goToPage(i + 1)"
+                [class.active]="currentPage === i + 1">
+                {{ i + 1 }}
+            </button>
+
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+                Next ➡
+            </button>
+
+        </div>
+
+
+    </div>
+
+    <form *ngIf="showForm" [formGroup]="reportForm" (ngSubmit)="submit()" class="card">
+
+        <!-- HEADER ROW (EXACT SAME AS PRODUCTION) -->
+        <div class="row row-header">
+            <h2 class="page-title1">Casting Hall Report</h2>
+
+            <div class="form-field date">
+                <input type="date" formControlName="reportDate">
+                <label>Date</label>
+            </div>
+
+            <div></div>
+        </div>
+
+        <hr>
+
+        <!-- ROW 1 -->
+        <div class="row row-3">
+            <div class="form-field">
+
+                <select formControlName="batchNo" [disabled]="noBatchAvailable"
+                    [class.has-value]="reportForm.get('batchNo')?.value">
+
+                    <!-- when no batch -->
+                    <option value="" disabled *ngIf="noBatchAvailable">
+                        No batch available
+                    </option>
+
+                    <!-- placeholder -->
+                    <option value="" disabled *ngIf="!noBatchAvailable">
+                        Select Batch
+                    </option>
+
+                    <!-- data -->
+                    <option *ngFor="let p of productionList" [value]="p.batchNo">
+                        {{ p.batchNo }}
+                    </option>
+
+                </select>
+
+                <label>Batch No</label>
+
+            </div>
+
+
+
+
+
+
+
+
+
+
+
+            <div class="form-field">
+                <input type="number" formControlName="size">
+                <label>Size</label>
+            </div>
+
+            <div class="form-field">
+                <input type="number" formControlName="bedNo">
+                <label>Bed No</label>
+            </div>
+
+            <div class="form-field">
+                <input type="number" formControlName="mouldNo">
+                <label>Mould No</label>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ROW 2 -->
+        <div class="row row-3">
+            <div class="form-field">
+                <input formControlName="castingTime">
+                <label>Casting Time</label>
+            </div>
+
+            <div class="form-field">
+                <input type="number" formControlName="consistency">
+                <label>Consistency</label>
+            </div>
+
+            <div class="form-field">
+                <input type="number" formControlName="flowInCm">
+                <label>Flow (cm)</label>
+            </div>
+
+            <div class="form-field">
+                <input type="number" formControlName="castingTempC">
+                <label>Casting Temp °C</label>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ROW 3 -->
+        <div class="row row-3">
+            <div class="form-field">
+                <input type="number" formControlName="vt">
+                <label>V.T.</label>
+            </div>
+
+            <div class="form-field">
+                <input type="number" formControlName="massTemp">
+                <label>Mass Temp</label>
+            </div>
+
+            <div class="form-field">
+                <input type="number" formControlName="fallingTestMm">
+                <label>Falling Test (mm)</label>
+            </div>
+
+            <div class="form-field">
+                <input type="text" formControlName="testTime" readonly>
+                <label>Test Time</label>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ROW 4 -->
+        <div class="row row-4">
+            <div class="form-field">
+                <input type="text" formControlName="hTime" readonly>
+                <label>H Time</label>
+            </div>
+
+            <div class="form-field">
+                <input type="text" formControlName="remark">
+                <label>Remark</label>
+            </div>
+
+            <div class="form-field">
+                <select formControlName="shift" [class.has-value]="reportForm.get('shift')?.value">
+                    <option value="" disabled>Select Shift</option>
+                    <option value="Morning">Morning (6 AM – 2 PM)</option>
+                    <option value="Afternoon">Afternoon (2 PM – 10 PM)</option>
+                    <option value="Night">Night (10 PM – 6 AM)</option>
+                </select>
+                <label>Shift</label>
+            </div>
+
+            <div></div>
+        </div>
+
+        <hr>
+
+        <!-- ACTIONS -->
+        <div class="actions">
+            <button type="submit">{{ editId ? 'Update' : 'Submit' }}</button>
+            <button type="button" class="cancel" (click)="cancel()">Cancel</button>
+        </div>
+
+    </form>
+    <!-- ================= CASTING IMPORT MODAL ================= -->
+    <ng-container *ngIf="showImportModal">
+
+        <div class="import-backdrop"></div>
+
+        <div class="import-modal">
+
+            <div class="modal-card">
+
+                <!-- HEADER -->
+                <div class="modal-header">
+                    <h3>Import Casting Excel</h3>
+                    <button class="btn btn-danger" (click)="closeImportModal()">X</button>
+                </div>
+
+                <!-- BODY -->
+                <div class="modal-body">
+
+                    <!-- <input type="file" accept=".xlsx,.xls" (change)="onExcelSelect($event)" /> -->
+
+                    <table class="table custom-table" *ngIf="importPreviewList.length">
+
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th *ngFor="let col of importPreviewFields">
+                                    {{ col.label }}
+                                </th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let row of pagedImportPreview; let i = index">
+                                <td>{{ (importCurrentPage - 1) * importPageSize + i + 1 }}</td>
+
+                                <td *ngFor="let col of importPreviewFields">
+                                    {{ row[col.key] }}
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+
+
+
+                    <!-- PAGINATION -->
+                    <div class="pagination-bar" *ngIf="importTotalPages > 1">
+                        <button (click)="prevImportPage()" [disabled]="importCurrentPage === 1">⬅</button>
+
+                        <button *ngFor="let p of [].constructor(importTotalPages); let i = index"
+                            (click)="goToImportPage(i+1)" [class.active]="importCurrentPage === i+1">
+                            {{ i+1 }}
+                        </button>
+
+                        <button (click)="nextImportPage()"
+                            [disabled]="importCurrentPage === importTotalPages">➡</button>
+                    </div>
+
+                </div>
+
+                <!-- FOOTER -->
+                <div class="modal-footer">
+                    <button class="btn btn-success" (click)="saveImportedCasting()">Save Imported Casting</button>
+                    <button class="btn btn-secondary" (click)="closeImportModal()">Cancel</button>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ================= FORM ================= -->
+
+
+
+
+        <!-- ================= CASTING VIEW MODAL ================= -->
+
+    </ng-container>
+    <div class="modal fade" id="castingModal" tabindex="-1">
+        <div class="modal-dialog modal-xl">
+            <div class="modal-content">
+
+                <!-- HEADER -->
+                <div class="modal-header">
+
+                    <div class="d-flex align-items-center modal-header-big">
+
+                        <h4 class="modal-title mb-0">
+                            Batch No - {{ selectedCasting?.batchNo }}
+                        </h4>
+
+                        <div class="meta-text">
+                            <strong>Date:</strong>
+                            {{ selectedCasting?.createdDate | date:'longDate' }}
+                        </div>
+
+                        <div class="meta-text">
+                            <strong>Created By:</strong>
+                            {{ selectedCasting?.createdByName || 'Admin' }}
+                        </div>
+
+                    </div>
+
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+
+                <!-- BODY -->
+                <div class="modal-body">
+
+                    <!-- ================= DATA TABLE ================= -->
+                    <table class="table custom-table">
+
+                        <thead>
+                            <tr>
+                                <th>Size</th>
+                                <th>Bed No</th>
+                                <th>Mould No</th>
+                                <th>Casting Time</th>
+                                <th>Consistency</th>
+                                <th>Flow (cm)</th>
+                                <th>Casting Temp</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr>
+                                <td>{{ selectedCasting?.size }}</td>
+                                <td>{{ selectedCasting?.bedNo }}</td>
+                                <td>{{ selectedCasting?.mouldNo }}</td>
+                                <td>{{ selectedCasting?.castingTime }}</td>
+                                <td>{{ selectedCasting?.consistency }}</td>
+                                <td>{{ selectedCasting?.flowInCm }}</td>
+                                <td>{{ selectedCasting?.castingTempC }}</td>
+                            </tr>
+
+                            <tr class="section-header">
+                                <th>V.T</th>
+                                <th>Mass Temp</th>
+                                <th>Falling Test</th>
+                                <th>Test Time</th>
+                                <th>H Time</th>
+                                <th colspan="2">Remark</th>
+                            </tr>
+
+                            <tr>
+                                <td>{{ selectedCasting?.vt }}</td>
+                                <td>{{ selectedCasting?.massTemp }}</td>
+                                <td>{{ selectedCasting?.fallingTestMm }}</td>
+                                <td>{{ selectedCasting?.testTime }}</td>
+                                <td>{{ selectedCasting?.hTime }}</td>
+                                <td colspan="2">{{ selectedCasting?.remark || '—' }}</td>
+                            </tr>
+
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+                <!-- ================= APPROVAL TABLE ================= -->
+                <table class="table1">
+                    <thead class="tablehead">
+                        <tr>
+                            <th style="padding:8px;color:white">CHECKED BY</th>
+                            <th style="padding:8px;color:white">REVIEWED BY</th>
+                            <th style="padding:8px;color:white">APPROVED BY</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td class="level-text">
+
+                                <div>{{ getCastingApprovalLevels(selectedCasting).checkedBy.name || '—' }}</div>
+                                <div>{{ getCastingApprovalLevels(selectedCasting).checkedBy.level || '' }}</div>
+                            </td>
+
+                            <td class="level-text">
+                                <div>{{ getCastingApprovalLevels(selectedCasting).reviewedBy.name || '—' }}</div>
+                                <div>{{ getCastingApprovalLevels(selectedCasting).reviewedBy.level || '' }}</div>
+                            </td>
+
+                            <td class="level-text">
+                                <div>{{ getCastingApprovalLevels(selectedCasting).approvedBy.name || '—' }}</div>
+                                <div>{{ getCastingApprovalLevels(selectedCasting).approvedBy.level || '' }}</div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+
+                <!-- FOOTER -->
+                <div class="modal-footer">
+
+                    <button class="btn btn-primary btn-sm" (click)="edit(selectedCasting); closeCastingModal()">
+                        Edit
+                    </button>
+
+                    <button class="report-btn pdf" (click)="downloadCasting('pdf')">
+                        PDF
+                    </button>
+                    <button class="report-btn excel" (click)="downloadCasting('excel')">
+                        XLS
+                    </button>
+
+                    <button class="btn btn-success btn-sm" *ngIf="canApproveCasting(selectedCasting)"
+                        (click)="approveCasting()">
+                        Approve
+                    </button>
+
+                    <button class="btn btn-warning btn-sm" *ngIf="canRejectCasting(selectedCasting)"
+                        (click)="rejectCasting()">
+                        Reject
+                    </button>
+
+
+                    <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                        Close
+                    </button>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

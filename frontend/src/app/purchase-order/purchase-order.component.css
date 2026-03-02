@@ -1,0 +1,164 @@
+/* FORCE DROPDOWN VISIBILITY */
+.container,
+.row,
+.custom-select,
+.field {
+    overflow: visible !important;
+}
+
+/* FIELD */
+.field {
+    position: relative;
+}
+
+/* INPUT */
+.field input {
+    width: 100%;
+    height: 46px;
+    padding: 14px 12px 10px;
+    border-radius: 10px;
+    border: 1.5px solid #ced4da;
+    background: #fff;
+}
+
+/* LABEL */
+.field label {
+    position: absolute;
+    top: 14px;
+    left: 14px;
+    font-size: 14px;
+    color: #666;
+    background: #fff;
+    padding: 0 6px;
+    pointer-events: none;
+    transition: .25s;
+}
+
+/* FLOAT */
+.field.filled label,
+.field input:focus+label,
+.select-input.open+label {
+    top: -8px;
+    font-size: 13px;
+    color: #0d6efd;
+}
+
+/* CUSTOM SELECT */
+.custom-select {
+    position: relative;
+}
+
+.select-input {
+    height: 46px;
+    padding: 14px 12px 10px;
+    border-radius: 10px;
+    border: 1.5px solid #ced4da;
+    cursor: pointer;
+}
+
+.select-input.open {
+    border-color: #0d6efd;
+    box-shadow: 0 0 6px rgba(13, 110, 253, .35);
+}
+
+/* DROPDOWN */
+.select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    z-index: 10000;
+}
+
+.option {
+    padding: 10px 14px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #f1f5ff;
+}
+
+/* MOBILE */
+@media (max-width: 767px) {
+    .select-options {
+        max-height: 180px;
+    }
+}
+
+/* ===== MODAL ===== */
+.modal-content {
+    border-radius: 16px;
+    box-shadow: 0 15px 45px rgba(0, 0, 0, 0.2);
+}
+
+.modal-header {
+    background: #f8f9fa;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.modal-title {
+    font-size: 18px;
+}
+
+/* ===== INFO GRID ===== */
+.order-info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    font-size: 15px;
+}
+
+.order-info-grid p {
+    margin-bottom: 6px;
+}
+
+/* ===== TABLE ===== */
+.order-table {
+    margin-top: 10px;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.order-table thead {
+    background: #1f2937;
+    color: #fff;
+}
+
+.order-table th,
+.order-table td {
+    padding: 10px 12px;
+    vertical-align: middle;
+}
+
+/* ===== GRAND TOTAL ===== */
+.grand-total {
+    margin-top: 14px;
+    text-align: right;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+
+/* Hide buttons only while PDF generating */
+.pdf-hide {
+    display: flex;
+}
+
+/* Ensure rupee symbol renders properly */
+table,
+p,
+h5,
+strong {
+    font-family: "Helvetica", "Arial", sans-serif;
+}
+
+/* PDF clean look */
+#order-pdf-content {
+    background: #fff;
+}

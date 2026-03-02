@@ -1,0 +1,160 @@
+<!-- NAVBAR (ALWAYS RENDERED) -->
+<nav class="navbar" style="display: flex !important;">
+  <div class="navbar-container">
+
+    <!-- HAMBURGER (MOBILE/TABLET ONLY) -->
+    <button class="menu-toggle" (click)="isMenuOpen = true">
+      ☰
+    </button>
+
+    <i class="fa fa-home home-icon" title="Home" routerLink="/home">
+    </i>
+
+
+    <!-- BRAND -->
+    <div class="navbar-brand">
+      <a routerLink="/home">Employee main</a>
+    </div>
+    <!-- HOME ICON -->
+
+  </div>
+
+
+  <!-- DESKTOP NAV (UNCHANGED) -->
+  <div class="desktop-nav">
+
+    <!-- MASTER -->
+    <!-- <select class="nav-select" (change)="navigate($event)" *ngIf="currentUser?.role === 'ROLE_COMPANY_OWNER'"> -->
+    <select class="nav-select" (change)="navigate($event)" *ngIf="isLoggedIn">
+
+      <option value="" disabled selected hidden>Master</option>
+      <option value="/employees">Employees</option>
+      <option value="/users">Users</option>
+      <option value="/price-list">Price List</option>
+      <option value="/root-master">Root Master</option>
+      <option value="/user-details">User Details</option>
+      <option value="/products">Products</option>
+      <option value="/projects">Project</option>
+
+      <option value="/leads">Lead</option>
+    </select>
+
+    <select class="nav-select" (change)="navigate($event)">
+      <option value="" disabled selected hidden>Production</option>
+      <option value="/production-entry">Production</option>
+      <option value="/casting-hall-report">Casting</option>
+      <option value="/wire-cutting-report">Cutting</option>
+      <option value="/autoclave">Autoclave</option>
+      <option value="/block-separating">Block Separating</option>
+      <option value="/cube-test">Cube Test</option>
+      <option value="/rejection">Rejection</option>
+      <option value="/production-dashboard">Production Dashboard</option>
+      <option value="/horizontal-report">📊 Horizontal Report</option>
+
+
+    </select>
+
+
+    <!-- TRANSACTION -->
+    <select class="nav-select" (change)="navigate($event)">
+      <option value="" disabled selected hidden>Transaction details</option>
+
+      <option value="/inquiries">Inquiry</option>
+      <option value="/inquiry-schedule">Schedule</option>
+
+      <option value="/purchase-orders">Purchase</option>
+      <option value="/sell-orders">Sale</option>
+      <option value="/receipts">Receipt</option>
+
+      <option value="/customers">Batch</option>
+      <option value="/km-list">Travel Details</option>
+      <option value="/transaction-export">Transaction Export</option>
+    </select>
+
+    <!-- SETTINGS -->
+    <select class="nav-select" (change)="navigate($event)">
+      <option value="" disabled selected hidden>Settings</option>
+      <option value="/state-master">State</option>
+      <option value="/district-master">Dist</option>
+      <option value="/taluka-master">Taluka</option>
+      <option value="/city-master">City</option>
+    </select>
+
+
+    <!-- USER INFO -->
+    <div class="user-info" *ngIf="isLoggedIn">
+      <span class="username" (click)="openProfile()">
+        {{ currentUser?.username }}
+      </span>
+      <button class="btn-logout" (click)="logout()">Logout</button>
+    </div>
+
+  </div>
+  <!-- </div> -->
+</nav>
+
+<!-- MOBILE OVERLAY -->
+<div class="overlay" *ngIf="isMenuOpen" (click)="isMenuOpen = false">
+</div>
+
+<!-- MOBILE SIDE MENU -->
+<div class="mobile-menu" [class.open]="isMenuOpen">
+
+  <!-- MASTER -->
+  <!-- <select class="nav-select" (change)="navigate($event); isMenuOpen = false" *ngIf="currentUser?.role === 'ROLE_COMPANY_OWNER'"> -->
+  <select class="nav-select" (change)="navigate($event); isMenuOpen = false" *ngIf="isLoggedIn">
+
+    <option value="" disabled selected hidden>Master</option>
+    <option value="/employees">Employees</option>
+    <option value="/users">Users</option>
+    <option value="/price-list">Price List</option>
+    <option value="/root-master">Root Master</option>
+    <option value="/user-details">User Details</option>
+    <option value="/products">Products</option>
+    <option value="/projects">Project</option>
+
+    <option value="/leads">Lead</option>
+  </select>
+
+  <select class="nav-select" (change)="navigate($event)">
+    <option value="" disabled selected hidden>Production</option>
+    <option value="/production-entry">Production</option>
+    <option value="/casting-hall-report">Casting</option>
+    <option value="/wire-cutting-report">Cutting</option>
+    <option value="/autoclave">Autoclave</option>
+    <option value="/block-separating">Block Separating</option>
+    <option value="/cube-test">Cube Test</option>
+    <option value="/rejection">Rejection</option>
+
+    <option value="/production-dashboard">Production Dashboard</option>
+    <option value="/horizontal-report">📊 Horizontal Report</option>
+
+  </select>
+
+  <!-- TRANSACTION -->
+  <select class="nav-select" (change)="navigate($event); isMenuOpen = false">
+    <option value="" disabled selected hidden>Transaction details</option>
+    <option value="/km-list">Travel Details</option>
+    <option value="/customers">Batch</option>
+    <option value="/inquiries">Inquiry</option>
+    <option value="/receipts">Receipt</option>
+    <option value="/purchase-orders">Purchase</option>
+    <option value="/sell-orders">Sale</option>
+    <option value="/transaction-export">Transaction Export</option>
+  </select>
+
+  <!-- SETTINGS -->
+  <select class="nav-select" (change)="navigate($event); isMenuOpen = false">
+    <option value="" disabled selected hidden>Settings</option>
+    <option value="/state-master">State</option>
+    <option value="/district-master">Dist</option>
+    <option value="/taluka-master">Taluka</option>
+    <option value="/city-master">City</option>
+  </select>
+
+  <!-- USER INFO -->
+  <div class="user-info" *ngIf="isLoggedIn">
+    <span class="username">{{ currentUser?.username }}</span>
+  </div>
+
+</div>

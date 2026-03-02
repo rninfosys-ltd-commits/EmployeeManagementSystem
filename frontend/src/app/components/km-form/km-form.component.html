@@ -1,0 +1,119 @@
+<div class="employee-form-container">
+    <div class="form-card">
+
+        <!-- HEADER -->
+        <div class="form-header">
+            <h2 class="title">KM Entry</h2>
+        </div>
+
+        <!-- FORM -->
+        <form [formGroup]="kmForm" (ngSubmit)="onAddKm()" class="employee-form">
+
+            <!-- ⭐ ROW 1 -->
+            <div class="form-row-3">
+
+                <div class="form-group floating">
+                    <input type="text" formControlName="salesperson" placeholder=" " class="big-input" />
+                    <label>Salesperson *</label>
+                </div>
+
+                <div class="form-group floating">
+                    <input type="number" formControlName="startKm" placeholder=" " class="big-input" />
+                    <label>Start KM *</label>
+                </div>
+
+                <div class="form-group floating">
+                    <input type="number" formControlName="endKm" placeholder=" " class="big-input" />
+                    <label>End KM *</label>
+                </div>
+
+            </div>
+
+            <!-- ⭐ ROW 2 -->
+            <div class="form-row-3">
+
+                <div class="form-group floating">
+                    <input type="text" formControlName="visitedPlace" placeholder=" " class="big-input" />
+                    <label>Visited Place *</label>
+                </div>
+
+                <div class="form-group floating">
+                    <input type="date" formControlName="trnDate" placeholder=" " class="big-input" />
+                    <label>Date *</label>
+                </div>
+
+                <div class="form-group floating">
+                    <input type="file" (change)="onFileSelected($event)" placeholder=" " class="big-input file-input" />
+                    <label>Upload (optional)</label>
+                </div>
+
+            </div>
+
+            <!-- ACTION BUTTONS -->
+            <div class="action-right">
+                <button type="submit" class="btn save-btn" [disabled]="kmForm.invalid || isSaving">
+                    <span *ngIf="editIndex === null">Save Transaction</span>
+                    <span *ngIf="editIndex !== null">Update Transaction</span>
+                </button>
+            </div>
+
+        </form>
+
+        <!-- DETAILS TITLE -->
+        <h3 class="details-title">Details</h3>
+
+        <!-- CART -->
+        <div class="cart-container">
+            <table class="employee-table" *ngIf="cart.length > 0; else emptyCart">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Salesperson</th>
+                        <th>Start KM</th>
+                        <th>End KM</th>
+                        <th>Visited Place</th>
+                        <th>Date</th>
+                        <th>Image</th>
+                        <th>Edit</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let c of cart; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ c.salesperson }}</td>
+                        <td>{{ c.startKm }}</td>
+                        <td>{{ c.endKm }}</td>
+                        <td>{{ c.visitedPlace }}</td>
+                        <td>{{ c.trnDate | date:'shortDate' }}</td>
+                        <td>
+                            <ng-container *ngIf="c.filePath; else noImage">
+                                <img [src]="c.filePath" class="cart-img" />
+                            </ng-container>
+                            <ng-template #noImage>
+                                <span class="text-muted">No Image</span>
+                            </ng-template>
+                        </td>
+
+                        <td><button class="btn btn-outline-primary btn-sm" (click)="editCart(i)">✎</button></td>
+                        <td><button class="btn btn-outline-danger btn-sm" (click)="removeCart(i)">✕</button></td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <ng-template #emptyCart>
+                <p class="empty-box">No transactions added yet.</p>
+            </ng-template>
+        </div>
+
+        <!-- SUBMIT / CANCEL -->
+        <div class="form-actions">
+            <button class="btn cancel-btn" (click)="cancel()">Cancel</button>
+            <button class="btn submit-btn" (click)="submitBatch()" [disabled]="cart.length === 0 || isSaving">
+                Submit
+            </button>
+        </div>
+
+    </div>
+</div>

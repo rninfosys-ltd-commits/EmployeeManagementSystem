@@ -1,0 +1,70 @@
+<div class="root-master-container">
+
+    <div class="parent">
+        <h2 class="title">Route Master</h2>
+    </div>
+
+    <!-- FORM -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="root-form">
+
+        <div class="field">
+            <input type="text" formControlName="routeName" placeholder=" " />
+            <label>Route Name</label>
+        </div>
+
+        <button type="submit" class="btn-submit">
+            {{ isEdit ? 'Update' : 'Submit' }}
+        </button>
+
+    </form>
+
+    <!-- TABLE -->
+    <div class="table-wrapper" *ngIf="paginatedRoots.length > 0">
+        <div class="table-scroll" *ngIf="paginatedRoots.length > 0">
+            <table class="lead-table">
+                <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Route Name</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let r of paginatedRoots; let i = index">
+                        <td>{{ roots.length - ((page - 1) * pageSize + i) }}</td>
+                        <td>{{ r.routeName }}</td>
+                        <td>
+                            <button class="edit-btn" (click)="editRoot(r)">Edit</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+        <!-- PAGINATION -->
+        <!-- PAGINATION -->
+        <div class="pagination" *ngIf="totalPages() > 1">
+
+            <!-- PREV -->
+            <button class="page-btn" (click)="prevPage()" [disabled]="page === 1">
+                Prev
+            </button>
+
+            <!-- PAGE NUMBERS -->
+            <button class="page-btn" *ngFor="let p of [].constructor(totalPages()); let i = index"
+                (click)="setPage(i + 1)" [class.active]="page === i + 1">
+                {{ i + 1 }}
+            </button>
+
+            <!-- NEXT -->
+            <button class="page-btn" (click)="nextPage()" [disabled]="page === totalPages()">
+                Next
+            </button>
+
+        </div>
+
+    </div>
+
+</div>

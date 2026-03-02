@@ -1,0 +1,49 @@
+<div class="login-container">
+  <div class="login-card">
+
+    <div class="login-header">
+      <h2>CRM System</h2>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="login-form">
+
+      <div *ngIf="isLoginFailed" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Floating Email -->
+      <div class="floating-group">
+        <input type="email" id="email" formControlName="email" placeholder=" " required
+          [class.is-invalid]="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" />
+        <label for="email">Email</label>
+
+        <div *ngIf="loginForm.get('email')?.invalid && loginForm.get('email')?.touched" class="invalid-feedback">
+          Valid email is required
+        </div>
+      </div>
+
+      <!-- Floating Password -->
+      <div class="floating-group">
+        <input type="password" id="password" formControlName="password" placeholder=" " required
+          [class.is-invalid]="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" />
+        <label for="password">Password</label>
+
+        <div *ngIf="loginForm.get('password')?.invalid && loginForm.get('password')?.touched" class="invalid-feedback">
+          Password is required (min 6 characters)
+        </div>
+      </div>
+
+      <button type="submit" class="btn-login" [disabled]="loginForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Sign In</span>
+        <span *ngIf="isLoading">Signing in...</span>
+      </button>
+
+      <div class="register-link">
+        <p>
+          Don't have an account? <a routerLink="/register">Sign up</a>
+        </p>
+      </div>
+
+    </form>
+  </div>
+</div>

@@ -1,0 +1,79 @@
+<div class="root-master-container">
+    <div class="main">
+        <h2 class="title">Taluka Master</h2>
+    </div>
+
+    <!-- FORM -->
+    <form [formGroup]="form" (ngSubmit)="onSubmit()" class="root-form">
+
+        <!-- DISTRICT SELECT -->
+        <div class="field">
+            <!-- <select formControlName="districtId" required> -->
+            <select formControlName="districtId" (change)="onDistrictChange()" required>
+
+                <option value="" disabled hidden></option>
+                <option *ngFor="let d of districts" [value]="d.id">
+                    {{ d.name }}
+                </option>
+            </select>
+            <label>District</label>
+        </div>
+
+        <!-- TALUKA NAME -->
+        <div class="field">
+            <input type="text" formControlName="name" placeholder=" " required />
+            <label>Taluka</label>
+        </div>
+
+        <!-- SUBMIT -->
+        <button type="submit" class="btn-submit">
+            {{ isEdit ? 'Update' : 'Submit' }}
+        </button>
+
+    </form>
+
+    <!-- TABLE -->
+    <div class="table-wrapper" *ngIf="paginatedTalukas.length">
+
+        <div class="table-scroll">
+
+            <table class="custom-table">
+                <thead>
+                    <tr>
+                        <th>Sr No</th>
+                        <th>Taluka</th>
+                        <th>District</th>
+                        <th>State</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+
+                <tbody>
+                    <tr *ngFor="let t of paginatedTalukas; let i = index">
+                        <td>{{ talukas.length - ((page - 1) * pageSize + i) }}</td>
+
+                        <td>{{ t.name }}</td>
+                        <td>{{ t.districtName }}</td>
+                        <td>{{ t.stateName }}</td>
+
+                        <td>
+                            <button class="btn-edit" (click)="edit(t)">Edit</button>
+                        </td>
+                    </tr>
+                </tbody>
+
+            </table>
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="pagination">
+            <button *ngFor="let p of [].constructor(totalPages()); let i = index" (click)="setPage(i + 1)"
+                [disabled]="page === i + 1">
+                {{ i + 1 }}
+            </button>
+        </div>
+    </div>
+
+
+</div>

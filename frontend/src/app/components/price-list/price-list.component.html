@@ -1,0 +1,90 @@
+<div class="party-price-container">
+
+    <div class="parent">
+        <div class="title">Price List</div>
+    </div>
+
+    <form [formGroup]="form" (ngSubmit)="submit()" class="price-form">
+
+        <div class="form-row">
+
+            <!-- PARTY -->
+            <div class="field custom-select">
+
+                <div class="select-input" (click)="togglePartyDropdown()" [class.open]="partyOpen"
+                    [class.filled]="form.get('party')?.value">
+                    {{ form.get('party')?.value?.username || '' }}
+                </div>
+
+                <label>Party Name</label>
+
+                <div class="select-options" *ngIf="partyOpen">
+                    <div class="option" *ngFor="let p of parties" (click)="selectParty(p)">
+                        {{ p.username }}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- PRODUCT -->
+            <div class="field custom-select">
+
+                <div class="select-input" (click)="toggleProductDropdown()" [class.open]="productOpen"
+                    [class.filled]="form.get('product')?.value">
+                    {{ form.get('product')?.value?.name || '' }}
+                </div>
+
+                <label>Product Name</label>
+
+                <div class="select-options" *ngIf="productOpen">
+                    <div class="option" *ngFor="let prod of products" (click)="selectProduct(prod)">
+                        {{ prod.name }}
+                    </div>
+                </div>
+
+            </div>
+
+
+            <!-- PRICE -->
+            <div class="field">
+                <input type="number" formControlName="price" placeholder=" " />
+                <label>Price</label>
+            </div>
+
+        </div>
+
+        <button class="btn-submit" type="submit">
+            {{ isEdit ? 'Update' : 'Submit' }}
+        </button>
+
+    </form>
+
+    <!-- TABLE -->
+    <div class="table-wrapper" *ngIf="paginatedPriceList.length > 0">
+        <table>
+            <thead>
+                <tr>
+                    <th>Sr No</th>
+                    <th>Party Name</th>
+                    <th>Product Name</th>
+                    <th>Price</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let item of paginatedPriceList; let i = index">
+                    <td>{{ (page - 1) * pageSize + i + 1 }}</td>
+                    <td>{{ item.partyName }}</td>
+                    <td>{{ item.productName }}</td>
+                    <td>₹ {{ item.price }}</td>
+                    <td>
+                        <button class="btn-edit" (click)="edit(item)">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+</div>

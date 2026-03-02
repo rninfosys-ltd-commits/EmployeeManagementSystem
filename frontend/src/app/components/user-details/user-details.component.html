@@ -1,0 +1,193 @@
+<div class="user-details-page">
+
+    <!-- FORM SECTION -->
+    <section class="details-form-section">
+        <div class="glass-container">
+            <div class="header-content">
+                <h2 class="form-title">User Role Wise Details</h2>
+                <p class="form-subtitle">Manage user roles, route names, and business details</p>
+            </div>
+
+            <form [formGroup]="form" (ngSubmit)="onSubmit()" class="user-form-modern">
+                <div class="form-grid">
+                    <!-- USER NAME DROPDOWN -->
+                    <div class="custom-select-group">
+                        <div class="select-label">User Name</div>
+                        <div class="modern-select" (click)="toggle('username')" [class.active]="open.username">
+                            <span class="select-value">{{ form.value.username || 'Select User' }}</span>
+                            <i class="caret-icon"></i>
+                        </div>
+                        <div class="options-panel" *ngIf="open.username">
+                            <div class="option-item" *ngFor="let u of partyUsers"
+                                (click)="select('username', u.username)">
+                                {{ u.username }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ROUTE NAME DROPDOWN -->
+                    <div class="custom-select-group">
+                        <div class="select-label">Route Name</div>
+                        <div class="modern-select" (click)="toggle('routeName')" [class.active]="open.routeName">
+                            <span class="select-value">{{ form.value.routeName || 'Select Route' }}</span>
+                            <i class="caret-icon"></i>
+                        </div>
+                        <div class="options-panel" *ngIf="open.routeName">
+                            <div class="option-item" *ngFor="let r of routes"
+                                (click)="select('routeName', r.routeName)">
+                                {{ r.routeName }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- GST -->
+                    <div class="input-group">
+                        <input type="text" formControlName="gstNo" id="gstNo" placeholder=" " />
+                        <label for="gstNo">GST No</label>
+                        <div class="input-highlight"></div>
+                    </div>
+
+                    <!-- ADDRESS -->
+                    <div class="input-group full-width">
+                        <input type="text" formControlName="address" id="address" placeholder=" " />
+                        <label for="address">Address</label>
+                        <div class="input-highlight"></div>
+                    </div>
+                </div>
+
+                <!-- LOCATION DROPDOWNS -->
+                <div class="location-grid">
+                    <!-- STATE -->
+                    <div class="custom-select-group">
+                        <div class="select-label">State</div>
+                        <div class="modern-select" (click)="toggle('state')" [class.active]="open.state">
+                            <span class="select-value">{{ getName(states, form.value.state) || 'Select State' }}</span>
+                            <i class="caret-icon"></i>
+                        </div>
+                        <div class="options-panel" *ngIf="open.state">
+                            <div class="option-item" *ngFor="let s of states"
+                                (click)="select('state', s.id); onStateChange()">
+                                {{ s.name }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- DISTRICT -->
+                    <div class="custom-select-group">
+                        <div class="select-label">District</div>
+                        <div class="modern-select" (click)="toggle('dist')" [class.active]="open.dist">
+                            <span class="select-value">{{ getName(districts, form.value.dist) || 'Select District'
+                                }}</span>
+                            <i class="caret-icon"></i>
+                        </div>
+                        <div class="options-panel" *ngIf="open.dist">
+                            <div class="option-item" *ngFor="let d of districts"
+                                (click)="select('dist', d.id); onDistrictChange()">
+                                {{ d.name }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- TALUKA -->
+                    <div class="custom-select-group">
+                        <div class="select-label">Taluka</div>
+                        <div class="modern-select" (click)="toggle('tq')" [class.active]="open.tq">
+                            <span class="select-value">{{ getName(talukas, form.value.tq) || 'Select Taluka' }}</span>
+                            <i class="caret-icon"></i>
+                        </div>
+                        <div class="options-panel" *ngIf="open.tq">
+                            <div class="option-item" *ngFor="let t of talukas"
+                                (click)="select('tq', t.id); onTalukaChange()">
+                                {{ t.name }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- CITY -->
+                    <div class="custom-select-group">
+                        <div class="select-label">City</div>
+                        <div class="modern-select" (click)="toggle('city')" [class.active]="open.city">
+                            <span class="select-value">{{ getName(cities, form.value.city) || 'Select City' }}</span>
+                            <i class="caret-icon"></i>
+                        </div>
+                        <div class="options-panel" *ngIf="open.city">
+                            <div class="option-item" *ngFor="let c of cities" (click)="select('city', c.id)">
+                                {{ c.name }}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="submit-button-modern">
+                        <span class="button-text">{{ isEdit ? 'Update Details' : 'Save Details' }}</span>
+                        <span class="button-glow"></span>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </section>
+
+    <!-- TABLE SECTION -->
+    <section class="details-table-section" *ngIf="paginatedUsers.length">
+        <div class="glass-container table-container">
+            <div class="table-header">
+                <h3 class="table-title">User Listings</h3>
+                <div class="table-actions">
+                    <!-- Add any table-wide actions here if needed -->
+                </div>
+            </div>
+
+            <div class="modern-table-wrapper">
+                <table class="premium-table">
+                    <thead>
+                        <tr>
+                            <th>Sr No</th>
+                            <th>User Name</th>
+                            <th>Route Name</th>
+                            <th>GST No</th>
+                            <th>Address</th>
+                            <th>Location</th>
+                            <th>Balance</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let u of paginatedUsers; let i = index">
+                            <td>{{ i + 1 }}</td>
+                            <td class="primary-text">{{ u.username }}</td>
+                            <td>{{ u.routeName || 'Not Assigned' }}</td>
+                            <td class="secondary-text">{{ u.gstNo || '-' }}</td>
+                            <td class="truncate-cell">{{ u.address || '-' }}</td>
+                            <td class="location-cell">
+                                <span class="state-label">{{ getName(states, u.state) }}</span>
+                                <span class="city-label">{{ u.city }}</span>
+                            </td>
+                            <td class="balance-cell">
+                                <span class="balance-amount">{{ u.balance | currency:'INR' }}</span>
+                            </td>
+                            <td>
+                                <button class="action-btn-edit" (click)="edit(u)"
+                                    [title]="u.detailId ? 'Edit Details' : 'Assign Details'">
+                                    <i class="edit-icon"></i>
+                                    <span>{{ u.detailId ? 'Edit' : 'Assign' }}</span>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- PAGINATION -->
+            <div class="pagination-modern" *ngIf="totalPages() > 1">
+                <button [disabled]="page === 1" (click)="setPage(page - 1)" class="page-nav">Prev</button>
+                <div class="page-numbers">
+                    <span *ngFor="let i of [1, 2, 3]" class="page-num" [class.active]="page === i"
+                        (click)="setPage(i)">{{ i }}</span>
+                </div>
+                <button [disabled]="page === totalPages()" (click)="setPage(page + 1)" class="page-nav">Next</button>
+            </div>
+        </div>
+    </section>
+
+</div>

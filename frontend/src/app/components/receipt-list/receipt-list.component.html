@@ -1,0 +1,171 @@
+<div class="receipt-list-container">
+
+    <div class="header-section">
+        <h2 class="title1">Receipts</h2>
+        <button class="add-btn" routerLink="/receipts/new">+ Add Receipt</button>
+    </div>
+
+    <div class="table-wrapper">
+        <table class="styled-table">
+            <thead>
+                <tr>
+                    <th class="numeric">ID</th>
+                    <th>Image</th>
+                    <th class="numeric">Customer ID</th>
+                    <th>Party Name</th>
+                    <th>Type</th>
+                    <th>Mode</th>
+                    <th class="numeric">Txn ID</th>
+                    <th class="numeric">Amount</th>
+                    <th>Date</th>
+                    <th>Action</th>
+                    <th>AC</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let r of paginatedReceipts">
+                    <td class="numeric">{{ r.id }}</td>
+
+                    <td>
+                        <img *ngIf="r.receiptImage" [src]="normalizeImageForView(r.receiptImage)" class="receipt-img" />
+                    </td>
+
+                    <td class="numeric">
+                        <a href="#" (click)="openCustomerReceipts(r.customerId ?? 0)" data-bs-toggle="modal"
+                            data-bs-target="#customerReceiptsModal">
+                            {{ r.customerId }}
+                        </a>
+                    </td>
+
+                    <td>{{ r.partyName }}</td>
+
+                    <td>{{ r.transactionType == 1 ? 'Receipt' : 'Payment' }}</td>
+
+                    <td>
+                        {{
+                        r.paymentMode === 0 ? 'Cash' :
+                        r.paymentMode === 1 ? 'UPI' :
+                        r.paymentMode === 2 ? 'Bank' :
+                        r.paymentMode === 3 ? 'Card' : '-'
+                        }}
+                    </td>
+
+                    <td class="numeric">{{ r.transactionId }}</td>
+                    <td class="numeric">{{ r.amount }}</td>
+                    <td>{{ r.receiptDate | date: 'dd-MM-yyyy' }}</td>
+
+                    <td class="action-buttons">
+                        <button class="icon-btn edit-btn" [routerLink]="['/receipts/edit', r.id]">
+                            <i class="bi bi-pencil"></i>
+                        </button>
+
+                        <button class="icon-btn delete-btn" (click)="delete(r.id)">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
+
+                    <td>
+                        <button class="btn btn-outline-primary pdf-btn" (click)="handleDownloadPDF(r.customerId)">
+                            <i class="bi bi-download"></i> Download PDF
+                        </button>
+
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <div class="pagination-container beautiful-pagination">
+        <button class="pg-btn" (click)="prevPage()" [disabled]="page === 1">
+            <i class="bi bi-chevron-left"></i> Prev
+        </button>
+
+        <span class="pg-text">
+            Page <strong>{{ page }}</strong> / {{ totalPages }}
+        </span>
+
+        <button class="pg-btn" (click)="nextPage()" [disabled]="page === totalPages">
+            Next <i class="bi bi-chevron-right"></i>
+        </button>
+    </div>
+
+</div>
+
+
+<!-- Ledger Modal -->
+<div class="modal fade" id="customerReceiptsModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl modal-dialog-scrollable">
+        <div class="modal-content premium-modal">
+
+            <div class="modal-header premium-header d-flex align-items-center">
+                <h4 class="modal-title">Customer Report</h4>
+
+                <!-- FIXED BUTTON -->
+                <button class="btn btn-outline-primary pdf-btn" (click)="downloadLedgerPDF()">
+                    <i class="bi bi-download"></i> Download PDF
+                </button>
+
+
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <div class="modal-body" id="ledger-content">
+
+                <div class="user-center-side">
+                    <img *ngIf="loggedInUser?.profileImage; else noUserImage"
+                        [src]="normalizeImageForView(loggedInUser.profileImage)" class="side-user-img" />
+
+                    <ng-template #noUserImage>
+                        <div class="side-placeholder"></div>
+                    </ng-template>
+
+                    <h3 class="side-username">{{ loggedInUser?.name || 'User' }}</h3>
+                </div>
+
+                <div class="customer-info-container">
+                    <div class="info-left">
+                        <p><strong>ID:</strong> {{ customerInfo.id }}</p>
+                        <p><strong>Name:</strong> {{ customerInfo.name }}</p>
+                    </div>
+
+                    <div class="info-right">
+                        <p><strong>Mobile:</strong> {{ customerInfo.mobile }}</p>
+                        <p><strong>Email:</strong> {{ customerInfo.email }}</p>
+                    </div>
+                </div>
+
+                <hr class="section-divider" />
+
+                <table class="premium-table" *ngIf="ledger.length > 0">
+                    <thead>
+                        <tr>
+                            <th>Sr</th>
+                            <th>Date</th>
+                            <!-- <th class="numeric">Txn ID</th> -->
+                            <th>Type</th>
+                            <th>Mode</th>
+                            <th class="numeric">Amount</th>
+                            <th class="numeric">Closing Balance</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr *ngFor="let row of ledger">
+                            <td>{{ row.srNo }}</td>
+                            <td>{{ row.receiptDate | date: 'dd-MM-yyyy' }}</td>
+                            <!-- <td class="numeric">{{ row.transactionId }}</td> -->
+                            <td>{{ row.transactionTypeLabel }}</td>
+                            <td>{{ row.paymentModeLabel }}</td>
+                            <td class="numeric">₹{{ row.amount }}</td>
+                            <td class="numeric">₹{{ row.closingBalance }}</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+        </div>
+    </div>
+</div>

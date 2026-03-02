@@ -1,0 +1,73 @@
+<div class="employee-form-container">
+  <div class="form-card glass-panel">
+
+    <div class="form-header">
+      <h2 class="page-title">{{ isEditMode ? 'Update Employee Profile' : 'Register New Employee' }}</h2>
+      <p style="margin-top: 0.5rem; font-size: 0.9rem; color: var(--text-muted)">Please fill in the details below.
+        Fields marked with * are mandatory.</p>
+    </div>
+
+    <div *ngIf="errorMessage" class="alert alert-danger">
+      {{ errorMessage }}
+    </div>
+
+    <form [formGroup]="employeeForm" (ngSubmit)="onSubmit()">
+
+      <!-- Row 1: Basic Information -->
+      <div class="form-row-4">
+        <div class="floating-group">
+          <input type="text" id="firstName" placeholder=" " formControlName="firstName" />
+          <label for="firstName">First Name *</label>
+        </div>
+
+        <div class="floating-group">
+          <input type="text" id="lastName" placeholder=" " formControlName="lastName" />
+          <label for="lastName">Last Name *</label>
+        </div>
+
+        <div class="floating-group">
+          <input type="email" id="email" placeholder=" " formControlName="email" />
+          <label for="email">Email Address *</label>
+        </div>
+
+        <div class="floating-group">
+          <input type="tel" id="phoneNumber" placeholder=" " formControlName="phoneNumber" />
+          <label for="phoneNumber">Phone Number *</label>
+        </div>
+      </div>
+
+      <!-- Row 2: Employment Details -->
+      <div class="form-row-4">
+        <div class="floating-group">
+          <input type="text" id="department" placeholder=" " formControlName="department" />
+          <label for="department">Department *</label>
+        </div>
+
+        <div class="floating-group">
+          <input type="text" id="position" placeholder=" " formControlName="position" />
+          <label for="position">Position *</label>
+        </div>
+
+        <div class="floating-group">
+          <input type="number" id="salary" placeholder=" " formControlName="salary" min="0" step="0.01" />
+          <label for="salary">Monthly Salary *</label>
+        </div>
+
+        <div class="floating-group">
+          <input type="date" id="hireDate" placeholder=" " formControlName="hireDate" />
+          <label for="hireDate">Date of Hire *</label>
+        </div>
+      </div>
+
+      <!-- Form Actions -->
+      <div class="form-actions">
+        <button type="button" class="btn-secondary" (click)="cancel()">Cancel</button>
+        <button type="submit" class="btn-primary" [disabled]="employeeForm.invalid || isLoading">
+          {{ isEditMode ? 'Save Changes' : 'Create Record' }}
+        </button>
+      </div>
+
+    </form>
+
+  </div>
+</div>

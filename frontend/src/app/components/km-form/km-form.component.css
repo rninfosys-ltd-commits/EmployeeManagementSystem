@@ -1,0 +1,314 @@
+/* MAIN CONTAINER */
+.employee-form-container {
+    max-width: 1490px;
+    margin: 5px 20px;
+    padding: 20px;
+}
+
+/* CARD */
+.form-card {
+    background-color: #f1f4f8;
+    padding: 10px 20px;
+    border-radius: 18px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.08);
+}
+
+/* HEADER */
+.form-header h2 {
+    font-size: 32px;
+    font-weight: 600;
+    margin-bottom: 20px;
+    color: white;
+    display: flex;
+    justify-content: center;
+}
+
+/* GRID — 3 columns */
+.form-row-3 {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 25px;
+    margin-bottom: 28px;
+}
+
+.title {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 200px;
+}
+
+/* ---------------------------- */
+/* FLOATING LABEL INPUT GROUP  */
+/* ---------------------------- */
+
+.form-group.floating {
+    position: relative;
+    width: 100%;
+}
+
+/* INPUT */
+.form-group.floating .big-input {
+    width: 100%;
+    padding: 18px 14px 8px;
+    font-size: 20px;
+    border: 2px solid #d4d4d4;
+    border-radius: 14px;
+    background: white;
+    transition: 0.25s ease;
+    outline: none;
+}
+
+/* FOCUS EFFECT */
+.form-group.floating .big-input:focus {
+    border-color: #8a5cff;
+    box-shadow: 0px 0px 8px rgba(138, 92, 255, 0.35);
+}
+
+/* LABEL DEFAULT POSITION */
+.form-group.floating label {
+    position: absolute;
+    top: 16px;
+    left: 18px;
+    background: #ffffff;
+    padding: 0px 6px;
+    font-size: 20px;
+    color: #777;
+    transition: 0.25s ease;
+    pointer-events: none;
+}
+
+/* FLOATING STATE */
+.form-group.floating .big-input:focus+label,
+.form-group.floating .big-input:not(:placeholder-shown)+label {
+    top: -10px;
+    left: 14px;
+    font-size: 20px;
+    color: #8a5cff;
+}
+
+/* Special fix for date input (force placeholder behavior) */
+input[type="date"]:not(:focus):not(:valid)::-webkit-datetime-edit {
+    color: transparent;
+}
+
+/* FILE INPUT FIX */
+.file-input {
+    padding: 20px 14px 6px;
+}
+
+.file-input::-webkit-file-upload-button {
+    margin-top: -3px;
+}
+
+.form-group.floating .file-input:not(:focus)+label {
+    top: -10px !important;
+    font-size: 20px !important;
+    color: #777 !important;
+}
+
+/* ---------------------------- */
+/* BUTTONS */
+/* ---------------------------- */
+
+.action-right {
+    text-align: right;
+    margin-bottom: 35px;
+}
+
+.save-btn {
+    background: linear-gradient(135deg, #8e98ff, #b08cff);
+    color: white;
+    padding: 10px 26px;
+    border-radius: 25px;
+    font-size: 25px;
+    border: none;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+}
+
+/* DETAILS TITLE */
+.details-title {
+    margin-top: 30px;
+    font-size: 25px;
+    font-weight: 600;
+    color: #222;
+}
+
+/* TABLE */
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.employee-table th {
+    background: #667eea;
+    color: #fff;
+    padding: 12px;
+}
+
+.employee-table td {
+    padding: 12px;
+    border: 1px solid #eee;
+}
+
+.employee-table tbody tr:hover {
+    background: #f4f6ff;
+}
+
+/* EMPTY BOX */
+.empty-box {
+    background: #f8f9fc;
+    padding: 20px;
+    border-radius: 12px;
+    color: #777;
+    font-size: 19px;
+}
+
+/* FOOTER BUTTONS */
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.cancel-btn {
+    background: red;
+    padding: 10px 26px;
+    border-radius: 25px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+.submit-btn {
+    background: blue;
+    padding: 10px 26px;
+    border-radius: 25px;
+    color: #fff;
+    cursor: pointer;
+    font-size: 20px;
+}
+
+
+
+.cart-img {
+    width: 60px;
+    height: 60px;
+    object-fit: cover;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+    cursor: pointer;
+}
+
+/* ================= MOBILE FORM RESPONSIVE PATCH ================= */
+@media (max-width: 600px) {
+
+    /* Container tighter */
+    .employee-form-container {
+        margin: 6px;
+        padding: 8px 4px 50px 4px;
+    }
+
+    .form-card {
+        padding: 10px;
+    }
+
+    /* Title */
+    .form-header h2 {
+        font-size: 22px;
+    }
+
+    .title {
+        width: 50%;
+        margin: 0 auto;
+        /* ✅ centers horizontally */
+        text-align: center;
+        font-size: 20px;
+    }
+
+
+    /* Inputs */
+    .form-group.floating .big-input {
+        font-size: 17px;
+        padding: 14px 12px 6px;
+    }
+
+    .form-group.floating label {
+        font-size: 18px;
+    }
+
+    .form-group.floating .big-input:focus+label,
+    .form-group.floating .big-input:not(:placeholder-shown)+label {
+        font-size: 18px;
+    }
+
+    /* Save button full width */
+    .action-right {
+        text-align: center;
+    }
+
+    .save-btn {
+        width: 100%;
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    /* Details title */
+    .details-title {
+        font-size: 18px;
+    }
+
+    /* ===== CART TABLE SCROLL ===== */
+    .cart-container {
+        overflow-x: auto;
+    }
+
+    .employee-table {
+        min-width: 750px;
+    }
+
+    .employee-table th,
+    .employee-table td {
+        font-size: 13px;
+        padding: 6px;
+        white-space: nowrap;
+    }
+
+    /* Cart image */
+    .cart-img {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Footer buttons stack */
+    .form-actions {
+        flex-direction: row;
+    }
+
+    .cancel-btn,
+    .submit-btn {
+        width: 100%;
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    /* Empty box */
+    .empty-box {
+        font-size: 14px;
+        padding: 12px;
+    }
+
+    .form-row-3 {
+        grid-template-columns: 1fr;
+    }
+}

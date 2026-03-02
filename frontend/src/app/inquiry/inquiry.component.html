@@ -1,0 +1,282 @@
+<div class="inquiry-wrapper">
+
+    <!-- ================= INQUIRY LIST ================= -->
+    <div class="inquiry-card" *ngIf="showInquiries">
+
+        <div class="header">
+            <div class="header-top">
+                <h2>Inquiry List</h2>
+                <button class="toggle-btn" (click)="toggleInquiries()">+ Add Inquiry</button>
+            </div>
+
+            <!-- FILTERS -->
+            <div class="filters">
+
+                <div class="date-field top-label">
+                    <label>From Date *</label>
+                    <input type="date" [(ngModel)]="filterFromDate" (change)="applyFilters()" />
+                </div>
+
+                <div class="date-field top-label">
+                    <label>To Date *</label>
+                    <input type="date" [(ngModel)]="filterToDate" (change)="applyFilters()" />
+                </div>
+
+                <select [(ngModel)]="filterStatus" (change)="applyFilters()">
+                    <option value="">Status</option>
+                    <option value="1">Active</option>
+                    <option value="0">Inactive</option>
+                </select>
+
+                <select [(ngModel)]="filterInquiryStatus" (change)="applyFilters()">
+                    <option [ngValue]="''">Inquiry Status</option>
+                    <option *ngFor="let s of statusList" [ngValue]="s.id">
+                        {{ s.name }}
+                    </option>
+                </select>
+
+
+                <!-- EXPORT -->
+                <select #exportSel (change)="exportData(exportSel.value)">
+                    <option value="">Export</option>
+                    <option value="pdf">Export PDF</option>
+                    <option value="excel">Export Excel</option>
+                </select>
+
+                <!-- 🔵 IMPORT INQUIRY -->
+                <select (change)="onImportSelect($event, inquiryFileInput)">
+                    <option value="">Import</option>
+                    <option value="excel">Import Excel</option>
+                </select>
+
+                <input type="file" hidden #inquiryFileInput accept=".xlsx,.xls" (change)="importInquiryExcel($event)" />
+
+
+                <button class="clear-btn" (click)="clearFilters()">Clear</button>
+            </div>
+        </div>
+
+        <!-- TABLE -->
+        <table class="inquiry-table" *ngIf="paginatedInquiries.length; else noData">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Date</th>
+                    <th>Lead</th>
+                    <th>Project</th>
+                    <th>Status</th>
+                    <th>Unit Code</th>
+
+                    <th>Inquiry Status</th>
+                    <th>Total</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let i of paginatedInquiries; let idx = index">
+                    <!-- <td>{{ (currentPage - 1) * pageSize + idx + 1 }}</td> -->
+                    <td>{{ i.inqueryId }}</td>
+
+                    <td>{{ i.inqueryDate | date }}</td>
+                    <td>{{ getLeadName(i.leadAccountId) }}</td>
+                    <td>{{ getProjectName(i.projectCode) }}</td>
+                    <td>
+                        <span class="badge" [ngClass]="i.isActive ? 'active' : 'inactive'">
+                            {{ i.isActive ? 'Active' : 'Inactive' }}
+                        </span>
+                    </td>
+                    <td>{{ i.unitCode }}</td>
+
+
+                    <td>{{ getInquiryStatusName(i.inqStatusId) }}</td>
+                    <td>₹ {{ i.total | number }}</td>
+                    <td>
+                        <button class="edit-btn" (click)="editInquiry(i)">Edit</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div class="pagination" *ngIf="totalPages > 1">
+            <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+        </div>
+
+        <ng-template #noData>
+            <p class="no-data">No inquiries found</p>
+        </ng-template>
+    </div>
+
+    <!-- ================= CREATE / EDIT INQUIRY ================= -->
+    <div class="inquiry-card mt" *ngIf="!showInquiries">
+
+        <div class="form-header">
+            <h2>{{ isEditMode ? 'Edit Inquiry' : 'Create Inquiry' }}</h2>
+            <button class="toggle-btn" (click)="toggleInquiries()">Back to List</button>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+            <div class="grid">
+
+                <div class="field floating">
+                    <input type="date" formControlName="inqueryDate" placeholder=" " />
+                    <label>Inquiry Date *</label>
+                </div>
+
+                <div class="field floating">
+                    <select formControlName="isActive">
+                        <option [value]="1">Active</option>
+                        <option [value]="0">Inactive</option>
+                    </select>
+                    <label>Status *</label>
+                </div>
+
+                <div class="field floating">
+                    <select formControlName="inqStatusId">
+                        <option value="" disabled></option>
+                        <option *ngFor="let s of statusList" [value]="s.id">
+                            {{ s.name }}
+                        </option>
+                    </select>
+                    <label>Inquiry Status *</label>
+                </div>
+
+                <div class="field floating">
+                    <select formControlName="leadAccountId">
+                        <option value="" disabled>Select Lead</option>
+
+                        <option *ngFor="let l of leads" [value]="l.leadId">
+                            {{ l.leadId }} - {{ l.cName }}
+                        </option>
+                    </select>
+
+                    <label>Lead *</label>
+                </div>
+
+
+                <div class="field floating">
+                    <select formControlName="projectCode">
+                        <option value="" disabled></option>
+                        <option *ngFor="let p of projects" [value]="p.projectId">
+                            {{ p.projectName }}
+                        </option>
+                    </select>
+                    <label>Project *</label>
+                </div>
+
+                <div class="field floating">
+                    <input type="number" formControlName="unitCode" placeholder=" " />
+                    <label>Unit Code</label>
+                </div>
+
+                <div class="field floating">
+                    <input type="number" formControlName="rate" placeholder=" " />
+                    <label>Rate</label>
+                </div>
+
+                <div class="field floating">
+                    <input type="number" formControlName="quantity" placeholder=" " />
+                    <label>Quantity</label>
+                </div>
+
+                <div class="field floating">
+                    <input type="number" formControlName="total" readonly placeholder=" " />
+                    <label>Total</label>
+                </div>
+
+                <div class="field floating span-3">
+                    <textarea rows="1" formControlName="particulars" placeholder=" "></textarea>
+                    <label>Particulars</label>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button type="submit" [disabled]="loading">
+                    {{ isEditMode ? 'Update Inquiry' : 'Save Inquiry' }}
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+
+    <!-- ================= INQUIRY EXCEL IMPORT MODAL ================= -->
+    <div class="modal-backdrop" *ngIf="excelPreview.length"></div>
+
+    <div class="modal" *ngIf="excelPreview.length">
+        <div class="modal-card">
+
+            <div class="modal-header">
+                <h3>Excel Import Preview (Inquiry)</h3>
+                <button class="close-btn" (click)="clearExcelPreview()">✕</button>
+            </div>
+
+            <div class="modal-body table-scroll">
+                <table class="inquiry-table">
+                    <thead>
+                        <tr>
+                            <th>Date</th>
+                            <th>Lead</th>
+                            <th>Project</th>
+                            <th>Status</th>
+                            <th>Unit Code</th>
+
+                            <!-- <th>Rate</th> -->
+                            <th>Qty</th>
+                            <th>Total</th>
+                            <th>Errors</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let r of excelPreview" [style.background]="r._errors.length ? '#fee2e2' : ''">
+
+                            <td>{{ r.inqueryDate }}</td>
+                            <td>
+                                {{ r.leadObj?.cName }}
+                                <span *ngIf="r.leadObj?._isNew" style="color:red;font-size:11px">
+                                    (new)
+                                </span>
+                            </td>
+
+                            <td>
+                                {{ r.projectObj?.projectName }}
+                                <span *ngIf="r.projectObj?._isNew" style="color:red;font-size:11px">
+                                    (new)
+                                </span>
+                            </td>
+
+                            <td>{{ r.inqStatusId ? getInquiryStatusName(r.inqStatusId) : '-' }}</td>
+                            <td>{{ r.unitCode }}</td>
+
+
+                            <!-- <td>{{ r.rate }}</td> -->
+                            <td>{{ r.quantity }}</td>
+                            <td>{{ r.total }}</td>
+                            <td style="color:#991b1b;font-size:13px">
+                                {{ r._errors.join(', ') }}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button class="toggle-btn btn-success" (click)="saveInquiryExcelToDB()">
+                    Save Imported Inquiries
+                </button>
+
+
+                <button class="clear-btn btn-danger" (click)="clearExcelPreview()">
+                    Cancel
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>

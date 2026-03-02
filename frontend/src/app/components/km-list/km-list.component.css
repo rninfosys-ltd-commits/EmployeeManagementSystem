@@ -1,0 +1,668 @@
+/* ---------------------------
+   KM LIST - Component Styles
+   Cleaned, compact, centered
+   --------------------------- */
+
+/* Layout container */
+.employee-list-container {
+    max-width: 1450px;
+    margin: 15px 30px;
+    padding: 18px;
+    font-family: "Helvetica Neue", Arial, sans-serif;
+    color: #2b2b2b;
+    background-color: #f1f4f8;
+    border-radius: 15px;
+}
+
+/* Top bar */
+/* ================= TOP BAR ================= */
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 0rem;
+}
+
+.top-bar h2 {
+    margin: 0;
+    font-size: 26px;
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+/* ACTION BUTTONS */
+.top-bar-actions {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+/* FILTER BUTTON */
+.filter-btn {
+    padding: 8px 14px;
+    border-radius: 6px;
+    border: 1px solid #ccc;
+    background: #fff;
+    cursor: pointer;
+}
+
+.filter-btn.active {
+    background: #0d6efd;
+    color: #fff;
+    border-color: #0d6efd;
+    font-size: 20px;
+}
+
+.title {
+    color: white;
+    font-size: 26px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* ================= MOBILE VIEW ================= */
+
+
+
+/* Buttons */
+.btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 20px;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    border: none;
+}
+
+/* Loading / empty */
+.loading,
+.empty-state {
+    text-align: center;
+    padding: 28px 10px;
+    color: #666;
+    font-size: 20px;
+}
+
+
+/* ================= LEAD TABLE UI ================= */
+
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.lead-table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    border: 1px solid #e5e7eb;
+}
+
+/* HEADER */
+.lead-table th {
+    background: blue;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: white;
+}
+
+/* CELLS */
+.lead-table th,
+.lead-table td {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    font-size: 20px;
+    text-align: center;
+}
+
+/* ROW HOVER */
+.lead-table tbody tr:hover {
+    background: #f1f5f9;
+}
+
+/* ACTION BUTTON */
+.edit-btn {
+    padding: 10px 20px;
+    border-radius: 999px;
+    border: none;
+    font-weight: 600;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+
+/* Table container */
+.table-container {
+    overflow-x: auto;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 10px;
+}
+
+/* General table styling (applies to all tables in this component) */
+.employee-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 17px;
+    margin: 0;
+}
+
+/* Header style */
+.employee-table thead th {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: #fff;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 18px;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    padding: 8px 6px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Cells: reduced padding for compact rows */
+.employee-table td,
+.employee-table th {
+    border: 1px solid #e0e0e0;
+    padding: 6px 8px;
+    /* reduced padding (smaller row gap) */
+    text-align: center;
+    /* center horizontally */
+    vertical-align: middle;
+    /* center vertically */
+    word-break: break-word;
+}
+
+/* Table rows hover */
+.employee-table tbody tr:hover {
+    background: #f7fbff;
+}
+
+/* Clickable batch cell style */
+.clickable {
+    cursor: pointer;
+    color: #0d6efd;
+    text-decoration: none;
+}
+
+.clickable:hover {
+    text-decoration: underline;
+}
+
+/* Small helper muted text */
+.small-muted {
+    font-size: 17px;
+    color: #666;
+}
+
+/* Filter buttons */
+.filter-buttons {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 10px;
+}
+
+.filter-btn {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid #4f46e5;
+    background: #fff;
+    color: #222;
+    cursor: pointer;
+    font-size: 19x;
+    width: 100px;
+}
+
+.filter-btn.active {
+    background: #4f46e5;
+    color: #fff;
+    width: 100px;
+    font-size: 25px;
+    padding: 10px;
+}
+
+/* Pagination */
+.pagination-container {
+    display: flex;
+    gap: 8px;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.pagination-container .btn {
+    padding: 5px 10px;
+}
+
+/* KM photo styles */
+.km-photo {
+    width: 56px;
+    height: 56px;
+    object-fit: contain;
+    /* border-radius: 6px; */
+    /* border: 1px solid #ddd; */
+    display: inline-block;
+    vertical-align: middle;
+    cursor: pointer;
+}
+
+/* Inline entries small image */
+.inline-entries-wrapper .km-photo.small {
+    width: 40px;
+    height: 40px;
+}
+
+/* ===========================
+   Modal table scroll wrapper
+   - vertical limit for ~5 rows
+   - horizontal scroll allowed
+   - sticky header
+   =========================== */
+.km-modal-table-wrapper {
+    max-height: 260px;
+    /* shows about 5 rows depending on font */
+    overflow-y: auto;
+    max-height: 380px;
+    /* vertical scroll after 5 rows */
+    overflow-x: auto;
+    /* horizontal scroll when table is wide */
+    border-radius: 6px;
+    border: 1px solid #e6e6e6;
+    padding: 0;
+    background: #fff;
+}
+
+/* Make thead sticky and centered */
+.km-modal-table-wrapper thead th {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    background: linear-gradient(135deg, #3aabec 0%, #4f9fe0 100%) !important;
+    color: #fff !important;
+}
+
+/* Reduce gaps for modal header / body */
+.modal-header {
+    padding: 10px 14px;
+}
+
+.modal-body {
+    padding: 10px 14px;
+    height: 483px;
+}
+
+/* Modal footer compact */
+.modal-footer {
+    padding: 8px 14px;
+}
+
+/* Make modal table cells slightly tighter compared to main table */
+.modal-entries-table td,
+.modal-entries-table th {
+    padding: 6px 8px;
+    font-size: 19px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Prevent overly wide columns by wrapping long text */
+.employee-table td {
+    white-space: normal;
+}
+
+
+
+/* Minor visual polish */
+.table-container::-webkit-scrollbar,
+.km-modal-table-wrapper::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb,
+.km-modal-table-wrapper::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.12);
+    border-radius: 6px;
+}
+
+/* ================= TABLE SCROLL FIX ================= */
+
+/* Table wrapper */
+.table-container {
+    width: 100%;
+    overflow-x: auto;
+    /* ✅ horizontal scroll only if needed */
+    overflow-y: hidden;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+    padding: 8px;
+}
+
+/* Prevent table from shrinking too much */
+.employee-table {
+    min-width: 900px;
+    /* ✅ forces scroll on small screens */
+    width: 100%;
+    border-collapse: collapse;
+}
+
+/* Sticky header (already nice, reinforced) */
+.employee-table thead th {
+    position: sticky;
+    top: 0;
+    z-index: 10;
+}
+
+/* ================= SCROLLBAR STYLE ================= */
+
+/* Chrome / Edge / Safari */
+.table-container::-webkit-scrollbar {
+    height: 8px;
+}
+
+.table-container::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.25);
+    border-radius: 6px;
+}
+
+.table-container::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+}
+
+/* Firefox */
+.table-container {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+}
+
+
+
+/* ================= KM BATCH LIST ================= */
+.lead-table tbody tr:nth-child(odd) {
+    background-color: #bfd6edab;
+    font-size: 20px;
+}
+
+.lead-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+    font-size: 20px;
+}
+
+
+.lead-table tbody tr:hover {
+    background-color: #f1f5f9 !important;
+}
+
+/* ================= MODAL TABLE STRIPES ================= */
+.employee-table tbody tr:nth-child(odd) {
+    background-color: #bfd6edab;
+    font-size: 20px;
+}
+
+
+.employee-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+    font-size: 20px;
+}
+
+
+.employee-table tbody tr:hover {
+    background-color: #f1f5f9 !important;
+}
+
+/* ================= MOBILE ONLY RESPONSIVE PATCH ================= */
+@media (max-width: 600px) {
+
+    /* Page padding */
+    .employee-list-container {
+        margin: 8px;
+        padding: 10px;
+    }
+
+    /* Title center */
+    .top-bar h2 {
+        font-size: 20px;
+        text-align: center;
+    }
+
+    /* Buttons full width */
+    .top-bar-actions,
+    .filter-buttons {
+        width: 100%;
+    }
+
+    .top-bar-actions button,
+    .filter-btn {
+        flex: 1;
+        font-size: 17px;
+        padding: 10px 4px;
+    }
+
+    /* ===== TABLE SCROLL FIX ===== */
+    .table-container {
+        padding: 4px;
+        overflow-x: auto;
+    }
+
+    .lead-table {
+        min-width: 750px;
+    }
+
+    .lead-table th,
+    .lead-table td {
+        font-size: 18px;
+        padding: 6px;
+        white-space: nowrap;
+    }
+
+    /* ===== MODAL FULL WIDTH ===== */
+    .modal-dialog {
+        margin: 5px;
+        max-width: 100%;
+    }
+
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        max-height: calc(100vh - 160px);
+        padding: 10px 10px 80px 10px;
+        /* ✅ bottom padding */
+    }
+
+
+    /* Modal table scroll */
+    .km-modal-table-wrapper {
+        max-height: 220px;
+        overflow-x: auto;
+    }
+
+    .modal-entries-table {
+        min-width: 900px;
+    }
+
+    .modal-entries-table td,
+    .modal-entries-table th {
+        font-size: 13px;
+        padding: 5px;
+        white-space: nowrap;
+    }
+
+    /* Images smaller */
+    .km-photo {
+        width: 40px;
+        height: 40px;
+    }
+
+    /* Footer buttons wrap */
+    .modal-footer {
+        flex-wrap: wrap;
+    }
+
+    .modal-footer button {
+        flex: 1;
+        font-size: 13px;
+    }
+
+    /* Pagination smaller */
+    .pagination-container .btn {
+        padding: 4px 6px;
+        font-size: 13px;
+    }
+
+    /* Make modal take full screen */
+    .modal-dialog {
+        margin: 0;
+        width: 100%;
+        max-width: 100%;
+        height: 100%;
+    }
+
+    .modal-content {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+
+    .modal-header {
+        flex-direction: column;
+        align-items: flex-start !important;
+        /* ✅ move left */
+        text-align: left;
+        /* ✅ text left */
+        gap: 6px;
+    }
+
+    .modal-header h5 {
+        font-size: 16px;
+    }
+
+    .modal-header small {
+        font-size: 16px;
+    }
+
+    /* Company title */
+    .modal-header .fw-bold {
+        font-size: 15px;
+    }
+
+    /* Body scroll */
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+        max-height: calc(100vh - 140px);
+        padding: 10px 5px 50px 5px;
+    }
+
+    /* Entries table scroll */
+    .km-modal-table-wrapper {
+        max-height: 200px;
+        overflow-x: auto;
+    }
+
+    .modal-entries-table {
+        min-width: 850px;
+    }
+
+    .modal-entries-table th,
+    .modal-entries-table td {
+        font-size: 12px;
+        padding: 4px;
+        white-space: nowrap;
+    }
+
+    /* Approval table smaller */
+    .employee-table thead th,
+    .employee-table td {
+        font-size: 15px;
+        padding: 6px;
+    }
+
+    /* Footer buttons full width */
+    .modal-footer {
+        flex-direction: row;
+        gap: 8px;
+        margin-bottom: 200px;
+    }
+
+    .modal-footer button {
+        width: 100%;
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    /* Close button position */
+    .btn-close {
+        position: absolute;
+        right: 10px;
+        top: 10px;
+    }
+
+    .employee-table {
+        width: 336px;
+    }
+}
+
+/* ================= FINAL MOBILE MODAL + TABLE FIX ================= */
+@media (max-width: 600px) {
+
+    /* Modal layout */
+    .modal-content {
+        display: flex;
+        flex-direction: column;
+        height: 100vh;
+    }
+
+    .modal-body {
+        flex: 1;
+        overflow-y: auto;
+    }
+
+    /* REAL horizontal scroll */
+    .km-modal-table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .modal-entries-table {
+        min-width: 800px;
+    }
+
+    /* Approval table scroll */
+    .employee-table {
+        min-width: 330px;
+    }
+
+    .employee-table-wrapper {
+        overflow-x: auto;
+    }
+
+    /* Sticky footer */
+    .modal-footer {
+        /* position: sticky; */
+        bottom: 0;
+        background: white;
+        padding: 10px;
+        box-shadow: 0 -2px 6px rgba(0, 0, 0, .08);
+    }
+
+    /* Footer buttons */
+    .modal-footer button {
+        width: 100%;
+        font-size: 14px;
+        padding: 10px;
+    }
+}

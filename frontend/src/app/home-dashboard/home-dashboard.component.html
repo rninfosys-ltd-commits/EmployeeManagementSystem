@@ -1,0 +1,113 @@
+<div class="project-wrapper">
+    <!-- STICKY HEADER & FILTERS -->
+    <div class="sticky-controls glass-panel">
+        <div class="header-top">
+            <h2>Dashboard Overview</h2>
+
+            <!-- FILTERS -->
+            <div class="filters">
+                <div class="date-field">
+                    <label>From Date</label>
+                    <input type="date" [(ngModel)]="fromDate" (change)="applyFilters()" />
+                </div>
+
+                <div class="date-field">
+                    <label>To Date</label>
+                    <input type="date" [(ngModel)]="toDate" (change)="applyFilters()" />
+                </div>
+
+                <div class="custom-select">
+                    <div class="selected" (click)="toggleStatus()">
+                        {{ status || 'All Status' }}
+                    </div>
+                    <ul *ngIf="showStatus">
+                        <li (click)='selectStatus("")'>All Status</li>
+                        <li (click)='selectStatus("OPEN")'>Open</li>
+                        <li (click)='selectStatus("IN_PROGRESS")'>In Progress</li>
+                        <li (click)='selectStatus("CLOSED")'>Closed</li>
+                        <li (click)='selectStatus("SUCCESS")'>Success</li>
+                        <li (click)='selectStatus("CANCELLED")'>Cancelled</li>
+                    </ul>
+                </div>
+
+                <div class="custom-select">
+                    <div class="selected" (click)="toggleExport()">
+                        Export As
+                    </div>
+                    <ul *ngIf="showExport">
+                        <li (click)='exportData("pdf")'>Download PDF</li>
+                        <li (click)='exportData("excel")'>Export Excel</li>
+                    </ul>
+                </div>
+
+                <div class="custom-select">
+                    <div class="selected" (click)="toggleChartType()">
+                        {{ chartType | uppercase }} Chart
+                    </div>
+                    <ul *ngIf="showChartType">
+                        <li (click)='selectChartType("line")'>Line Chart</li>
+                        <li (click)='selectChartType("bar")'>Bar Chart</li>
+                        <li (click)='selectChartType("pie")'>Pie Chart</li>
+                    </ul>
+                </div>
+
+                <button class="clear-btn" (click)="clear()">Clear Filters</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- MAIN CONTENT AREA (SCROLLABLE) -->
+    <div class="main-content">
+        <div class="project-card glass-panel metrics-section">
+
+            <div class="dashboard-cards">
+                <div class="card open">
+                    <h4>OPEN</h4>
+                    <h2>{{ summary.OPEN.count }}</h2>
+                    <p>₹ {{ summary.OPEN.amount }}</p>
+                </div>
+
+                <div class="card progress">
+                    <h4>IN PROGRESS</h4>
+                    <h2>{{ summary.IN_PROGRESS.count }}</h2>
+                    <p>₹ {{ summary.IN_PROGRESS.amount }}</p>
+                </div>
+
+                <div class="card closed">
+                    <h4>CLOSED</h4>
+                    <h2>{{ summary.CLOSED.count }}</h2>
+                    <p>₹ {{ summary.CLOSED.amount }}</p>
+                </div>
+
+                <div class="card success">
+                    <h4>SUCCESS</h4>
+                    <h2>{{ summary.SUCCESS.count }}</h2>
+                    <p>₹ {{ summary.SUCCESS.amount }}</p>
+                </div>
+
+                <div class="card cancel">
+                    <h4>CANCELLED</h4>
+                    <h2>{{ summary.CANCELLED.count }}</h2>
+                    <p>₹ {{ summary.CANCELLED.amount }}</p>
+                </div>
+            </div>
+            <div class="total-summary">
+                <span>Aggregated Total : </span>
+                <strong class="total-amount">₹ {{ grandTotalAmount }}</strong>
+            </div>
+        </div>
+
+        <!-- CHARTS -->
+        <div class="charts-grid">
+            <div class="chart-card glass-panel">
+                <h3>Revenue Trend (Current Month)</h3>
+                <canvas id="currentMonthChart"></canvas>
+            </div>
+
+            <div class="chart-card glass-panel">
+                <h3>Revenue Trend (Last Month)</h3>
+                <canvas id="lastMonthChart"></canvas>
+            </div>
+        </div>
+    </div>
+</div>

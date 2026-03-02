@@ -1,0 +1,273 @@
+/* =================================================
+   DESKTOP / LAPTOP (DEFAULT — UNCHANGED)
+================================================= */
+
+.root-master-container {
+    max-width: 100%;
+    margin: 20px 40px;
+    background-color: #f1f4f8;
+    padding: 15px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+    text-align: center;
+    margin-bottom: 10px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 12px 10px;
+    border-radius: 5px;
+    width: 250px;
+    color: white;
+}
+
+
+.parent {
+    display: flex;
+    justify-content: center;
+}
+
+/* FORM */
+.root-form {
+    display: flex;
+    gap: 15px;
+    align-items: flex-end;
+    margin-bottom: 30px;
+}
+
+.field {
+    position: relative;
+    width: 100%;
+}
+
+.field input {
+    width: 100%;
+    padding: 12px 10px;
+    font-size: 20px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    outline: none;
+    background: transparent;
+}
+
+.field label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    background: white;
+    padding: 0 6px;
+    color: #777;
+    font-size: 20px;
+    transform: translateY(-50%);
+    pointer-events: none;
+    transition: 0.3s;
+}
+
+/* FLOATING LABEL */
+.field input:focus+label,
+.field input:not(:placeholder-shown)+label {
+    top: -6px;
+    font-size: 18px;
+    color: #6a11cb;
+}
+
+/* BUTTON */
+.btn-submit {
+    background: linear-gradient(135deg, #6a11cb, #2575fc);
+    color: white;
+    border: none;
+    padding: 12px 22px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 20px;
+}
+
+/* TABLE */
+/* ================= TABLE SCROLL ================= */
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+/* ================= TABLE ================= */
+.lead-table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    border: 1px solid #e5e7eb;
+}
+
+/* HEADER */
+.lead-table th {
+    background: blue;
+    font-size: 20px;
+    text-transform: uppercase;
+    color: white;
+}
+
+/* CELLS */
+.lead-table th,
+.lead-table td {
+    padding: 14px;
+    border: 1px solid #e5e7eb;
+    font-size: 20px;
+    text-align: center;
+}
+
+/* ROW HOVER */
+.lead-table tbody tr:hover {
+    background: #f1f5f9;
+}
+
+/* ACTION BUTTON */
+.edit-btn {
+    padding: 6px 20px;
+    border-radius: 999px;
+    border: none;
+    font-weight: 600;
+    background: #2563eb;
+    color: white;
+    cursor: pointer;
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .lead-table th,
+    .lead-table td {
+        font-size: 16px;
+        padding: 10px 12px;
+        white-space: nowrap;
+    }
+
+    .lead-table thead th {
+        position: sticky;
+        top: 0;
+        z-index: 2;
+    }
+}
+
+.btn-edit {
+    background: #2ecc71;
+    color: white;
+    border: none;
+    padding: 6px 14px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+/* =================================================
+   MOBILE VIEW (≤ 767px) — RESPONSIVE ONLY
+================================================= */
+
+@media (max-width: 767px) {
+
+    .root-master-container {
+        margin: 15px;
+        padding: 16px;
+    }
+
+    .title {
+        margin-bottom: 25px;
+    }
+
+    /* STACK FORM */
+    .root-form {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+    }
+
+    /* FULL WIDTH BUTTON */
+    .btn-submit {
+        width: 100%;
+        text-align: center;
+    }
+
+    /* TABLE SCROLL */
+    .table-wrapper {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    table {
+        min-width: 500px;
+    }
+
+    th,
+    td {
+        font-size: 16px;
+        padding: 10px;
+    }
+}
+
+/* =================================================
+   TABLET VIEW (768px – 992px) — RESPONSIVE ONLY
+================================================= */
+
+@media (min-width: 768px) and (max-width: 992px) {
+
+    .root-master-container {
+        margin: 20px 40px;
+    }
+
+    /* FORM WRAP */
+    .root-form {
+        flex-wrap: wrap;
+    }
+
+    /* TABLE SCROLL */
+    .table-wrapper {
+        overflow-x: auto;
+    }
+
+    table {
+        min-width: 600px;
+    }
+}
+
+/* ================= ROOT MASTER TABLE ================= */
+.root-master-container .lead-table tbody tr:nth-child(odd) {
+    background-color: #bfd6edab;
+    font-size: 20px;
+}
+
+.root-master-container .lead-table tbody tr:nth-child(even) {
+    background-color: #ffffff;
+    font-size: 20px;
+}
+
+.root-master-container .lead-table tbody tr:hover {
+    background-color: #f1f5f9 !important;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+.page-btn {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: none;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    background: #e5e7eb;
+}
+
+.page-btn.active {
+    background: #2563eb;
+    color: white;
+}
+
+.page-btn:disabled {
+    background: #cbd5e1;
+    cursor: not-allowed;
+}

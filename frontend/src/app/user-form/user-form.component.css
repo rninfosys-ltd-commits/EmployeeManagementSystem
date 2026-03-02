@@ -1,0 +1,273 @@
+.user-form-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 15px;
+}
+
+.form-box {
+    width: 480px;
+    padding: 10px 25px;
+    background-color: #f1f4f8;
+    border-radius: 12px;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08);
+    border: 1px solid #eaeaea;
+    overflow: visible;
+}
+
+.form-title {
+    text-align: center;
+    margin-bottom: 5px;
+    font-size: 20px;
+    font-weight: 700;
+    color: white;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* ================= FLOATING GROUP ================= */
+.floating-group {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+/* ================= INPUTS ================= */
+.floating-group input {
+    width: 100%;
+    padding: 12px 14px 10px;
+    border-radius: 10px;
+    border: 1px solid #d0d0d0;
+    background: #fff;
+    font-size: 16px;
+    outline: none;
+    transition: 0.25s ease;
+}
+
+/* ================= FLOATING LABEL ================= */
+.floating-group label {
+    position: absolute;
+    left: 14px;
+    top: 12px;
+    font-size: 16px;
+    color: #666;
+    background: #fff;
+    padding: 0 5px;
+    pointer-events: none;
+    transition: 0.2s ease;
+}
+
+/* INPUT FLOAT */
+.floating-group input:focus+label,
+.floating-group input:not(:placeholder-shown)+label {
+    top: -8px;
+    left: 10px;
+    font-size: 14px;
+    color: #8a5cff;
+}
+
+/* INPUT FOCUS BORDER */
+.floating-group input:focus {
+    border-color: #8a5cff;
+    box-shadow: 0 0 5px rgba(138, 92, 255, 0.35);
+}
+
+/* ================= CUSTOM ROLE DROPDOWN ================= */
+.custom-select {
+    position: relative;
+}
+
+/* ROLE INPUT LOOK (EXACT SAME AS PASSWORD) */
+.select-input {
+    width: 100%;
+    padding: 12px 14px 10px;
+    border-radius: 10px;
+    border: 1px solid #d0d0d0;
+    background: #fff;
+    font-size: 16px;
+    cursor: pointer;
+    transition: 0.25s ease;
+}
+
+/* ROLE FOCUS BORDER */
+.select-input.open {
+    border-color: #8a5cff;
+    box-shadow: 0 0 5px rgba(138, 92, 255, 0.35);
+}
+
+/* 🔥 FLOAT LABEL WHEN ROLE OPEN OR VALUE EXISTS */
+.custom-select .select-input.open+label,
+.custom-select .select-input:not(:empty)+label {
+    top: -8px;
+    left: 10px;
+    font-size: 20px;
+    color: #8a5cff;
+}
+
+/* ================= DROPDOWN PANEL ================= */
+.select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.15);
+    z-index: 10000;
+}
+
+/* OPTION */
+.option {
+    padding: 10px 14px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #f1ecff;
+}
+
+/* ================= BUTTONS ================= */
+.button-row {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 25px;
+}
+
+.btn-submit {
+    width: 48%;
+    background: #8a5cff;
+    color: #fff;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-size: 16px;
+}
+
+.btn-submit:hover {
+    background: #7647d8;
+}
+
+.btn-cancel {
+    width: 48%;
+    background: #ccc;
+    color: #333;
+    padding: 10px 20px;
+    border-radius: 6px;
+    border: none;
+    cursor: pointer;
+    transition: 0.3s ease;
+    font-size: 16px;
+}
+
+.btn-cancel:hover {
+    background: #b5b5b5;
+}
+
+/* ================= MOBILE ================= */
+@media (max-width: 600px) {
+
+    .user-form-container {
+        padding: 0 12px;
+    }
+
+    .form-box {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .select-options {
+        max-height: 180px;
+    }
+}
+
+/* ================= MOBILE FORM FIX (≤ 600px ONLY) ================= */
+@media (max-width: 600px) {
+
+    /* ---------- PAGE CONTAINER ---------- */
+    .user-form-container {
+        padding: 10px;
+        margin-top: 10px;
+    }
+
+    /* ---------- FORM BOX ---------- */
+    .form-box {
+        width: 100%;
+        padding: 16px;
+        border-radius: 12px;
+    }
+
+    /* ---------- TITLE ---------- */
+    .form-title {
+        font-size: 22px;
+        padding: 6px 12px;
+        margin-bottom: 12px;
+    }
+
+    /* ---------- INPUT GROUP ---------- */
+    .floating-group {
+        margin-bottom: 18px;
+    }
+
+    /* ---------- INPUTS ---------- */
+    .floating-group input {
+        padding: 28px 12px 8px;
+        font-size: 15px;
+        border-radius: 8px;
+    }
+
+    /* ---------- LABELS ---------- */
+    .floating-group label {
+        font-size: 20px;
+        top: 14px;
+        left: 12px;
+    }
+
+    .floating-group input:focus+label,
+    .floating-group input:not(:placeholder-shown)+label {
+        top: -7px;
+        font-size: 20px;
+    }
+
+    /* ---------- CUSTOM ROLE SELECT ---------- */
+    .select-input {
+        padding: 40px 12px 8px;
+        font-size: 20px;
+        border-radius: 8px;
+    }
+
+    .custom-select .select-input.open+label,
+    .custom-select .select-input:not(:empty)+label {
+        top: -7px;
+        font-size: 18px;
+    }
+
+    /* Dropdown panel */
+    .select-options {
+        max-height: 160px;
+        border-radius: 8px;
+    }
+
+    .option {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    /* ---------- BUTTONS ---------- */
+    .button-row {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 20px;
+    }
+
+    .btn-submit,
+    .btn-cancel {
+        width: 100%;
+        font-size: 25px;
+        padding: 10px 14px;
+        border-radius: 6px;
+    }
+}

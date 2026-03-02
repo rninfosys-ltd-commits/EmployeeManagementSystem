@@ -1,0 +1,366 @@
+/* -------------------------------------------------- */
+/* MAIN LAYOUT */
+/* -------------------------------------------------- */
+
+.employee-form-container {
+    max-width: 1480px;
+    margin: 2px 25px;
+    padding: 20px 20px;
+}
+
+.form-card {
+    background-color: #f1f4f8;
+    border-radius: 14px;
+    padding: 10px 20px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+}
+
+.title {
+    color: white;
+    font-size: 20px;
+    font-weight: bold;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 150px;
+}
+
+/* -------------------------------------------------- */
+/* HEADER */
+/* -------------------------------------------------- */
+.form-header {
+    margin-bottom: 20px;
+}
+
+.form-header h2 {
+    font-size: 20px;
+    font-weight: 700;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 5px 10px;
+    border-radius: 5px;
+    width: 180px;
+    color: white;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+}
+
+/* -------------------------------------------------- */
+/* ALERT */
+/* -------------------------------------------------- */
+.alert {
+    padding: 12px 16px;
+    font-size: 14px;
+    border-radius: 8px;
+    margin-bottom: 16px;
+}
+
+.alert-danger {
+    background: #fde2e2;
+    border: 1px solid #f5b5b5;
+    color: #b91c1c;
+}
+
+/* -------------------------------------------------- */
+/* FORM GRID — 4 FIELDS PER ROW */
+/* -------------------------------------------------- */
+
+.form-row {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-bottom: 24px;
+}
+
+/* -------------------------------------------------- */
+/* FLOATING LABEL INPUT GROUP */
+/* -------------------------------------------------- */
+
+.form-group {
+    position: relative;
+    width: 100%;
+}
+
+/* INPUT */
+.form-group.floating .form-control {
+    width: 100%;
+    padding: 12px 14px 6px;
+    font-size: 16px;
+    border: 2px solid #dddddd;
+    border-radius: 14px;
+    background: #ffffff;
+    transition: 0.25s ease;
+    outline: none;
+}
+
+/* ON FOCUS */
+.form-group.floating .form-control:focus {
+    border-color: #7c5cff;
+    box-shadow: 0 0 8px rgba(124, 92, 255, 0.35);
+}
+
+/* LABEL */
+.form-group.floating label {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    padding: 0px 5px;
+    background: #ffffff;
+    font-size: 14px;
+    color: #777;
+    pointer-events: none;
+    transition: 0.22s ease;
+}
+
+/* FLOAT UP (focus OR has value) */
+.form-group.floating .form-control:focus+label,
+.form-group.floating.has-value label {
+    top: -9px;
+    left: 10px;
+    font-size: 14px;
+    color: #7c5cff;
+}
+
+/* FIX for date input — keeps placeholder hidden */
+input[type="date"]:not(:focus):not(:valid)::-webkit-datetime-edit {
+    color: transparent;
+}
+
+/* -------------------------------------------------- */
+/* ACTION BUTTONS */
+/* -------------------------------------------------- */
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 8px;
+    padding-top: 16px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 30px;
+    font-size: 16px;
+    border: none;
+    cursor: pointer;
+    font-weight: 500;
+    transition: 0.25s ease;
+    /* background-color: blue; */
+}
+
+.btn-primary {
+    background: linear-gradient(135deg, #6d5dfc, #8a65ff);
+    color: #fff;
+}
+
+.btn-primary:hover:not(:disabled) {
+    box-shadow: 0 6px 18px rgba(120, 92, 255, 0.45);
+    transform: translateY(-2px);
+}
+
+.btn-secondary {
+    background: red;
+    color: #fff;
+    margin-right: 20px;
+}
+
+.btn-secondary:hover:not(:disabled) {
+    background: #4b5563;
+}
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+    background: blue;
+}
+
+/* -------------------------------------------------- */
+/* CART TABLE */
+/* -------------------------------------------------- */
+
+.cart-title {
+    margin-top: 30px;
+    margin-bottom: 10px;
+    font-size: 20px;
+    font-weight: 600;
+}
+
+.cart-container {
+    margin-top: 15px;
+    border-radius: 12px;
+    overflow: hidden;
+    border: 1px solid #e5e7eb;
+    background: #fafafa;
+}
+
+.cart-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.cart-table thead {
+    background: #111827;
+    color: #ffffff;
+}
+
+.cart-table th {
+    padding: 12px 16px;
+    text-align: left;
+    font-size: 14px;
+}
+
+.cart-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #e5e7eb;
+    font-size: 14px;
+}
+
+.cart-table tbody tr:nth-child(even) {
+    background: #f3f4f6;
+}
+
+.cart-table tbody tr:hover {
+    background: #ededed;
+}
+
+.empty-cart-text {
+    padding: 14px;
+    font-size: 14px;
+    color: #6b7280;
+}
+
+/* -------------------------------------------------- */
+/* STATUS BADGES */
+/* -------------------------------------------------- */
+.status-pill {
+    display: inline-flex;
+    padding: 4px 10px;
+    font-size: 11px;
+    font-weight: 600;
+    border-radius: 20px;
+}
+
+.status-pending {
+    background: #fef3c7;
+    color: #92400e;
+}
+
+.status-approved {
+    background: #dcfce7;
+    color: #166534;
+}
+
+/* -------------------------------------------------- */
+/* FINAL SUBMIT ROW */
+/* -------------------------------------------------- */
+.submit-row {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+    gap: 15px;
+}
+
+/* -------------------------------------------------- */
+/* RESPONSIVE */
+/* -------------------------------------------------- */
+@media (max-width: 900px) {
+    .form-row {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 640px) {
+    .form-row {
+        grid-template-columns: 1fr;
+    }
+
+    .form-card {
+        padding: 24px 16px;
+    }
+}
+
+/* ================= MOBILE FORM FINAL FIX ================= */
+@media (max-width: 600px) {
+
+    /* Container tighter */
+    .employee-form-container {
+        margin: 6px 5px 50px 5px;
+        padding: 8px;
+    }
+
+    .form-card {
+        padding: 12px;
+    }
+
+    /* Title full width */
+    .form-header h2 {
+        width: 100%;
+        font-size: 20px;
+    }
+
+    /* Inputs smaller */
+    .form-group.floating .form-control {
+        font-size: 16px;
+        padding: 14px 12px 6px;
+    }
+
+    .form-group.floating label {
+        font-size: 16px;
+    }
+
+    .form-group.floating.has-value label,
+    .form-group.floating .form-control:focus+label {
+        font-size: 16px;
+    }
+
+    /* Save transaction button */
+    .form-actions {
+        justify-content: center;
+    }
+
+    .form-actions .btn {
+        width: 100%;
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    /* ================= CART TABLE ================= */
+
+    .cart-container {
+        overflow-x: auto;
+    }
+
+    .cart-table {
+        min-width: 900px;
+    }
+
+    .cart-table th,
+    .cart-table td {
+        font-size: 16px;
+        padding: 6px;
+        white-space: nowrap;
+    }
+
+    /* Status badge */
+    .status-pill {
+        font-size: 14px;
+        padding: 3px 8px;
+    }
+
+    /* Submit buttons stacked */
+    .submit-row {
+        flex-direction: row;
+        margin-bottom: 30px;
+    }
+
+    .submit-row .btn {
+        width: 100%;
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    /* Cart title */
+    .cart-title {
+        font-size: 20px;
+    }
+}

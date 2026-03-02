@@ -1,0 +1,313 @@
+/* ONLY style container + field — NEVER row/col */
+.container {
+    background-color: #f1f4f8;
+    max-width: 1470px;
+    padding: 10px 15px;
+    border-radius: 15px;
+}
+
+.field,
+.custom-select {
+    overflow: visible !important;
+}
+
+
+/* ==================================================
+   FLOATING FIELD (INPUT + SELECT + CUSTOM)
+================================================== */
+
+.field {
+    position: relative;
+    width: 100%;
+}
+
+.btn {
+    color: white;
+    background-color: blue;
+    font-size: 16px;
+}
+
+.title1 {
+    text-align: center;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 6px 12px;
+    border-radius: 5px;
+    width: auto;
+    color: white;
+}
+
+/* INPUT / SELECT / CUSTOM INPUT */
+.field input,
+.field .select-input {
+    width: 100%;
+    height: 46px;
+    padding: 14px 12px 10px;
+    border-radius: 10px;
+    border: 1.5px solid #ced4da;
+    background: #fff;
+    font-size: 15px;
+    outline: none;
+}
+
+/* LABEL DEFAULT */
+.field label {
+    position: absolute;
+    top: 0px;
+    left: 45px;
+    font-size: 14px;
+    color: blue;
+    background: #fff;
+    padding: 0 6px;
+    pointer-events: none;
+    transition: 0.25s ease;
+}
+
+/* FLOAT LABEL */
+.field.filled label,
+.field input:focus+label,
+.field .select-input.open+label {
+    top: -5px;
+    font-size: 13px;
+    color: blue;
+}
+
+/* INPUT FOCUS */
+.field input:focus,
+.select-input.open {
+    border-color: #0d6efd;
+    box-shadow: 0 0 6px rgba(13, 110, 253, 0.35);
+}
+
+/* ==================================================
+   CUSTOM DROPDOWN
+================================================== */
+
+.custom-select {
+    position: relative;
+}
+
+.select-input {
+    cursor: pointer;
+}
+
+/* DROPDOWN PANEL */
+.select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    z-index: 10000;
+}
+
+/* OPTION */
+.option {
+    padding: 10px 14px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #f1f5ff;
+}
+
+/* ==================================================
+   MOBILE OPTIMIZATION
+================================================== */
+
+@media (max-width: 767px) {
+    .select-options {
+        max-height: 180px;
+    }
+}
+
+/* ================= GLOBAL CUSTOM TABLE ================= */
+.custom-table {
+    border-collapse: collapse;
+}
+
+/* HEADER */
+.custom-table thead {
+    background-color: #1e40af;
+    /* BLUE */
+}
+
+.custom-table thead th {
+    color: #ffffff;
+    font-weight: 600;
+    /* border-color: #1e3a8a; */
+    background-color: blue;
+}
+
+/* HEADER */
+.custom-table thead {
+    background-color: #1e40af;
+}
+
+.custom-table thead th {
+    color: #ffffff;
+    font-weight: 600;
+    font-size: 16px;
+}
+
+/* ROW COLORS */
+.custom-table tbody tr:nth-child(odd) td {
+    background-color: #bfd6edab;
+    font-size: 15px;
+}
+
+.custom-table tbody tr:nth-child(even) td {
+    background-color: #ffffff;
+    font-size: 15px;
+}
+
+.custom-table tbody tr:hover td {
+    background-color: #f1f5f9;
+}
+
+/* ================= SALE ORDER MOBILE RESPONSIVE ================= */
+@media (max-width: 767px) {
+
+    /* CONTAINER */
+    .container {
+        padding: 8px;
+    }
+
+    /* HEADER TITLE + BUTTON ONE LINE */
+    .d-flex.justify-content-between {
+        flex-wrap: nowrap;
+        gap: 8px;
+    }
+
+    .title1 {
+        width: auto !important;
+        font-size: 18px;
+        padding: 6px 14px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .btn {
+        font-size: 18px;
+        padding: 8px 14px;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    /* FORM → SINGLE COLUMN */
+    .row.g-3>div {
+        width: 100%;
+    }
+
+    .col-md-2,
+    .col-md-3,
+    .col-md-4,
+    .col-md-5,
+    .col-md-8 {
+        flex: 0 0 100%;
+        max-width: 100%;
+    }
+
+    /* INPUTS */
+    .field input,
+    .field .select-input {
+        height: 40px;
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    .field label {
+        font-size: 16px;
+        left: 23px;
+        top: -7px;
+    }
+
+    .field.filled label,
+    .field input:focus+label,
+    .field .select-input.open+label {
+        top: -6px;
+        font-size: 16px;
+    }
+
+    /* ADD TO CART BUTTON FULL WIDTH */
+    .btn-primary,
+    .btn-success {
+        width: 60%;
+    }
+
+    /* TABLE WRAPPER SCROLL */
+    .table-responsive {
+        overflow-x: auto;
+    }
+
+    .custom-table {
+        min-width: 700px;
+    }
+
+    /* TABLE FONT SMALLER */
+    .custom-table th,
+    .custom-table td {
+        font-size: 14px;
+        padding: 6px 8px;
+    }
+
+    /* CART TABLE */
+    table.table {
+        min-width: 600px;
+    }
+
+    table.table th,
+    table.table td {
+        font-size: 14px;
+        padding: 6px;
+    }
+
+    /* TOTAL + PLACE BUTTON STACK */
+    .d-flex.justify-content-between.align-items-center {
+        flex-direction: row;
+        gap: 6px;
+        align-items: stretch;
+    }
+
+    strong {
+        text-align: center;
+    }
+
+    html,
+    body {
+        height: 100%;
+        overflow-y: auto;
+    }
+
+    .container {
+        min-height: 100vh;
+        overflow-y: auto;
+        padding-bottom: 120px;
+        /* space for bottom buttons */
+    }
+
+    /* allow page scrolling */
+    .row,
+    .field,
+    .custom-select {
+        overflow: visible !important;
+    }
+
+    /* cart table scroll */
+    table.table {
+        display: block;
+        overflow-x: auto;
+        white-space: nowrap;
+    }
+
+    /* bottom action area breathing room */
+    .d-flex.justify-content-between.align-items-center {
+        margin-bottom: 40px;
+    }
+}

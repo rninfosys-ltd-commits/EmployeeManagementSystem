@@ -1,0 +1,362 @@
+/* ==================================================
+   DESKTOP / LAPTOP (DEFAULT ≥ 993px)
+   (UNCHANGED LAYOUT)
+================================================== */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 70px;
+  margin: 0;
+  background: rgb(146 255 225 / 80%) !important;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-bottom: 2px solid rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 2rem;
+  z-index: 10000 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: space-between;
+  box-sizing: border-box;
+}
+
+.navbar-container {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* BRAND */
+.navbar-brand a {
+  font-size: 1.5rem;
+  font-weight: 700;
+  background: var(--accent-gradient);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  letter-spacing: -0.5px;
+}
+
+/* DESKTOP NAV */
+.desktop-nav {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+/* DROPDOWNS */
+.nav-select {
+  padding: 8px 16px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  background: rgb(84 212 196 / 70%);
+  color: var(--text-main);
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  outline: none;
+  appearance: none;
+  transition: all 0.2s;
+  box-shadow: var(--shadow-sm);
+}
+
+/* OPTIONS */
+.nav-select option {
+  background: #ffffff;
+  color: #333;
+  padding: 10px;
+}
+
+.nav-select option:checked {
+  background: #667eea;
+  color: white;
+}
+
+.nav-select:hover {
+  border-color: var(--primary);
+  box-shadow: var(--shadow);
+}
+
+/* USER INFO */
+.user-info {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-left: 1rem;
+  padding-left: 1rem;
+  border-left: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.username {
+  font-weight: 600;
+  color: var(--primary);
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+/* LOGOUT */
+.btn-logout {
+  background: #fee2e2;
+  color: #ef4444;
+  border: none;
+  padding: 6px 16px;
+  border-radius: var(--radius);
+  font-weight: 600;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-logout:hover {
+  background: #fecaca;
+}
+
+/* HAMBURGER (HIDDEN ON DESKTOP) */
+.menu-toggle {
+  display: none;
+  font-size: 30px;
+  background: none;
+  border: none;
+  color: white;
+  cursor: pointer;
+}
+
+
+/* ==================================================
+   MOBILE MENU (USED BY MOBILE & TABLET)
+================================================== */
+
+.mobile-menu {
+  position: fixed;
+  top: 0;
+  left: -280px;
+  width: 260px;
+  height: 100vh;
+  background: linear-gradient(135deg, #667eea, #764ba2);
+  padding: 80px 20px 20px;
+  display: none;
+  /* 🔥 Hide on desktop by default */
+  flex-direction: column;
+  gap: 16px;
+  transition: left 0.3s ease;
+  z-index: 1200;
+}
+
+.mobile-menu.open {
+  left: 0;
+}
+
+/* Mobile dropdown look */
+.mobile-menu .nav-select {
+  background: white;
+  color: #333;
+}
+
+.mobile-menu .nav-select option {
+  background: #f5f5f5;
+  color: #333;
+}
+
+.mobile-menu .nav-select option:checked {
+  background: #667eea;
+  color: white;
+}
+
+/* OVERLAY */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  z-index: 1100;
+}
+
+
+/* ==================================================
+   MOBILE VIEW (≤ 767px)
+================================================== */
+
+@media (max-width: 767px) {
+  .navbar {
+    padding: 0.75rem 1rem;
+  }
+
+  /* RESET DESKTOP SPACING */
+  .navbar-brand a {
+    margin-right: 0;
+    font-size: 20px;
+  }
+
+  .menu-toggle {
+    display: block;
+    margin-left: 0;
+    /* Reset offset */
+  }
+
+  .navbar-container {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: flex;
+    /* 🔥 Show only on mobile */
+    width: 240px;
+  }
+
+  /* Prevent horizontal scroll */
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+
+
+/* ==================================================
+   TABLET VIEW (768px – 992px)
+================================================== */
+
+@media (min-width: 768px) and (max-width: 992px) {
+
+  /* RESET DESKTOP SPACING */
+  .navbar-brand a {
+    margin-right: 0;
+    font-size: 24px;
+  }
+
+  .menu-toggle {
+    display: block;
+    margin-right: 0;
+  }
+
+  .navbar-container {
+    justify-content: space-between;
+    width: 100%;
+  }
+
+  /* Title on RIGHT */
+  .navbar-brand {
+    margin-left: auto;
+  }
+
+  .desktop-nav {
+    display: none;
+  }
+
+  .mobile-menu {
+    display: flex;
+    /* 🔥 Show only on tablet */
+    width: 260px;
+  }
+
+  /* Prevent horizontal scroll */
+  html,
+  body {
+    overflow-x: hidden;
+  }
+}
+
+.home-icon {
+  font-size: 22px;
+  color: black;
+  background-color: white;
+  cursor: pointer;
+  padding: 10px 10px;
+  border-radius: 8px;
+  transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.home-icon:hover {
+  background: rgba(255, 255, 255, 0.2);
+  transform: translateY(-1px);
+}
+
+/* GLOBAL FILTERS */
+.global-filters {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: rgba(255, 255, 255, 0.4);
+  padding: 6px 12px;
+  border-radius: var(--radius);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  margin: 0 1rem;
+}
+
+.nav-date-field input {
+  padding: 6px 10px;
+  border-radius: 6px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  font-size: 0.85rem;
+  outline: none;
+  background: white;
+}
+
+.nav-btn {
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+  transition: all 0.2s;
+}
+
+.nav-btn.export {
+  background: var(--primary);
+  color: white;
+}
+
+.nav-btn.clear {
+  background: #f3f4f6;
+  color: #374151;
+}
+
+.nav-btn:hover {
+  filter: brightness(0.9);
+}
+
+/* EXPORT DROPDOWN */
+.export-dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown-menu {
+  display: none;
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: white;
+  min-width: 120px;
+  box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.1);
+  z-index: 1001;
+  border-radius: 8px;
+  overflow: hidden;
+  margin-top: 5px;
+  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.dropdown-menu button {
+  width: 100%;
+  padding: 10px 15px;
+  border: none;
+  background: none;
+  text-align: left;
+  font-size: 0.9rem;
+  cursor: pointer;
+}
+
+.dropdown-menu button:hover {
+  background-color: #f3f4f6;
+}
+
+.export-dropdown:hover .dropdown-menu {
+  display: block;
+}

@@ -1,0 +1,212 @@
+<div class="container">
+
+    <!-- ================= TABLE VIEW ================= -->
+    <div class="main" *ngIf="!showForm">
+
+        <div class="header">
+            <h2 class="page-title">Block Separating Register</h2>
+
+            <div>
+                <button class="add-btn" (click)="openForm()">+ Add</button>
+
+                <button class="add-btn" style="margin-left:10px" (click)="goToDashboard()">
+                    Go To Dashboard
+                </button>
+            </div>
+        </div>
+
+
+
+        <div class="filters">
+
+            <div class="date-field top-label">
+                <label>From Date</label>
+                <input type="date" [(ngModel)]="filterFromDate" (change)="onDateChange()" />
+            </div>
+
+            <div class="date-field top-label">
+                <label>To Date</label>
+                <input type="date" [(ngModel)]="filterToDate" (change)="onDateChange()" />
+            </div>
+
+            <select (change)="onExportChange($event)">
+                <option value="">Export</option>
+                <option value="pdf">Export PDF</option>
+                <option value="excel">Export Excel</option>
+                <option value="horizontal">📊 Combined Horizontal</option>
+            </select>
+            <!-- IMPORT SELECT -->
+            <select (change)="onImportSelect($event)">
+                <option value="">Import</option>
+                <option value="excel">Import Excel</option>
+            </select>
+
+            <!-- HIDDEN FILE INPUT -->
+            <input type="file" accept=".xlsx,.xls" hidden #fileInput (change)="onExcelSelect($event)" />
+            <select [(ngModel)]="filterShift" (change)="applyFilters()">
+                <option value="">All Shifts</option>
+                <option value="1">Shift 1</option>
+                <option value="2">Shift 2</option>
+                <option value="3">Shift 3</option>
+                <option value="G">General</option>
+            </select>
+            <select [(ngModel)]="filterBlockSize" (change)="applyFilters()">
+                <option value="">All Block Sizes</option>
+                <option *ngFor="let s of blockSizes" [value]="s">
+                    {{ s }}
+                </option>
+            </select>
+
+
+            <button class="clear-btn" (click)="clearFilters()">Clear</button>
+        </div>
+        <table class="table custom-table">
+            <thead>
+                <tr>
+                    <th>Batch Number</th>
+                    <th>Casting Date</th>
+
+                    <th>shift</th>
+                    <th>Size of Block</th>
+                    <th>Time</th>
+                    <th>Remark</th>
+                    <th>Action</th>
+
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let r of pagedList">
+
+                    <td>{{ r.batchNumber }}</td>
+                    <td>{{ r.castingDate | date:'dd-MM-yyyy' }}</td>
+                    <td>{{ r.shift }}</td>
+                    <td>{{ r.blockSize }}</td>
+                    <td>{{ r.time }}</td>
+                    <td>{{ r.remark || '—' }}</td>
+
+                    <td>
+                        <button class="link-btn" (click)="edit(r)">Edit</button>
+                        <button class="link-btn danger" (click)="delete(r.id)">Delete</button>
+                        <div class="report-actions">
+                            <button class="report-btn pdf" (click)="downloadBlock(r, 'pdf')">PDF</button>
+                            <button class="report-btn excel" (click)="downloadBlock(r, 'excel')">XLS</button>
+                            <button class="report-btn" style="background:#2e7d32;color:#fff"
+                                (click)="downloadHorizontalReport(r)"
+                                title="Download Combined Horizontal Report">HZ</button>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr *ngIf="!filteredList.length">
+                    <td colspan="5" style="text-align:center;">No records found</td>
+                </tr>
+            </tbody>
+        </table>
+        <!-- ================= PAGINATION ================= -->
+        <div class="pagination-bar" *ngIf="totalPages > 1">
+
+            <button (click)="prevPage()" [disabled]="currentPage === 1">
+                ⬅ Prev
+            </button>
+
+            <button *ngFor="let p of [].constructor(totalPages); let i = index" (click)="goToPage(i + 1)"
+                [class.active]="currentPage === i + 1">
+                {{ i + 1 }}
+            </button>
+
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages">
+                Next ➡
+            </button>
+
+        </div>
+
+
+    </div>
+
+    <!-- ================= FORM VIEW ================= -->
+    <form *ngIf="showForm" [formGroup]="form" (ngSubmit)="submit()" class="card">
+
+        <!-- HEADER -->
+        <div class="row row-header">
+            <h2 class="page-title1">Block Separating Register</h2>
+
+            <div class="form-field date">
+                <input type="date" formControlName="reportDate">
+                <label>Date</label>
+            </div>
+            <div class="form-field shift">
+                <select formControlName="shift">
+                    <option value="" disabled></option>
+                    <option value="1">Shift 1</option>
+                    <option value="2">Shift 2</option>
+                    <option value="3">Shift 3</option>
+                    <option value="G">General Shift</option>
+                </select>
+                <label>Shift</label>
+            </div>
+
+            <div></div>
+        </div>
+
+        <hr>
+
+        <!-- ROW -->
+        <div class="row row-3">
+            <div class="form-field date">
+                <input type="date" formControlName="castingDate" placeholder=" " />
+                <label>Casting Date</label>
+            </div>
+            <div class="form-field">
+                <select formControlName="batchNumber" [disabled]="noBatchAvailable">
+
+                    <option value="" disabled *ngIf="noBatchAvailable">
+                        No batch available
+                    </option>
+
+                    <option value="" disabled *ngIf="!noBatchAvailable">
+                        Select Batch
+                    </option>
+
+                    <option *ngFor="let b of autoclaveBatches" [value]="b.batchNo">
+                        {{ b.batchNo }}
+                    </option>
+
+                </select>
+                <label>Batch Number</label>
+
+            </div>
+
+
+            <div class="form-field">
+                <input type="text" formControlName="blockSize" placeholder=" " />
+                <label>Size of Block</label>
+            </div>
+
+            <div class="form-field">
+                <input formControlName="time" readonly>
+                <label>Time</label>
+            </div>
+
+            <div class="form-field textarea">
+                <textarea formControlName="remark" placeholder=" "></textarea>
+                <label>Remark</label>
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- ACTIONS -->
+        <div class="actions">
+            <button type="submit" [disabled]="isSubmitting">
+                Submit
+            </button>
+
+            <button type="button" class="cancel" (click)="cancel()">
+                Cancel
+            </button>
+        </div>
+
+    </form>
+
+</div>

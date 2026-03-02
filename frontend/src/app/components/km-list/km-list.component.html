@@ -1,0 +1,280 @@
+<div class="employee-list-container">
+
+    <!-- TOP BAR -->
+    <div class="top-bar">
+        <h2 class="title">KM Batches</h2>
+
+        <div class="top-bar-actions">
+            <button class="filter-btn" [class.active]="activeFilter === 'ALL'" (click)="setFilter('ALL')">
+                All
+            </button>
+
+            <button class="btn btn-primary" routerLink="/km-form" *ngIf="canAddBatch()">
+                + Add KM
+            </button>
+        </div>
+    </div>
+
+
+    <!-- FILTER BUTTONS -->
+    <div class="filter-buttons mb-3">
+
+
+        <button class="filter-btn" *ngIf="!isAdmin()" [class.active]="activeFilter === 'PENDING'"
+            (click)="setFilter('PENDING')">Pending</button>
+
+        <button class="filter-btn" *ngIf="!isAdmin()" [class.active]="activeFilter === 'APPROVED'"
+            (click)="setFilter('APPROVED')">Approved</button>
+    </div>
+
+    <!-- LOADING -->
+    <div *ngIf="isLoading" class="loading">Loading...</div>
+
+    <!-- BATCH TABLE LIST -->
+    <div *ngIf="!isLoading && filteredBatches.length > 0" class="table-container">
+
+        <div *ngIf="!isLoading && filteredBatches.length > 0" class="table-scroll">
+            <table class="lead-table">
+                <thead>
+                    <tr>
+                        <th>Batch No</th>
+                        <th>Date</th>
+                        <th>Created By</th>
+                        <th>Total Entries</th>
+                        <th>Download</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let b of paginatedBatches">
+                        <td class="clickable" (click)="openBatchModal(b.kmBatchNo)">
+                            {{ b.kmBatchNo }}
+                        </td>
+                        <td>{{ b.trndate | date:'shortDate' }}</td>
+                        <td>{{ b.createdby }}</td>
+                        <td>{{ b.totalEntries }}</td>
+                        <td>
+                            <button class="edit-btn" (click)="download(b.kmBatchNo)">
+                                Download
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- EMPTY STATE -->
+    <div *ngIf="!isLoading && filteredBatches.length === 0" class="empty-state">
+        No batches found.
+    </div>
+
+    <!-- PAGINATION -->
+    <div class="pagination-container d-flex gap-2 align-items-center mt-3" *ngIf="totalPages > 1">
+        <button class="btn btn-outline-secondary" (click)="changePage(currentPage - 1)"
+            [disabled]="currentPage === 1">Prev</button>
+
+        <button class="btn" *ngFor="let p of [].constructor(totalPages); let i = index"
+            [ngClass]="{ 'btn-primary': currentPage === (i + 1), 'btn-outline-primary': currentPage !== (i + 1) }"
+            (click)="changePage(i + 1)">
+            {{ i + 1 }}
+        </button>
+
+        <button class="btn btn-outline-secondary" (click)="changePage(currentPage + 1)"
+            [disabled]="currentPage === totalPages">Next</button>
+    </div>
+
+</div>
+
+
+<!-- ========================================================= -->
+<!-- =====================      MODAL     ===================== -->
+<!-- ========================================================= -->
+
+<div class="modal fade" id="kmBatchModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header d-flex justify-content-between align-items-center">
+
+                <h5 class="fw-bold text-center flex-grow-1">Demo Auto Limited</h5>
+                <div>
+                    <h5 class="modal-title mb-1">KM Batch - {{ selectedBatchNo }}</h5>
+
+                    <small *ngIf="selectedBatch" class="d-block">
+                        Created: {{ selectedBatch.trndate | date:'longDate' }}
+                    </small>
+
+                    <small *ngIf="selectedBatch" class="d-block">
+                        Created By: {{ selectedBatch.createdby }}
+                    </small>
+                </div>
+
+
+
+
+                <button class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- MODAL BODY -->
+            <div class="modal-body" id="km-pdf-content">
+
+                <!-- SCROLLABLE ENTRIES TABLE -->
+                <div class="km-modal-table-wrapper">
+                    <table class="employee-table table table-bordered modal-entries-table">
+
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Salesperson</th>
+                                <th>Start KM</th>
+                                <th>End KM</th>
+                                <th>Visited Place</th>
+                                <th>Date</th>
+                                <th>Img</th>
+                                <th *ngIf="canEditDelete()">Edit</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            <tr *ngFor="let e of entries; let i = index">
+                                <td>{{ e.id }}</td>
+
+                                <!-- SALESPERSON -->
+                                <td>
+                                    <ng-container *ngIf="editingIndex !== i; else editSales">
+                                        {{ e.salesperson }}
+                                    </ng-container>
+                                    <ng-template #editSales>
+                                        <input [(ngModel)]="editModel.salesperson"
+                                            class="form-control form-control-sm" />
+                                    </ng-template>
+                                </td>
+
+                                <!-- START KM -->
+                                <td>
+                                    <ng-container *ngIf="editingIndex !== i; else editStart">
+                                        {{ e.startKm }}
+                                    </ng-container>
+                                    <ng-template #editStart>
+                                        <input type="number" [(ngModel)]="editModel.startKm"
+                                            class="form-control form-control-sm" />
+                                    </ng-template>
+                                </td>
+
+                                <!-- END KM -->
+                                <td>
+                                    <ng-container *ngIf="editingIndex !== i; else editEnd">
+                                        {{ e.endKm }}
+                                    </ng-container>
+                                    <ng-template #editEnd>
+                                        <input type="number" [(ngModel)]="editModel.endKm"
+                                            class="form-control form-control-sm" />
+                                    </ng-template>
+                                </td>
+
+                                <!-- VISITED PLACE -->
+                                <td>
+                                    <ng-container *ngIf="editingIndex !== i; else editPlace">
+                                        {{ e.visitedPlace }}
+                                    </ng-container>
+                                    <ng-template #editPlace>
+                                        <input [(ngModel)]="editModel.visitedPlace"
+                                            class="form-control form-control-sm" />
+                                    </ng-template>
+                                </td>
+
+                                <!-- DATE -->
+                                <td>
+                                    <ng-container *ngIf="editingIndex !== i; else editDate">
+                                        {{ e.trnDate | date:'shortDate' }}
+                                    </ng-container>
+                                    <ng-template #editDate>
+                                        <input type="date" [(ngModel)]="editModel.trnDate"
+                                            class="form-control form-control-sm" />
+                                    </ng-template>
+                                </td>
+
+                                <!-- IMAGE -->
+                                <td>
+                                    <ng-container *ngIf="e.filePath; else noImg">
+                                        <img [src]="getImageUrl(e.filePath)" class="km-photo"
+                                            (click)="openImage(e.filePath)" />
+                                    </ng-container>
+                                    <ng-template #noImg>
+                                        <span class="text-muted">No image</span>
+                                    </ng-template>
+                                </td>
+
+                                <!-- EDIT BUTTONS -->
+                                <td *ngIf="canEditDelete()">
+                                    <button *ngIf="editingIndex !== i" class="btn btn-outline-primary btn-sm"
+                                        (click)="startEdit(i)">✎ Edit</button>
+
+                                    <div *ngIf="editingIndex === i" class="d-flex gap-2">
+                                        <button class="btn btn-success btn-sm" (click)="saveEdit(e.id)">💾 Save</button>
+                                        <button class="btn btn-outline-danger btn-sm" (click)="cancelEdit()">✕
+                                            Cancel</button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+
+                    </table>
+                </div>
+
+                <!-- APPROVAL SUMMARY -->
+                <table class="employee-table table mt-4" *ngIf="selectedBatch">
+                    <thead>
+                        <tr>
+                            <th>Checked By</th>
+                            <th>Reviewed By</th>
+                            <th>Approved By</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>
+                                <div>{{ getApprovalLevels(selectedBatch).checkedBy.name || '—' }}</div>
+                                <div class="small-muted" *ngIf="getApprovalLevels(selectedBatch).checkedBy.level">
+                                    {{ getApprovalLevels(selectedBatch).checkedBy.level }}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div>{{ getApprovalLevels(selectedBatch).reviewedBy.name || '—' }}</div>
+                                <div class="small-muted" *ngIf="getApprovalLevels(selectedBatch).reviewedBy.level">
+                                    {{ getApprovalLevels(selectedBatch).reviewedBy.level }}
+                                </div>
+                            </td>
+
+                            <td>
+                                <div>{{ getApprovalLevels(selectedBatch).approvedBy.name || '—' }}</div>
+                                <div class="small-muted" *ngIf="getApprovalLevels(selectedBatch).approvedBy.level">
+                                    {{ getApprovalLevels(selectedBatch).approvedBy.level }}
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <div class="modal-footer d-flex gap-2">
+                    <button class="btn btn-info btn-sm" (click)="download(selectedBatchNo)">Download</button>
+                    <button class="btn btn-success btn-sm" *ngIf="canApprove() && !isL1AlreadyApproved()"
+                        (click)="approve(selectedBatchNo)">Approve</button>
+                    <button class="btn btn-warning btn-sm" *ngIf="isAnyApprover()"
+                        (click)="reject(selectedBatchNo)">Reject</button>
+                    <button class="btn btn-danger btn-sm" *ngIf="canEditDelete()"
+                        (click)="deleteBatch(selectedBatchNo)">Delete</button>
+                </div>
+
+            </div>
+
+
+
+        </div>
+    </div>
+</div>

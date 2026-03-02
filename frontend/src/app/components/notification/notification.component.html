@@ -1,0 +1,43 @@
+<!-- ============ TOAST CONTAINER ============ -->
+<div class="toast-container">
+    <div *ngFor="let toast of toasts" class="toast-item" [ngClass]="'toast-' + toast.type"
+        (click)="dismissToast(toast.id)">
+
+        <div class="toast-icon">
+            <span>{{ getIcon(toast.type) }}</span>
+        </div>
+
+        <div class="toast-body">
+            <span class="toast-message">{{ toast.message }}</span>
+        </div>
+
+        <button class="toast-close" (click)="dismissToast(toast.id)">×</button>
+
+        <div class="toast-progress" [ngClass]="'progress-' + toast.type"></div>
+    </div>
+</div>
+
+<!-- ============ CONFIRM MODAL ============ -->
+<div class="confirm-overlay" *ngIf="confirmVisible" (click)="onCancel()">
+    <div class="confirm-dialog" (click)="$event.stopPropagation()"
+        [ngClass]="'confirm-' + (confirmOptions.type || 'info')">
+
+        <div class="confirm-icon-wrapper">
+            <div class="confirm-icon">
+                {{ getIcon(confirmOptions.type || 'warning') }}
+            </div>
+        </div>
+
+        <h3 class="confirm-title">{{ confirmOptions.title || 'Confirm Action' }}</h3>
+        <p class="confirm-message">{{ confirmOptions.message }}</p>
+
+        <div class="confirm-actions">
+            <button class="confirm-btn cancel" (click)="onCancel()">
+                {{ confirmOptions.cancelText || 'Cancel' }}
+            </button>
+            <button class="confirm-btn confirm" (click)="onConfirm()">
+                {{ confirmOptions.confirmText || 'Confirm' }}
+            </button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,700 @@
+/* ================= THEME ================= */
+:root {
+    --primary: #2563eb;
+    --primary-dark: #1e40af;
+    --bg-main: #f1f5f9;
+    --card-bg: #ffffff;
+    --border: #e2e8f0;
+    --text-main: #0f172a;
+    --text-muted: #64748b;
+    --success-bg: #dcfce7;
+    --success-text: #166534;
+    --danger-bg: #fee2e2;
+    --danger-text: #991b1b;
+}
+
+/* ================= WRAPPER ================= */
+.project-wrapper {
+    background-color: white;
+    padding: 12px;
+    min-height: 100vh;
+    font-family: "Inter", "Segoe UI", sans-serif;
+}
+
+/* ================= CARD ================= */
+.project-card {
+    max-width: 1450px;
+    margin: auto;
+    background: var(--card-bg);
+    border-radius: 14px;
+    padding: 10px 20px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+    background-color: #f1f4f8;
+}
+
+.title1 {
+    text-align: center;
+    font-size: 18px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 8px 10px;
+    border-radius: 5px;
+    width: 200px;
+    color: white;
+}
+
+.project-card.mt {
+    margin-top: 8px;
+}
+
+/* ================= HEADER ================= */
+.header {
+    display: flex;
+    flex-direction: column;
+    gap: 18px;
+    margin-bottom: 10px;
+}
+
+.header-top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 6px;
+}
+
+.form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 30px;
+}
+
+.header h2,
+.form-header h2 {
+    margin: 0;
+    font-weight: 600;
+    font-size: 20px;
+    color: white;
+}
+
+/* ================= BUTTONS ================= */
+.toggle-btn,
+.edit-btn,
+.actions button {
+    /* border-radius: 999px; */
+    border-radius: 12px;
+
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.25s ease;
+    background-color: #2563eb;
+    color: #e8e8f1;
+    font-size: 16px;
+}
+
+.toggle-btn,
+.edit-btn {
+    padding: 10px 14px;
+    white-space: nowrap;
+    font-size: 16px;
+}
+
+
+.project-table td:last-child {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+    padding-right: 0;
+}
+
+
+.toggle-btn:hover,
+.edit-btn:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+}
+
+/* ================= GRID ================= */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 22px;
+}
+
+.field {
+    position: relative;
+}
+
+.field.full {
+    grid-column: span 4;
+}
+
+/* Remark should span remaining columns */
+.field.span-3 {
+    grid-column: span 3;
+}
+
+/* ================= INPUTS ================= */
+input,
+textarea,
+select {
+    width: 100%;
+    padding: 10px 14px;
+    border-radius: 10px;
+    border: 1.5px solid var(--border);
+    font-size: 16px;
+    background: #f8fafc;
+    transition: 0.2s ease;
+    border: 1.5px solid #93c5fd;
+}
+
+input:focus,
+textarea:focus,
+select:focus {
+    outline: none;
+    background: #fff;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+/* ================= FLOATING LABEL ================= */
+/* ================= FLOATING LABEL (FINAL – FIXED) ================= */
+
+.field.floating {
+    position: relative;
+}
+
+.field.floating label {
+    position: absolute;
+    left: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: #ffffff;
+    padding: 0 6px;
+
+    font-size: 19px;
+    font-weight: 500;
+    color: #64748b;
+
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+/* 👇 move label on focus OR value */
+.field.floating input:focus+label,
+.field.floating input:not(:placeholder-shown)+label,
+.field.floating textarea:focus+label,
+.field.floating textarea:not(:placeholder-shown)+label,
+.field.floating select:focus+label,
+.field.floating select.ng-valid+label {
+    top: -6px;
+    /* sits on border */
+    font-size: 19px;
+    /* smaller text */
+    color: #2563eb;
+    /* blue */
+}
+
+
+/* ================= ACTION ================= */
+.actions {
+    margin-top: 32px;
+    display: flex;
+    justify-content: center;
+}
+
+.actions button {
+    min-width: 240px;
+    height: 52px;
+    box-shadow: 0 10px 25px rgba(37, 99, 235, 0.35);
+}
+
+/* ================= TABLE ================= */
+.project-table {
+    width: 100%;
+    min-width: 720px;
+    border-collapse: collapse;
+    border: 1px solid #e5e7eb;
+}
+
+.project-table th {
+    background: blue;
+    font-size: 19px;
+    text-transform: uppercase;
+    color: white;
+}
+
+.project-table th,
+.project-table td {
+    padding: 10px;
+    border: 1px solid #e5e7eb;
+    font-size: 15px;
+    text-align: center;
+}
+
+.project-table tbody tr:hover {
+    background: #f1f5f9;
+}
+
+/* ================= BADGES ================= */
+.badge {
+    padding: 4px 12px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.badge.active {
+    background: var(--success-bg);
+    color: var(--success-text);
+}
+
+.badge.inactive {
+    background: var(--danger-bg);
+    color: var(--danger-text);
+}
+
+/* ================= PAGINATION ================= */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 14px;
+    margin-top: 24px;
+    font-size: 20px;
+}
+
+.pagination button {
+    padding: 8px 20px;
+    border-radius: 999px;
+    border: none;
+    font-weight: 600;
+    color: white;
+    background-color: #1e40af;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.pagination button:disabled {
+    background: #94a3b8;
+    cursor: not-allowed;
+}
+
+/* ================= TABLE SCROLL ================= */
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
+.table-scroll::-webkit-scrollbar {
+    height: 6px;
+}
+
+.table-scroll::-webkit-scrollbar-thumb {
+    background: #cbd5f5;
+    border-radius: 6px;
+}
+
+/* ================= RESPONSIVE ================= */
+@media (max-width: 1100px) {
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .field.full {
+        grid-column: span 2;
+    }
+}
+
+@media (max-width: 600px) {
+    .grid {
+        grid-template-columns: 1fr;
+    }
+
+    .field.full {
+        grid-column: span 1;
+    }
+
+    .actions button {
+        width: 100%;
+    }
+}
+
+.filters {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    /* tighter & balanced spacing */
+    padding: 14px 18px;
+
+    background: #ffffff;
+    border: 1px solid #e5e7eb;
+    border-radius: 14px;
+    margin-bottom: 10px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+}
+
+/* ================= DATE FIELD (LABEL + INPUT) ================= */
+
+.date-field {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+/* LABEL */
+.date-field label {
+    font-size: 19px;
+    font-weight: 500;
+    color: #374151;
+}
+
+/* ================= INPUTS & SELECTS ================= */
+
+.filters input[type="date"],
+.filters select {
+    height: 40px;
+    /* ✅ same height everywhere */
+    width: 280px;
+    /* ✅ same width everywhere */
+
+    padding: 0 14px;
+    font-size: 15px;
+
+    border-radius: 10px;
+    border: 1px solid #d1d5db;
+    background: #ffffff;
+    color: #374151;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* ================= FOCUS (CLEAN & SOFT) ================= */
+
+.filters input:focus,
+.filters select:focus {
+    outline: none;
+    border-color: #6366f1;
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
+}
+
+/* ================= SELECT ARROW (CONSISTENT) ================= */
+
+.filters select {
+    appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%236b7280' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+/* ================= CLEAR BUTTON ================= */
+
+.clear-btn {
+    height: 40px;
+    /* matches inputs */
+    padding: 0 35px;
+
+    border-radius: 999px;
+    border: none;
+
+    font-size: 16px;
+    font-weight: 600;
+
+    background: #ff0000;
+    color: #ffffff;
+
+    cursor: pointer;
+    white-space: nowrap;
+    transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.clear-btn:hover {
+    background: #dc2626;
+    transform: translateY(-1px);
+}
+
+/* ================= SCROLLBAR (CLEAN) ================= */
+
+.filters::-webkit-scrollbar {
+    height: 4px;
+}
+
+.filters::-webkit-scrollbar-thumb {
+    background: #e5e7eb;
+    border-radius: 4px;
+}
+
+
+
+
+
+
+
+
+
+/* ================= TOP LINE LABEL INPUT ================= */
+
+.date-field.top-label {
+    position: relative;
+    min-width: 280px;
+}
+
+/* LABEL ON BORDER LINE */
+.date-field.top-label label {
+    position: absolute;
+    top: -9px;
+    /* 👈 sits on border line */
+    left: 14px;
+    background: #ffffff;
+    /* cuts border behind */
+    padding: 0 6px;
+
+    font-size: 19px;
+    font-weight: 600;
+    color: #2563eb;
+    z-index: 2;
+}
+
+/* INPUT */
+.date-field.top-label input {
+    width: 100%;
+    height: 42px;
+    padding: 0 14px;
+    font-size: 19px;
+
+    border-radius: 12px;
+    border: 1.5px solid #cbd5e1;
+    background: #f8fafc;
+
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+/* FOCUS */
+.date-field.top-label input:focus {
+    outline: none;
+    background: #ffffff;
+    border-color: #2563eb;
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+
+/* ================= CLOSE BUTTON ================= */
+
+.close-btn {
+    background: red;
+    color: white;
+    border: none;
+    font-size: 22px;
+    cursor: pointer;
+}
+
+
+/* ================= MODAL BACKDROP ================= */
+.modal-backdrop-custom {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 9999;
+}
+
+/* ================= MODAL ================= */
+.modal-custom {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10000;
+
+    width: 92%;
+    max-width: 1200px;
+}
+
+/* ================= MODAL CARD ================= */
+.modal-card {
+    background: #ffffff;
+    border-radius: 16px;
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
+
+    max-height: 85vh;
+    display: flex;
+    flex-direction: column;
+    padding: 15px;
+}
+
+/* ================= MODAL FOOTER ================= */
+.modal-footer {
+    display: flex;
+    justify-content: space-between;
+    /* ⬅ left & right */
+    align-items: center;
+    padding: 16px 20px;
+    border-top: 1px solid #e5e7eb;
+}
+
+/* Optional: keep button sizes consistent */
+.modal-footer .toggle-btn,
+.modal-footer .clear-btn {
+    min-width: 220px;
+}
+
+/* ================= MODAL HEADER ================= */
+.modal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    /* ⬅ left & right */
+    padding: 16px 20px;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+/* Title */
+.modal-header h3 {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* Close button */
+.modal-header .close-btn {
+    background: #ef4444;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    width: 36px;
+    height: 36px;
+    font-size: 20px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-header .close-btn:hover {
+    background: #dc2626;
+}
+
+/* ================= COMPACT FILTERS – SCHEDULE LIST ================= */
+
+@media (max-width: 1200px) {
+
+    .filters {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        /* tighter spacing */
+        flex-wrap: nowrap;
+        /* ❌ no wrapping */
+        overflow-x: hidden;
+        /* ❌ no scroll */
+        padding: 10px 12px;
+    }
+
+    /* DATE FIELDS */
+    .filters .date-field.top-label {
+        min-width: unset;
+    }
+
+    .filters .date-field.top-label input {
+        width: 150px;
+        /* 🔽 reduced date width */
+        height: 34px;
+        font-size: 16px;
+        padding: 0 10px;
+    }
+
+    .filters .date-field.top-label label {
+        font-size: 18px;
+        top: -10px;
+    }
+
+    /* SELECT DROPDOWNS */
+    .filters select {
+        width: 140px;
+        /* 🔽 smaller select */
+        height: 34px;
+        font-size: 18px;
+        padding: 0 10px;
+    }
+
+    /* CLEAR BUTTON */
+    .filters .clear-btn {
+        height: 34px;
+        padding: 0 18px;
+        font-size: 18px;
+        white-space: nowrap;
+    }
+}
+
+.project-table tbody tr:nth-child(odd) {
+    background-color: #bfd6edab;
+
+    font-size: 20px;
+}
+
+.project-table tbody tr:nth-child(even) {
+    background-color: white;
+    font-size: 20px;
+
+}
+
+/* ================= MOBILE FILTER RESPONSIVE – SCHEDULE ================= */
+
+@media (max-width: 768px) {
+
+    /* FILTER CONTAINER */
+    .filters {
+        flex-wrap: wrap;
+        /* allow wrapping */
+        gap: 12px;
+        justify-content: flex-start;
+        overflow-x: visible;
+        /* remove horizontal scroll */
+        padding: 12px;
+    }
+
+    /* EACH FILTER ITEM FULL WIDTH */
+    .filters>* {
+        flex: 1 1 100%;
+        max-width: 100%;
+    }
+
+    /* DATE FIELDS */
+    .filters .date-field.top-label {
+        width: 100%;
+    }
+
+    .filters .date-field.top-label input {
+        width: 100%;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    .filters .date-field.top-label label {
+        font-size: 18px;
+        top: -10px;
+    }
+
+    /* SELECT DROPDOWNS */
+    .filters select {
+        width: 100%;
+        height: 40px;
+        font-size: 18px;
+    }
+
+    /* CLEAR BUTTON */
+    .filters .clear-btn {
+        width: 100%;
+        height: 42px;
+        font-size: 20px;
+        text-align: center;
+    }
+}

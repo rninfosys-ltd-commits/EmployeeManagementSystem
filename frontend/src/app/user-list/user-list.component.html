@@ -1,0 +1,66 @@
+<div class="user-container">
+
+    <div class="header-section">
+        <h2 class="title">User Management</h2>
+
+        <button class="btn-add" (click)="addUser()">+ Add User</button>
+    </div>
+
+    <div class="table-scroll">
+
+        <table class="project-table" *ngIf="paginatedUsers.length > 0">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                <tr *ngFor="let u of paginatedUsers">
+                    <td>{{ u.id }}</td>
+                    <td>{{ u.username }}</td>
+                    <td>{{ u.email }}</td>
+
+                    <td>
+                        <span class="badge active">{{ u.role }}</span>
+                    </td>
+
+                    <td>
+                        <div class="action-buttons">
+                            <button class="edit-btn" (click)="editUser(u.id)">Edit</button>
+
+                            <button *ngIf="u.active" class="edit-btn warn" (click)="deactivate(u.id)">
+                                Deactivate
+                            </button>
+
+                            <button *ngIf="!u.active" class="edit-btn success" (click)="activate(u.id)">
+                                Activate
+                            </button>
+
+                            <button class="edit-btn danger" (click)="deleteUser(u.id)">
+                                Delete
+                            </button>
+                        </div>
+                    </td>
+
+                </tr>
+            </tbody>
+        </table>
+
+        <p *ngIf="paginatedUsers.length === 0" class="no-data">
+            No users found
+        </p>
+    </div>
+
+    <!-- PAGINATION (SAME AS PROJECT) -->
+    <div class="pagination" *ngIf="totalPages() > 1">
+        <button (click)="setPage(page - 1)" [disabled]="page === 1">Prev</button>
+        <span>Page {{ page }} of {{ totalPages() }}</span>
+        <button (click)="setPage(page + 1)" [disabled]="page === totalPages()">Next</button>
+    </div>
+
+</div>

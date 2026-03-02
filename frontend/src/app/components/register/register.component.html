@@ -1,0 +1,92 @@
+<div class="register-container">
+  <div class="register-card">
+    <div class="register-header">
+      <h2>Create Account</h2>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="register-form">
+
+      <div *ngIf="isSuccessful" class="alert alert-success">
+        User created successfully! Redirecting...
+      </div>
+
+      <div *ngIf="isSignUpFailed" class="alert alert-danger">
+        {{ errorMessage }}
+      </div>
+
+      <!-- Floating Username -->
+      <div class="floating-group">
+        <input type="text" id="username" formControlName="username" placeholder=" " required
+          [class.is-invalid]="registerForm.get('username')?.invalid && registerForm.get('username')?.touched" />
+        <label for="username">Username</label>
+        <div *ngIf="registerForm.get('username')?.invalid && registerForm.get('username')?.touched"
+          class="invalid-feedback">
+          Username is required (min 3 characters)
+        </div>
+      </div>
+
+      <!-- Floating Email -->
+      <div class="floating-group">
+        <input type="email" id="email" formControlName="email" placeholder=" " required
+          [class.is-invalid]="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" />
+        <label for="email">Email</label>
+        <div *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched" class="invalid-feedback">
+          Valid email is required
+        </div>
+      </div>
+
+      <!-- Floating Password -->
+      <div class="floating-group">
+        <input type="password" id="password" formControlName="password" placeholder=" " required
+          [class.is-invalid]="registerForm.get('password')?.invalid && registerForm.get('password')?.touched" />
+        <label for="password">Password</label>
+        <div *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched"
+          class="invalid-feedback">
+          Password is required (min 6 characters)
+        </div>
+      </div>
+
+      <!-- Floating Confirm Password -->
+      <div class="floating-group">
+        <input type="password" id="confirmPassword" formControlName="confirmPassword" placeholder=" " required
+          [class.is-invalid]="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched" />
+        <label for="confirmPassword">Confirm Password</label>
+        <div *ngIf="registerForm.hasError('mismatch') && registerForm.get('confirmPassword')?.touched"
+          class="invalid-feedback">
+          Passwords do not match
+        </div>
+      </div>
+
+      <!-- Role Selection -->
+      <div class="floating-group role-wrapper">
+        <label class="static-label">Select Role</label>
+        <div class="custom-select" (click)="toggleRoleDropdown()"
+          [class.is-invalid]="registerForm.get('role')?.invalid && registerForm.get('role')?.touched">
+          {{ selectedRole || 'Choose Role' }}
+          <span class="arrow" [class.open]="showRoleDropdown">▲</span>
+        </div>
+
+        <ul class="role-list" *ngIf="showRoleDropdown">
+          <li *ngFor="let r of roles" (click)="selectRole(r)">
+            {{ r }}
+          </li>
+        </ul>
+
+        <div *ngIf="registerForm.get('role')?.invalid && registerForm.get('role')?.touched" class="invalid-feedback">
+          Role is required
+        </div>
+      </div>
+
+      <!-- Submit Button -->
+      <button type="submit" class="btn-register" [disabled]="registerForm.invalid || isLoading">
+        <span *ngIf="!isLoading">Create Account</span>
+        <span *ngIf="isLoading">Creating...</span>
+      </button>
+
+      <div class="login-link">
+        <p>Already have an account? <a (click)="goToLogin()">Sign in</a></p>
+      </div>
+
+    </form>
+  </div>
+</div>

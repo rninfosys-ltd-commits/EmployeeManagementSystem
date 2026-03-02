@@ -1,0 +1,398 @@
+<div class="lead-wrapper">
+
+    <div class="lead-card" *ngIf="showLeads">
+
+        <div class="header">
+            <h2 class="title">Cube Test List</h2>
+
+            <div>
+                <button class="toggle-btn" (click)="openCreate()">+ Add</button>
+
+                <button class="toggle-btn" style="margin-left:10px" (click)="goToDashboard()">
+                    Go To Dashboard
+                </button>
+            </div>
+        </div>
+
+
+        <div class="filters">
+
+            <div class="date-field top-label">
+                <label>From Date</label>
+                <input type="date" [(ngModel)]="filterFromDate" (change)="onDateChange()" />
+            </div>
+
+            <div class="date-field top-label">
+                <label>To Date</label>
+                <input type="date" [(ngModel)]="filterToDate" (change)="onDateChange()" />
+            </div>
+
+            <select (change)="onExportChange($event)">
+                <option value="">Export</option>
+                <option value="pdf">Export PDF</option>
+                <option value="excel">Export Excel</option>
+                <option value="horizontal">📊 Combined Horizontal</option>
+            </select>
+            <!-- IMPORT SELECT -->
+            <!-- <select (change)="onImportSelect($event)">
+                <option value="">Import</option>
+                <option value="excel">Import Excel</option>
+            </select> -->
+
+            <!-- HIDDEN FILE INPUT -->
+            <input type="file" accept=".xlsx,.xls" hidden #fileInput (change)="onExcelSelect($event)" />
+            <select [(ngModel)]="filterShift" (change)="applyFilters()">
+                <option value="">All Shifts</option>
+                <option value="1">Shift 1</option>
+                <option value="2">Shift 2</option>
+                <option value="3">Shift 3</option>
+                <option value="G">General</option>
+            </select>
+
+
+
+            <button class="clear-btn" (click)="clearFilters()">Clear</button>
+        </div>
+
+        <div class="table-scroll">
+            <table class="lead-table">
+
+                <thead>
+                    <tr>
+                        <!-- <th>ID</th> -->
+                        <th>Batch_Casting Date</th>
+                        <th>Test Date</th>
+                        <th>Strength oven Dry</th>
+                        <th>Cube Immediate</th>
+                        <th>Density</th>
+                        <th>Shift</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let r of paginated">
+                        <!-- <td>{{ r.id }}</td> -->
+                        <td class="clickable" (click)="openCubeModal(r)">
+                            {{ r.batchNo }}_{{ r.castDate | date:'dd-MM-yyyy' }}
+                        </td>
+
+
+
+
+
+                        <td>{{ r.testingDate | date:'dd-MM-yyyy' }}</td>
+                        <td>{{r.compStrengthovenDry}}</td>
+                        <td>{{r.cubeDimensionImmediate}}</td>
+                        <td>{{r.densityKgM3}}</td>
+                        <td>{{ r.shift }}</td>
+
+                        <td>
+                            <span class="badge" [ngClass]="r.isActive ? 'active':'inactive'">
+                                {{ r.isActive ? 'Active':'Inactive' }}
+                            </span>
+                        </td>
+
+                        <td class="action-cell">
+                            <button class="link-btn" (click)="edit(r)">Edit</button>
+                            <button class="link-btn danger" (click)="delete(r.id)">Delete</button>
+                            <div class="report-actions">
+                                <button class="report-btn pdf"
+                                    (click)="selectedCube = r; downloadCube('pdf')">PDF</button>
+                                <button class="report-btn excel"
+                                    (click)="selectedCube = r; downloadCube('excel')">XLS</button>
+                                <button class="report-btn" style="background:#2e7d32;color:#fff"
+                                    (click)="downloadHorizontalReport(r)" title="Combined Horizontal">HZ</button>
+                            </div>
+                        </td>
+
+                    </tr>
+                </tbody>
+
+            </table>
+
+        </div>
+
+        <div class="pagination">
+            <button (click)="prevPage()">Prev</button>
+            <span>{{currentPage}} / {{totalPages}}</span>
+            <button (click)="nextPage()">Next</button>
+        </div>
+
+    </div>
+
+    <!-- ================= FORM ================= -->
+
+    <div class="lead-card" *ngIf="!showLeads">
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+            <div class="row-header">
+
+                <div class="page-title1">Cube Test</div>
+
+                <div class="header-right">
+
+                    <div class="form-field date">
+                        <input type="date" formControlName="reportDate">
+
+                        <label>Date</label>
+                    </div>
+
+                    <div class="form-field shift">
+                        <select formControlName="shift">
+                            <option value="" disabled></option>
+                            <option value="1">Shift 1</option>
+                            <option value="2">Shift 2</option>
+                            <option value="3">Shift 3</option>
+                            <option value="G">General Shift</option>
+                        </select>
+                        <label>Shift</label>
+                    </div>
+
+                </div>
+
+            </div>
+
+            <hr>
+            <div class="grid">
+                <!-- Batch Dropdown -->
+                <div class="form-field">
+
+                    <select formControlName="batchNo" (change)="onBatchSelect($event)" [disabled]="noBatchAvailable">
+
+                        <!-- when empty -->
+                        <option value="" disabled *ngIf="noBatchAvailable">
+                            No batch available
+                        </option>
+
+                        <!-- when data exists -->
+                        <option value="" disabled *ngIf="!noBatchAvailable">
+                            Select Batch
+                        </option>
+
+                        <option *ngFor="let b of batches" [value]="b.batchNumber">
+                            {{ b.batchNumber }}_{{ b.castingDate | date:'dd-MM-yyyy' }}
+                        </option>
+
+                    </select>
+
+                    <label>Batch No</label>
+                </div>
+
+                <!-- hidden castDate -->
+                <input type="hidden" formControlName="castDate">
+
+
+                <div class="form-field">
+                    <input type="date" formControlName="testingDate">
+                    <label>Testing Date</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="cubeDimensionImmediate">
+                    <label>Cube Immediate</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="cubeDimensionOvenDry1">
+                    <label>Cube Oven Dry 1</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="cubeDimensionOvenDry2">
+                    <label>Cube Oven Dry 2</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="cubeDimensionOvenDry3">
+                    <label>Cube Oven Dry 3</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="weightImmediateKg">
+                    <label>Weight Immediate</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="weightovenDryKg">
+                    <label>Weight Oven Dry</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="weightWithMoistureKg">
+                    <label>Weight Moisture</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="loadovenDryTonn">
+                    <label>Load Oven Dry</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="loadMoistureTonn">
+                    <label>Load Moisture</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="compStrengthovenDry">
+                    <label>Strength Oven Dry</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="compStrengthMoisture">
+                    <label>Strength Moisture</label>
+                </div>
+
+                <div class="form-field">
+                    <input formControlName="densityKgM3">
+                    <label>Density</label>
+                </div>
+
+            </div>
+
+
+            <div class="actions">
+                <button type="submit">Submit</button>
+                <button type="button" (click)="backToList()">Back</button>
+            </div>
+
+        </form>
+
+    </div>
+
+</div>
+<!-- ================= CUBE VIEW MODAL ================= -->
+<div class="modal fade" id="cubeModal" tabindex="-1">
+    <div class="modal-dialog modal-xl">
+        <div class="modal-content">
+
+            <!-- HEADER -->
+            <div class="modal-header">
+
+                <div class="d-flex align-items-center modal-header-big">
+
+                    <h4 class="modal-title mb-0">
+                        Batch No - {{ selectedCube?.batchNo }}
+                    </h4>
+
+                    <div class="meta-text">
+                        <strong>Date:</strong>
+                        {{ selectedCube?.castDate | date:'longDate' }}
+                    </div>
+
+                    <div class="meta-text">
+                        <strong>Shift:</strong>
+                        {{ selectedCube?.shift }}
+                    </div>
+
+                </div>
+
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+
+            <!-- BODY -->
+            <div class="modal-body">
+
+                <table class="table custom-table">
+
+                    <thead>
+                        <tr>
+                            <th>Cube Immediate</th>
+                            <th>Cube Oven Dry</th>
+                            <th>Weight Immediate</th>
+                            <th>Weight Oven Dry</th>
+                            <th>Weight Moisture</th>
+                            <th>Density</th>
+                            <th>Testing Date</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr>
+                            <td>{{ selectedCube?.cubeDimensionImmediate }}</td>
+                            <td>{{ selectedCube?.cubeDimensionOvenDry1 }}</td>
+                            <td>{{ selectedCube?.cubeDimensionOvenDry2 }}</td>
+                            <td>{{ selectedCube?.cubeDimensionOvenDry3 }}</td>
+                            <td>{{ selectedCube?.densityKgM3 }}</td>
+                            <td>{{ selectedCube?.testingDate | date:'dd-MM-yyyy' }}</td>
+                        </tr>
+
+                        <tr class="section-header">
+                            <th>Load Oven Dry</th>
+                            <th>Load Moisture</th>
+                            <th>Strength Oven Dry</th>
+                            <th>Strength Moisture</th>
+                            <th colspan="3"></th>
+                        </tr>
+
+                        <tr>
+                            <td>{{ selectedCube?.loadovenDryTonn }}</td>
+                            <td>{{ selectedCube?.loadMoistureTonn }}</td>
+                            <td>{{ selectedCube?.compStrengthovenDry }}</td>
+                            <td>{{ selectedCube?.compStrengthMoisture }}</td>
+                            <td colspan="3"></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+            </div>
+
+            <!-- APPROVAL TABLE (UI SAME AS CASTING) -->
+            <table class="table1">
+                <thead class="tablehead">
+                    <tr>
+                        <th style="padding:8px;color:white">CHECKED BY</th>
+                        <th style="padding:8px;color:white">REVIEWED BY</th>
+                        <th style="padding:8px;color:white">APPROVED BY</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr>
+                        <td>{{getApprovalLevels(selectedCube).checkedBy.name}}</td>
+                        <td>{{getApprovalLevels(selectedCube).reviewedBy.name}}</td>
+                        <td>{{getApprovalLevels(selectedCube).approvedBy.name}}</td>
+
+                    </tr>
+                </tbody>
+            </table>
+
+            <!-- FOOTER -->
+            <div class="modal-footer">
+
+                <button class="btn btn-primary btn-sm" (click)="edit(selectedCube); closeCubeModal()">
+                    Edit
+                </button>
+
+                <button class="btn btn-secondary btn-sm" data-bs-dismiss="modal">
+                    Close
+                </button>
+                <button class="btn btn-success btn-sm" *ngIf="canApprove(selectedCube)" (click)="approveCube()">
+                    Approve
+                </button>
+
+                <button class="report-btn pdf" (click)="downloadCube('pdf')">
+                    PDF
+                </button>
+                <button class="report-btn excel" (click)="downloadCube('excel')">
+                    XLS
+                </button>
+                <button class="report-btn" style="background:#2e7d32;color:#fff" (click)="downloadHorizontalReport()"
+                    title="Combined Horizontal">
+                    HZ
+                </button>
+
+                <button class="btn btn-warning btn-sm" *ngIf="canReject(selectedCube)" (click)="rejectCube()">
+                    Reject
+                </button>
+
+
+
+            </div>
+
+        </div>
+    </div>
+</div>

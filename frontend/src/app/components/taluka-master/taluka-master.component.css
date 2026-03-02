@@ -1,0 +1,416 @@
+/* PAGE CONTAINER */
+.root-master-container {
+    max-width: 1480px;
+    margin: 20px auto;
+    background-color: #f1f4f8;
+    padding: 10px 20px;
+    border-radius: 14px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+.title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 10px 10px;
+    border-radius: 5px;
+    width: 250px;
+    color: white;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+}
+
+/* FORM LAYOUT — SAME AS DISTRICT */
+.root-form {
+    display: grid;
+    grid-template-columns: 1fr 1fr auto;
+    gap: 24px;
+    align-items: center;
+    margin-top: 5px;
+}
+
+/* FIELD */
+.field {
+    position: relative;
+    width: 100%;
+}
+
+/* INPUT & SELECT */
+.field input,
+.field select {
+    width: 100%;
+    height: 52px;
+    padding: 14px 16px;
+    border: 1px solid #d1d5db;
+    border-radius: 12px;
+    font-size: 14px;
+    outline: none;
+    background: #fff;
+}
+
+/* REMOVE DEFAULT SELECT ARROW */
+.field select {
+    appearance: none;
+    cursor: pointer;
+}
+
+/* CUSTOM DROPDOWN ICON */
+.field::after {
+    content: "▾";
+    position: absolute;
+    right: 16px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #6b7280;
+    pointer-events: none;
+}
+
+/* LABEL */
+.field label {
+    position: absolute;
+    top: 50%;
+    left: 16px;
+    transform: translateY(-50%);
+    font-size: 20px;
+    color: #6b7280;
+    background: #fff;
+    padding: 0 6px;
+    pointer-events: none;
+    transition: all 0.2s ease;
+}
+
+/* FLOAT LABEL */
+.field input:focus+label,
+.field input:not(:placeholder-shown)+label,
+.field select:focus+label,
+.field select:valid+label {
+    top: -8px;
+    font-size: 18px;
+    color: #4f46e5;
+}
+
+/* FOCUS */
+.field input:focus,
+.field select:focus {
+    border-color: #4f46e5;
+}
+
+/* SUBMIT BUTTON */
+.btn-submit {
+    height: 52px;
+    padding: 0 32px;
+    background: #4f46e5;
+    color: #fff;
+    border: none;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background: #4338ca;
+}
+
+/* TABLE */
+.table-wrapper {
+    margin-top: 40px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+thead {
+    background: #f9fafb;
+}
+
+th,
+td {
+    padding: 14px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.btn-edit {
+    background: #6366f1;
+    color: #fff;
+    border: none;
+    padding: 6px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+/* PAGINATION */
+.pagination {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.pagination button {
+    margin: 0 4px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #d1d5db;
+    cursor: pointer;
+}
+
+/* ================= TALUKA TABLE – MATCH ALL MASTERS ================= */
+
+.table-wrapper table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 24px;
+    border: 1px solid #e5e7eb;
+}
+
+/* HEADER */
+.table-wrapper thead {
+    background-color: #1e40af;
+    /* BLUE */
+}
+
+.table-wrapper thead th {
+    color: #ffffff;
+    font-size: 20px;
+    font-weight: 700;
+    padding: 16px;
+    text-transform: uppercase;
+    border-right: 1px solid #1e3a8a;
+}
+
+/* CELLS */
+.table-wrapper tbody td {
+    padding: 16px;
+    font-size: 20px;
+    border-right: 1px solid #e5e7eb;
+}
+
+/* STRIPED ROWS */
+.table-wrapper tbody tr:nth-child(odd) td {
+    background-color: #dbeaf7;
+}
+
+.table-wrapper tbody tr:nth-child(even) td {
+    background-color: #ffffff;
+}
+
+/* HOVER */
+.table-wrapper tbody tr:hover td {
+    background-color: #f1f5f9;
+}
+
+/* ACTION COLUMN CENTER */
+.table-wrapper tbody td:last-child {
+    text-align: center;
+}
+
+/* EDIT BUTTON – SAME GREEN STYLE */
+.table-wrapper .btn-edit {
+    background: #22c55e;
+    color: #ffffff;
+    padding: 6px 20px;
+    border-radius: 999px;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.table-wrapper .btn-edit:hover {
+    background: #16a34a;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
+    transform: translateY(-1px);
+}
+
+/* ================= PAGINATION – SAME LOOK ================= */
+.pagination {
+    margin-top: 22px;
+    display: flex;
+    justify-content: center;
+    gap: 8px;
+}
+
+.pagination button {
+    padding: 6px 14px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background: #e5e7eb;
+    color: #64748b;
+    cursor: not-allowed;
+}
+
+@media (max-width: 768px) {
+
+    /* ROOT */
+    .root-master-container {
+        margin: 0 !important;
+        padding: 10px !important;
+        border-radius: 0 !important;
+        width: 100% !important;
+    }
+
+    /* TITLE */
+    .title {
+        width: 100% !important;
+        font-size: 18px;
+        padding: 8px;
+        margin-bottom: 10px;
+    }
+
+    /* FORM STACK */
+    .root-form {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+    }
+
+    .field {
+        width: 100%;
+        margin-top: 10px;
+    }
+
+    .field input,
+    .field select {
+        width: 100%;
+        height: 42px;
+        font-size: 16px;
+        padding: 10px;
+    }
+
+    /* FLOAT LABEL */
+    .field input:focus+label,
+    .field input:not(:placeholder-shown)+label,
+    .field select:focus+label,
+    .field select:valid+label {
+        top: -3px;
+        font-size: 18px;
+        color: #7b61ff;
+    }
+
+    /* SUBMIT */
+    .btn-submit {
+        width: 100%;
+        height: 50px;
+        font-size: 20px;
+    }
+
+    /* TABLE FULL WIDTH */
+    .table-wrapper {
+        margin-top: 14px;
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    table.custom-table {
+        width: 50% !important;
+        display: table;
+        white-space: normal;
+    }
+
+    .custom-table thead th {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    .custom-table tbody td {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    /* COLUMN WIDTHS */
+    .custom-table th:nth-child(1),
+    .custom-table td:nth-child(1) {
+        width: 10%;
+    }
+
+    .custom-table th:nth-child(2),
+    .custom-table td:nth-child(2) {
+        width: 25%;
+    }
+
+    .custom-table th:nth-child(3),
+    .custom-table td:nth-child(3) {
+        width: 25%;
+    }
+
+    .custom-table th:nth-child(4),
+    .custom-table td:nth-child(4) {
+        width: 25%;
+    }
+
+    .custom-table th:nth-child(5),
+    .custom-table td:nth-child(5) {
+        width: 15%;
+        text-align: center;
+    }
+
+    /* EDIT BUTTON */
+    .btn-edit {
+        padding: 4px 12px;
+        font-size: 18px;
+    }
+
+    /* PAGINATION */
+    .pagination {
+        margin-top: 10px;
+        justify-content: center;
+    }
+
+    .pagination button {
+        padding: 6px 10px;
+        font-size: 16px;
+    }
+
+    /* Give ACTION column more space */
+    .custom-table th:nth-child(5),
+    .custom-table td:nth-child(5) {
+        width: 20% !important;
+        min-width: 80px;
+        padding-right: 6px;
+    }
+
+    /* Prevent button overflow */
+    .custom-table td:last-child {
+        overflow: visible;
+    }
+
+    /* Slightly smaller edit button */
+    .btn-edit {
+        padding: 4px 10px !important;
+        font-size: 16px !important;
+    }
+
+    .table-wrapper {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    /* Keep table wider than screen */
+    .custom-table {
+        min-width: 700px;
+    }
+
+    .table-scroll {
+        width: 100%;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    .table-scroll .custom-table {
+        min-width: 700px;
+    }
+}

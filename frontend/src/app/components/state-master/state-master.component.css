@@ -1,0 +1,368 @@
+/* ================= CONTAINER ================= */
+.root-master-container {
+    background-color: #f1f4f8;
+    padding: 30px;
+    border-radius: 16px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+}
+
+/* TITLE */
+.root-master-container .title {
+    text-align: center;
+    font-size: 26px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+/* ================= TABLE ================= */
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+/* HEADER */
+.custom-table thead {
+    background: #1e40af;
+    /* BLUE */
+}
+
+.custom-table thead th {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 700;
+    padding: 16px;
+    text-transform: uppercase;
+    border-right: 1px solid #1e3a8a;
+}
+
+/* CELLS */
+.custom-table td {
+    padding: 16px;
+    font-size: 19px;
+    border-right: 1px solid #e5e7eb;
+}
+
+/* ROW STRIPES */
+.custom-table tbody tr:nth-child(odd) td {
+    background-color: #dbeaf7;
+}
+
+.custom-table tbody tr:nth-child(even) td {
+    background-color: #ffffff;
+}
+
+/* HOVER */
+.custom-table tbody tr:hover td {
+    background-color: #f1f5f9;
+}
+
+/* ACTION COLUMN */
+.custom-table td:last-child {
+    text-align: center;
+}
+
+/* ================= EDIT BUTTON ================= */
+.btn-edit {
+    background: #22c55e;
+    color: #ffffff;
+    padding: 6px 22px;
+    border-radius: 999px;
+    border: none;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+.btn-edit:hover {
+    background: #16a34a;
+    box-shadow: 0 4px 12px rgba(34, 197, 94, 0.35);
+    transform: translateY(-1px);
+}
+
+/* ================= PAGINATION ================= */
+.pagination {
+    margin-top: 18px;
+    text-align: center;
+}
+
+.pagination button {
+    margin: 0 4px;
+    padding: 6px 12px;
+    border-radius: 6px;
+    border: 1px solid #cbd5e1;
+    background: #ffffff;
+    cursor: pointer;
+}
+
+.pagination button:disabled {
+    background: #e5e7eb;
+    cursor: default;
+}
+
+
+/* ROOT */
+.root-master-container {
+    background-color: #f1f4f8;
+    padding: 10px 15px;
+    border-radius: 12px;
+    margin: 10px 30px;
+}
+
+/* TITLE */
+.title {
+    text-align: center;
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 5px;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 10px 10px;
+    border-radius: 5px;
+    width: 250px;
+    color: white;
+}
+
+.main {
+    display: flex;
+    justify-content: center;
+}
+
+/* FORM – EXACT SAME GRID */
+.root-form {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 20px;
+    align-items: center;
+}
+
+/* FIELD */
+.field {
+    position: relative;
+    width: 100%;
+}
+
+/* INPUT */
+.field input {
+    width: 100%;
+    height: 48px;
+    padding: 14px;
+    border: 1px solid #d0d0d0;
+    border-radius: 10px;
+    font-size: 16px;
+    outline: none;
+    background: white;
+}
+
+/* LABEL */
+.field label {
+    position: absolute;
+    top: 50%;
+    left: 18px;
+    transform: translateY(-50%);
+    font-size: 18px;
+    color: #777;
+    background: white;
+    padding: 0 6px;
+    pointer-events: none;
+    transition: 0.2s ease;
+}
+
+/* FLOATING LABEL */
+.field input:focus+label,
+.field input:not(:placeholder-shown)+label {
+    top: -6px;
+    font-size: 16px;
+    color: #7b61ff;
+}
+
+/* INPUT FOCUS */
+.field input:focus {
+    border-color: #7b61ff;
+}
+
+/* SUBMIT BUTTON – SAME AS DISTRICT */
+.btn-submit {
+    height: 48px;
+    padding: 0 28px;
+    background: #4f46e5;
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 20px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.btn-submit:hover {
+    background: #4338ca;
+}
+
+
+
+.pagination span {
+    font-weight: 600;
+    color: #0f172a;
+}
+
+/* ================= PAGINATION – FINAL FIX ================= */
+.pagination {
+    margin-top: 24px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 16px;
+}
+
+/* BUTTONS */
+.pagination button {
+    padding: 8px 22px;
+    border-radius: 999px;
+    border: none;
+    font-weight: 600;
+    font-size: 20px;
+
+    background-color: #1e40af;
+    /* BLUE */
+    color: #ffffff;
+
+    cursor: pointer;
+    transition: all 0.25s ease;
+}
+
+/* HOVER */
+.pagination button:hover:not(:disabled) {
+    background-color: #2563eb;
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(37, 99, 235, 0.35);
+}
+
+/* DISABLED */
+.pagination button:disabled {
+    background-color: #94a3b8;
+    cursor: not-allowed;
+    box-shadow: none;
+    transform: none;
+}
+
+/* PAGE TEXT */
+.pagination span {
+    font-weight: 600;
+    font-size: 15px;
+    color: #0f172a;
+    font-size: 20px;
+}
+
+/* ================= STATE MASTER MOBILE RESPONSIVE ================= */
+@media (max-width: 768px) {
+
+    /* Root container */
+    .root-master-container {
+        margin: 6px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    /* Title */
+    .title {
+        width: 100%;
+        font-size: 18px;
+        padding: 8px;
+        margin-bottom: 8px;
+    }
+
+    /* Center wrapper */
+    .main {
+        justify-content: center;
+    }
+
+    /* Form stack */
+    .root-form {
+        grid-template-columns: 1fr !important;
+        gap: 10px;
+    }
+
+    /* Input */
+    .field input {
+        height: 42px;
+        font-size: 18px;
+        padding: 10px;
+    }
+
+    .field input:focus+label,
+    .field input:not(:placeholder-shown)+label {
+        top: -6px;
+        font-size: 16px;
+        color: #7b61ff;
+    }
+
+    .field {
+        margin-top: 15px;
+    }
+
+    /* Submit button */
+    .btn-submit {
+        width: 100%;
+        height: 42px;
+        font-size: 20px;
+        padding: 0;
+    }
+
+    .table-wrapper {
+        overflow-x: hidden;
+        width: 100%;
+    }
+
+    table.custom-table {
+        width: 100%;
+        min-width: unset;
+        display: table;
+        white-space: normal;
+    }
+
+    .custom-table thead th,
+    .custom-table td {
+        padding: 8px;
+        font-size: 16px;
+    }
+
+    /* Make columns tighter */
+    .custom-table th:nth-child(1),
+    .custom-table td:nth-child(1) {
+        width: 20%;
+    }
+
+    .custom-table th:nth-child(2),
+    .custom-table td:nth-child(2) {
+        width: 50%;
+    }
+
+    .custom-table th:nth-child(3),
+    .custom-table td:nth-child(3) {
+        width: 30%;
+        text-align: center;
+    }
+
+    /* Edit button */
+    .btn-edit {
+        padding: 5px 20px;
+        font-size: 18px;
+    }
+
+    /* Pagination */
+    .pagination {
+        flex-direction: row;
+        gap: 8px;
+        margin-top: 12px;
+    }
+
+    .pagination button {
+        width: 30%;
+        padding: 8px;
+        font-size: 14px;
+    }
+
+    .pagination span {
+        font-size: 14px;
+    }
+}

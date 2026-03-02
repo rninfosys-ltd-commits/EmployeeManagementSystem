@@ -1,0 +1,307 @@
+<div class="lead-wrapper">
+
+    <!-- ================= LEAD LIST ================= -->
+    <div class="lead-card" *ngIf="showLeads">
+
+        <div class="header">
+            <h2 class="title">Lead List</h2>
+            <button class="toggle-btn" (click)="openCreate()">+ Add Lead</button>
+        </div>
+
+        <!-- FILTERS -->
+        <div class="filters">
+
+            <div class="date-field top-label">
+                <label>From Date *</label>
+                <input type="date" [(ngModel)]="filterFromDate" (change)="applyFilters()" />
+            </div>
+
+            <div class="date-field top-label">
+                <label>To Date *</label>
+                <input type="date" [(ngModel)]="filterToDate" (change)="applyFilters()" />
+            </div>
+
+            <select [(ngModel)]="filterStatus" (change)="applyFilters()">
+                <option value="">Status</option>
+                <option value="1">Active</option>
+                <option value="0">Inactive</option>
+            </select>
+
+            <!-- EXPORT -->
+            <select #exportSel (change)="exportData(exportSel.value)">
+                <option value="">Export</option>
+                <option value="pdf">Export PDF</option>
+                <option value="excel">Export Excel</option>
+            </select>
+
+            <!-- IMPORT -->
+            <select (change)="onImportSelect($event, leadFileInput)">
+                <option value="">Import</option>
+                <option value="excel">Import Excel</option>
+            </select>
+
+            <input type="file" hidden #leadFileInput accept=".xlsx,.xls" (change)="importLeadExcel($event)" />
+
+            <button type="button" class="clear-btn" (click)="clearFilters()">Clear</button>
+        </div>
+
+        <!-- TABLE -->
+        <div class="table-scroll">
+            <table class="lead-table" *ngIf="paginatedLeads.length; else noData">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Customer</th>
+                        <th>Contact</th>
+                        <th>Email</th>
+                        <th>Budget</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let l of paginatedLeads">
+                        <td>{{ l.leadId }}</td>
+                        <td>{{ l.cName || l.customerName }}</td>
+
+                        <td>{{ l.contactNo }}</td>
+                        <td>{{ l.email }}</td>
+                        <td>₹ {{ l.budget | number }}</td>
+                        <td>
+                            <span class="badge" [ngClass]="l.isActive ? 'active' : 'inactive'">
+                                {{ l.isActive ? 'Active' : 'Inactive' }}
+                            </span>
+                        </td>
+                        <td>
+                            <button class="edit-btn" (click)="editLead(l)">Edit</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- PAGINATION -->
+        <div class="pagination" *ngIf="totalPages > 1">
+            <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+        </div>
+
+        <ng-template #noData>
+            <p class="no-data">No leads found</p>
+        </ng-template>
+    </div>
+
+    <!-- ================= CREATE / EDIT LEAD ================= -->
+    <div class="lead-card" *ngIf="!showLeads">
+
+        <div class="header">
+            <h2 class="title">{{ isEditMode ? 'Edit Lead' : 'Create Lead' }}</h2>
+            <button class="toggle-btn" (click)="backToList()">Back to List</button>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+            <div class="grid">
+
+                <div class="field floating">
+                    <input type="date" formControlName="date" />
+                    <label>Date *</label>
+                </div>
+
+                <div class="field floating">
+                    <input formControlName="cName" />
+                    <label>Customer Name *</label>
+                </div>
+
+                <div class="field floating">
+                    <input type="number" formControlName="contactNo" />
+                    <label>Contact No *</label>
+                </div>
+
+                <div class="field floating">
+                    <input formControlName="email" />
+                    <label>Email</label>
+                </div>
+
+                <div class="field floating">
+                    <input formControlName="website" />
+                    <label>Website</label>
+                </div>
+
+                <div class="field floating">
+                    <input formControlName="panNo" />
+                    <label>PAN No *</label>
+                </div>
+
+                <div class="field floating">
+                    <input formControlName="gstNo" />
+                    <label>GST No</label>
+                </div>
+
+                <div class="field floating">
+                    <input type="number" formControlName="phone" />
+                    <label>Contact No 2</label>
+                </div>
+
+                <div class="field floating">
+                    <input type="number" formControlName="fax" />
+                    <label>Fax</label>
+                </div>
+
+                <div class="field floating">
+                    <input type="number" formControlName="income" />
+                    <label>Income</label>
+                </div>
+
+                <div class="field floating">
+                    <input formControlName="incomeSource" />
+                    <label>Income Source</label>
+                </div>
+
+                <div class="field floating">
+                    <input type="number" formControlName="otherIncome" />
+                    <label>Other Income</label>
+                </div>
+
+                <div class="field floating">
+                    <input formControlName="otherIncomeSource" />
+                    <label>Other Income Source</label>
+                </div>
+
+                <div class="field floating">
+                    <input type="number" formControlName="budget" />
+                    <label>Budget *</label>
+                </div>
+
+                <div class="field floating">
+                    <input formControlName="area" />
+                    <label>Area</label>
+                </div>
+
+                <div class="field floating">
+                    <select formControlName="stateId" (change)="onStateChange()">
+                        <option [ngValue]="null" disabled></option>
+                        <option *ngFor="let s of states" [ngValue]="s.id">{{ s.name }}</option>
+                    </select>
+                    <label>State *</label>
+                </div>
+
+                <div class="field floating">
+                    <select formControlName="distId" (change)="onDistrictChange()">
+                        <option [ngValue]="null" disabled></option>
+                        <option *ngFor="let d of districts" [ngValue]="d.id">{{ d.name }}</option>
+                    </select>
+                    <label>District *</label>
+                </div>
+
+                <div class="field floating">
+                    <select formControlName="cityId">
+                        <option [ngValue]="null" disabled></option>
+                        <option *ngFor="let c of cities" [ngValue]="c.id">{{ c.name }}</option>
+                    </select>
+                    <label>City *</label>
+                </div>
+
+                <div class="field floating">
+                    <select formControlName="isActive">
+                        <option [ngValue]="1">Active</option>
+                        <option [ngValue]="0">Inactive</option>
+                    </select>
+                    <label>Status</label>
+                </div>
+
+                <div class="field floating">
+                    <textarea rows="1" formControlName="invoiceAddress"></textarea>
+                    <label>Address</label>
+                </div>
+
+                <div class="field floating full">
+                    <textarea rows="2" formControlName="notes"></textarea>
+                    <label>Notes</label>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button type="submit" [disabled]="loading">
+                    {{ loading ? 'Saving...' : (isEditMode ? 'Update Lead' : 'Save Lead') }}
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- ================= EXCEL IMPORT MODAL ================= -->
+    <div class="modal-backdrop" *ngIf="excelPreview.length"></div>
+
+    <div class="modal" *ngIf="excelPreview.length">
+        <div class="modal-card">
+
+            <div class="modal-header">
+                <h3>Excel Import Preview (Leads)</h3>
+                <button class="close-btn" (click)="clearExcelPreview()">✕</button>
+            </div>
+
+            <div class="modal-body table-scroll">
+                <table class="lead-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Date</th>
+                            <th>Name</th>
+                            <th>Contact 1</th>
+                            <th>Contact 2</th>
+                            <th>Email</th>
+                            <th>State</th>
+                            <th>Income</th>
+                            <th>Budget</th>
+                            <th>Income Source</th>
+                            <th>Address</th>
+                            <th>Status</th>
+                            <th>Result</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        <tr *ngFor="let r of excelPreview" [ngClass]="{
+        'success-row': r.importStatus === 'SUCCESS',
+        'error-row': r.importStatus === 'FAILED'
+      }">
+
+                            <td>{{ r.id }}</td>
+                            <td>{{ r.date }}</td>
+                            <td>{{ r.cName }}</td>
+
+                            <td>{{ r.contactNo1 }}</td>
+                            <td>{{ r.contactNo2 }}</td>
+                            <td>{{ r.email }}</td>
+                            <td>{{ r.state }}</td>
+                            <td>{{ r.income }}</td>
+                            <td>{{ r.budget }}</td>
+                            <td>{{ r.incomeSource }}</td>
+                            <td>{{ r.address }}</td>
+
+                            <td>{{ r.importStatus }}</td>
+                            <td class="error-text">{{ r.errorMessage }}</td>
+                        </tr>
+                    </tbody>
+
+                </table>
+            </div>
+
+            <div class="modal-footer">
+                <button class="toggle-btn btn-success" [disabled]="hasExcelErrors" (click)="saveLeadExcelToDB()">
+                    Save Imported Leads
+                </button>
+
+                <button class="clear-btn btn-danger" (click)="clearExcelPreview()">
+                    Cancel
+                </button>
+            </div>
+
+        </div>
+    </div>
+
+</div>

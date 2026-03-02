@@ -1,0 +1,75 @@
+<div class="user-form-container">
+    <div class="form-box">
+
+        <h2 class="form-title">
+            {{ isEdit ? 'Edit User' : 'Add New User' }}
+        </h2>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+
+            <!-- Username -->
+            <div class="floating-group">
+                <input type="text" formControlName="username" placeholder=" " required>
+                <label>Username *</label>
+            </div>
+
+            <!-- Email -->
+            <div class="floating-group">
+                <input type="email" formControlName="email" placeholder=" " required>
+                <label>Email *</label>
+            </div>
+
+            <!-- Password -->
+            <div class="floating-group" *ngIf="!isEdit">
+                <input type="password" formControlName="password" placeholder=" " required>
+                <label>Password *</label>
+            </div>
+
+            <!-- Role (FIXED DROPDOWN) -->
+            <!-- Role (CUSTOM DROPDOWN – FIXED WIDTH) -->
+            <div class="floating-group custom-select">
+
+                <div class="select-input" (click)="toggleRoleDropdown()" [class.open]="roleDropdownOpen">
+
+                    {{ form.get('role')?.value || ' ' }}
+                </div>
+
+                <label>Role *</label>
+
+                <div class="select-options" *ngIf="roleDropdownOpen">
+                    <div class="option" *ngFor="let r of roles" (click)="selectRole(r)">
+                        {{ r }}
+                    </div>
+                </div>
+
+            </div>
+
+
+
+
+            <!-- Mobile -->
+            <div class="floating-group">
+                <input type="text" formControlName="mobile" placeholder=" ">
+                <label>Mobile</label>
+            </div>
+
+            <!-- Profile Image -->
+            <div class="floating-group">
+                <input type="file" accept="image/*" (change)="onImageSelected($event)">
+                <label>Profile Image</label>
+            </div>
+
+            <!-- Buttons -->
+            <div class="button-row">
+                <button type="submit" class="btn-submit">
+                    {{ isEdit ? 'Update User' : 'Create User' }}
+                </button>
+
+                <button type="button" class="btn-cancel" (click)="router.navigate(['/users'])">
+                    Cancel
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>

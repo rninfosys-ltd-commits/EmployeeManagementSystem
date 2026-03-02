@@ -1,0 +1,150 @@
+/* Overlay Card */
+.product-dialog {
+    width: 100%;
+    max-width: 100%;
+    background: #ffffff;
+    border-radius: 14px;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.25);
+    padding: 24px;
+    font-family: "Inter", sans-serif;
+}
+
+/* Header */
+.dialog-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 14px;
+}
+
+.dialog-header h2 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1976d2;
+}
+
+.close-btn {
+    background: #f5f5f5;
+    border: none;
+    border-radius: 50%;
+    width: 36px;
+    height: 36px;
+    cursor: pointer;
+    font-size: 18px;
+    color: #ff3b3b;
+}
+
+/* Body Layout */
+.dialog-body {
+    display: flex;
+    gap: 40px;
+    margin-top: 24px;
+}
+
+/* LEFT : Image */
+.image-section {
+    width: 260px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.image-box {
+    width: 220px;
+    height: 220px;
+    border-radius: 14px;
+    background: #f1f3f6;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.image-box img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.image-placeholder {
+    color: #888;
+    font-size: 14px;
+}
+
+.upload-btn {
+    margin-top: 16px;
+    padding: 10px 20px;
+    background: #1976d2;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+/* RIGHT : Form */
+.form-section {
+    flex: 1;
+}
+
+.field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 18px;
+}
+
+.field label {
+    font-size: 14px;
+    margin-bottom: 6px;
+    color: #333;
+}
+
+.field input,
+.field textarea {
+    padding: 10px;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    font-size: 14px;
+    outline: none;
+}
+
+.field input:focus,
+.field textarea:focus {
+    border-color: #1976d2;
+}
+
+/* Submit Button */
+.submit-btn {
+    margin-top: 10px;
+    width: 220px;
+    padding: 10px;
+    background: #673ab7;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: #512da8;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .dialog-body {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .image-section {
+        width: 100%;
+    }
+
+    .submit-btn {
+        width: 100%;
+    }
+}

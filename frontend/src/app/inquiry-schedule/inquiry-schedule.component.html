@@ -1,0 +1,236 @@
+<div class="project-wrapper">
+
+    <!-- ================= SCHEDULE LIST ================= -->
+    <div class="project-card" *ngIf="showList">
+
+        <div class="header">
+            <div class="header-top">
+                <h2 class="title1">Schedule List</h2>
+
+                <button type="button" class="toggle-btn" (click)="openForm()">
+                    + Add Schedule
+                </button>
+            </div>
+        </div>
+
+        <!-- ================= FILTERS ================= -->
+        <div class="filters">
+
+            <div class="date-field top-label">
+                <label>From Date *</label>
+                <input type="date" [(ngModel)]="filterFromDate" (change)="applyFilters()" />
+            </div>
+
+            <div class="date-field top-label">
+                <label>To Date *</label>
+                <input type="date" [(ngModel)]="filterToDate" (change)="applyFilters()" />
+            </div>
+
+            <select [(ngModel)]="filterStatus" (change)="applyFilters()">
+                <option value=""> Inquiry Status</option>
+                <option value="OPEN">Open</option>
+                <option value="IN_PROGRESS">In Progress</option>
+                <option value="CLOSED">Closed</option>
+                <option value="SUCCESS">Success</option>
+                <option value="CANCELLED">Cancelled</option>
+            </select>
+
+            <select #exportSel (change)="exportData(exportSel.value)">
+                <option value="">Export</option>
+                <option value="pdf">Export PDF</option>
+                <option value="excel">Export Excel</option>
+            </select>
+
+            <!-- <select (change)="onImportSelect($event, inquiryFileInput)">
+                <option value="">Import</option>
+                <option value="excel">Import Excel</option>
+            </select> -->
+
+            <input type="file" hidden #inquiryFileInput accept=".xlsx,.xls" (change)="importScheduleExcel($event)" />
+
+
+            <button class="clear-btn" (click)="clearFilters()">Clear</button>
+        </div>
+
+        <!-- ================= TABLE ================= -->
+        <div class="table-scroll">
+            <table class="project-table" *ngIf="paginatedData.length; else noData">
+                <thead>
+                    <tr>
+                        <th>Schedule ID</th>
+                        <th>Inquiry ID</th>
+                        <th>Schedule Date</th>
+                        <th>Time</th>
+                        <th>Remark</th>
+                        <th>Status</th>
+                        <th>Assign To</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let s of paginatedData; let i = index">
+                        <td>{{ (currentPage - 1) * pageSize + i + 1 }}</td>
+                        <td>{{ s.inquiryId }}</td>
+                        <td>{{ s.scheduleDate | date }}</td>
+                        <td>{{ s.scheTime }}</td>
+                        <td>{{ s.remark }}</td>
+                        <td>
+                            <span class="badge active">{{ s.inqStatus }}</span>
+                        </td>
+                        <td>{{ s.assignTo }}</td>
+                        <td>
+                            <button class="edit-btn" (click)="editSchedule(s)">Edit</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <!-- ================= PAGINATION ================= -->
+        <div class="pagination" *ngIf="totalPages > 1">
+            <button (click)="prevPage()" [disabled]="currentPage === 1">Prev</button>
+            <span>Page {{ currentPage }} of {{ totalPages }}</span>
+            <button (click)="nextPage()" [disabled]="currentPage === totalPages">Next</button>
+        </div>
+
+        <ng-template #noData>
+            <p class="no-data">No schedules found</p>
+        </ng-template>
+    </div>
+
+    <!-- ================= CREATE / EDIT FORM ================= -->
+    <div class="project-card mt" *ngIf="!showList">
+
+        <div class="form-header">
+            <h2 class="title1">{{ isEdit ? 'Edit Schedule' : 'Add Schedule' }}</h2>
+
+            <button type="button" class="toggle-btn" (click)="backToList()">
+                Back to List
+            </button>
+        </div>
+
+        <form [formGroup]="form" (ngSubmit)="submit()">
+
+            <div class="grid">
+
+                <!-- Inquiry dropdown -->
+                <div class="field floating">
+                    <select formControlName="inquiryId">
+
+                        <option value="" disabled>Select Inquiry</option>
+                        <option *ngFor="let l of inquiries" [value]="l.inqId">
+                            {{ l.inqId }} - {{ l.cname }}
+                        </option>
+                    </select>
+                    <label>Inquiry Id</label>
+                </div>
+
+
+                <div class="field floating">
+                    <input type="date" formControlName="scheduleDate" />
+                    <label>Schedule Date</label>
+                </div>
+
+                <div class="field floating">
+                    <input type="time" formControlName="scheduleTime" />
+                    <label>Schedule Time</label>
+                </div>
+
+                <div class="field floating">
+                    <select formControlName="status">
+                        <option value="OPEN">Open</option>
+                        <option value="IN_PROGRESS">In Progress</option>
+                        <option value="CLOSED">Closed</option>
+                        <option value="SUCCESS">Success</option>
+                        <option value="CANCELLED">Cancelled</option>
+                    </select>
+                    <label>Status</label>
+                </div>
+
+                <div class="field floating">
+                    <input formControlName="assignTo" />
+                    <label>Assign To</label>
+                </div>
+
+                <div class="field floating span-3">
+                    <textarea rows="1" formControlName="remark"></textarea>
+                    <label>Remark</label>
+                </div>
+
+            </div>
+
+            <div class="actions">
+                <button type="submit">
+                    {{ isEdit ? 'Update Schedule' : 'Save Schedule' }}
+                </button>
+            </div>
+
+        </form>
+    </div>
+
+    <!-- BACKDROP -->
+
+
+</div>
+<div class="modal-backdrop-custom" *ngIf="scheduleExcelPreview.length"></div>
+
+<!-- <div class="modal-custom" *ngIf="scheduleExcelPreview.length"> -->
+
+
+<div class="modal-custom" *ngIf="scheduleExcelPreview.length">
+
+
+    <div class="modal-card">
+
+        <div class="modal-header">
+            <h3>Excel Import Preview </h3>
+            <button class="close-btn" (click)="clearExcelPreview()">✕</button>
+        </div>
+
+        <div class="modal-body table-scroll">
+            <table class="project-table">
+                <thead>
+                    <tr>
+                        <th>Inquiry</th>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Status</th>
+                        <th>Assign To</th>
+                        <th>Remark</th>
+                        <th>Errors</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let r of scheduleExcelPreview" [style.background]="r._errors.length ? '#fee2e2' : ''">
+
+
+                        <td>{{ r.inquiryId || '-' }}</td>
+                        <td>{{ r.scheduleDate }}</td>
+                        <td>{{ r.scheTime }}</td>
+                        <td>{{ r.inqStatus }}</td>
+                        <td>{{ r.assignTo }}</td>
+                        <td>{{ r.remark }}</td>
+
+                        <td style="color:#991b1b;font-size:13px">
+                            {{ r._errors.join(', ') }}
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="modal-footer">
+            <button class="toggle-btn" [disabled]="hasScheduleExcelErrors" (click)="saveScheduleExcelToDB()">
+                Save Imported Schedules
+            </button>
+
+
+            <button class="clear-btn" (click)="clearExcelPreview()">
+                Cancel
+            </button>
+        </div>
+
+    </div>
+</div>

@@ -1,0 +1,165 @@
+<div class="employee-form-container">
+    <div class="form-card">
+        <div class="form-header">
+            <h2 class="title">Transactions</h2>
+        </div>
+
+        <div *ngIf="errorMessage" class="alert alert-danger">
+            {{ errorMessage }}
+        </div>
+
+        <!-- MAIN FORM -->
+        <form [formGroup]="customerForm" class="employee-form">
+
+            <!-- Row 1: 4 fields -->
+            <div class="form-row">
+                <!-- Transaction Date -->
+                <div class="form-group floating" [ngClass]="{ 'has-value': customerForm.get('trndate')?.value }">
+                    <input type="date" id="trndate" formControlName="trndate" class="form-control" placeholder=" " />
+                    <label for="trndate">Transaction Date *</label>
+                </div>
+
+                <!-- Customer Name -->
+                <div class="form-group floating" [ngClass]="{ 'has-value': customerForm.get('customerName')?.value }">
+                    <input type="text" id="customerName" formControlName="customerName" class="form-control"
+                        placeholder=" " />
+                    <label for="customerName">Customer Name *</label>
+                </div>
+
+                <!-- Tooling Drawing Part No -->
+                <div class="form-group floating"
+                    [ngClass]="{ 'has-value': customerForm.get('toolingdrawingpartno')?.value }">
+                    <input type="text" id="toolingdrawingpartno" formControlName="toolingdrawingpartno"
+                        class="form-control" placeholder=" " />
+                    <label for="toolingdrawingpartno">Tooling Drawing Part No *</label>
+                </div>
+
+                <!-- Part Drawing Name -->
+                <div class="form-group floating"
+                    [ngClass]="{ 'has-value': customerForm.get('partdrawingname')?.value }">
+                    <input type="text" id="partdrawingname" formControlName="partdrawingname" class="form-control"
+                        placeholder=" " />
+                    <label for="partdrawingname">Part Drawing Name *</label>
+                </div>
+            </div>
+
+            <!-- Row 2: 4 fields -->
+            <div class="form-row">
+                <!-- Part Drawing No -->
+                <div class="form-group floating" [ngClass]="{ 'has-value': customerForm.get('partdrawingno')?.value }">
+                    <input type="text" id="partdrawingno" formControlName="partdrawingno" class="form-control"
+                        placeholder=" " />
+                    <label for="partdrawingno">Part Drawing No *</label>
+                </div>
+
+                <!-- Description of Tooling -->
+                <div class="form-group floating"
+                    [ngClass]="{ 'has-value': customerForm.get('descriptionoftooling')?.value }">
+                    <input type="text" id="descriptionoftooling" formControlName="descriptionoftooling"
+                        class="form-control" placeholder=" " />
+                    <label for="descriptionoftooling">Description of Tooling *</label>
+                </div>
+
+                <!-- Work Order No -->
+                <div class="form-group floating" [ngClass]="{ 'has-value': customerForm.get('cmworkorderno')?.value }">
+                    <input type="text" id="cmworkorderno" formControlName="cmworkorderno" class="form-control"
+                        placeholder=" " />
+                    <label for="cmworkorderno">Work Order No *</label>
+                </div>
+
+                <!-- Tooling Asset No -->
+                <div class="form-group floating" [ngClass]="{ 'has-value': customerForm.get('toolingassetno')?.value }">
+                    <input type="text" id="toolingassetno" formControlName="toolingassetno" class="form-control"
+                        placeholder=" " />
+                    <label for="toolingassetno">Tooling Asset No *</label>
+                </div>
+            </div>
+
+            <!-- ACTIONS -->
+            <div class="form-actions">
+
+                <button type="button" class="btn btn-primary" (click)="addToCart()"
+                    [disabled]="customerForm.invalid || isSaving">
+                    <span>Save Transaction</span>
+                    <span *ngIf="isSaving">Processing...</span>
+                </button>
+            </div>
+        </form>
+
+        <!-- CART TABLE -->
+        <h3 class="cart-title">Details</h3>
+
+        <div class="cart-container">
+            <table class="cart-table" *ngIf="cartItems.length > 0; else emptyCart">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Customer Name</th>
+                        <th>Tooling Drawing Part No</th>
+                        <th>Part Name</th>
+                        <th>Part No</th>
+                        <th>Description</th>
+                        <th>Work Order</th>
+                        <th>Asset No</th>
+                        <th>Status</th>
+                        <th>Update</th>
+
+
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <tr *ngFor="let c of cartItems; let i = index">
+                        <td>{{ i + 1 }}</td>
+                        <td>{{ c.customerName }}</td>
+                        <td>{{ c.toolingdrawingpartno }}</td>
+                        <td>{{ c.partdrawingname }}</td>
+                        <td>{{ c.partdrawingno }}</td>
+                        <td>{{ c.descriptionoftooling }}</td>
+                        <td>{{ c.cmworkorderno }}</td>
+                        <td>{{ c.toolingassetno }}</td>
+
+                        <td>
+                            <span class="status-pill" [ngClass]="{
+            'status-approved': c.status === 'APPROVED',
+            'status-pending': c.status !== 'APPROVED'
+        }">
+                                {{ c.status || 'PENDING' }}
+                            </span>
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn btn-warning btn-sm" (click)="editCartItem(i)">
+                                ✎
+                            </button>
+                        </td>
+
+                        <td>
+                            <button type="button" class="btn btn-danger btn-sm" (click)="removeFromCart(i)">
+                                ✕
+                            </button>
+                        </td>
+                    </tr>
+
+                </tbody>
+            </table>
+
+            <ng-template #emptyCart>
+                <p class="empty-cart-text">No transactions added yet.</p>
+            </ng-template>
+        </div>
+
+        <!-- SUBMIT BUTTON -->
+        <div class="submit-row">
+            <button type="button" class="btn btn-secondary" (click)="cancel()" [disabled]="isSaving">
+                Cancel
+            </button>
+            <button type="button" class="btn btn-primary" (click)="saveTransactions()"
+                [disabled]="isSaving || cartItems.length === 0">
+                <span *ngIf="!isSaving">Submit</span>
+                <span *ngIf="isSaving">Saving...</span>
+            </button>
+        </div>
+    </div>
+</div>

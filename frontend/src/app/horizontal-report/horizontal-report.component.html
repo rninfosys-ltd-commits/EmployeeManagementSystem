@@ -1,0 +1,130 @@
+<div class="hr-page">
+
+    <!-- ═══════════════════ HEADER ═══════════════════ -->
+    <div class="hr-header">
+        <div class="hr-title-block">
+            <span class="hr-icon">📊</span>
+            <div>
+                <h1 class="hr-title">Production Workflow Report</h1>
+                <p class="hr-subtitle">All process stages — side by side</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ FILTERS ═══════════════════ -->
+    <div class="hr-filters">
+        <div class="filter-group">
+            <label>From Date</label>
+            <input type="date" [(ngModel)]="fromDate" />
+        </div>
+        <div class="filter-group">
+            <label>To Date</label>
+            <input type="date" [(ngModel)]="toDate" />
+        </div>
+        <div class="filter-group">
+            <label>Batch No</label>
+            <input type="text" [(ngModel)]="batchNo" placeholder="e.g. B001" />
+        </div>
+        <div class="filter-actions">
+            <button class="btn-apply" (click)="loadReport()">Apply</button>
+            <button class="btn-clear" (click)="clearFilters()">Clear</button>
+        </div>
+    </div>
+
+    <!-- ═══════════════════ LEGEND ═══════════════════ -->
+    <div class="hr-legend">
+        <span *ngFor="let stage of stages" class="legend-pill theme-{{ stage.theme }}">
+            {{ stage.label }}
+        </span>
+    </div>
+
+    <!-- ═══════════════════ LOADING / ERROR ═══════════════════ -->
+    <div class="hr-loading" *ngIf="loading">
+        <div class="spinner"></div>
+        <span>Loading report data…</span>
+    </div>
+
+    <div class="hr-error" *ngIf="error && !loading">
+        <span>⚠️ {{ error }}</span>
+        <button (click)="loadReport()">Retry</button>
+    </div>
+
+    <!-- ═══════════════════ EMPTY STATE ═══════════════════ -->
+    <div class="hr-empty" *ngIf="!loading && !error && allRows.length === 0">
+        <span class="empty-icon">🗂️</span>
+        <p>No data found. Try adjusting the filters.</p>
+    </div>
+
+    <!-- ═══════════════════ TABLE WRAPPER ═══════════════════ -->
+    <div class="hr-scroll-wrapper" *ngIf="!loading && !error && allRows.length > 0">
+        <table class="hr-table">
+
+            <!-- ── Stage Group Header Row ── -->
+            <thead>
+
+                <!-- ROW-1: Stage Banners -->
+                <tr class="stage-banner-row">
+                    <th class="col-batch-banner" rowspan="2">Batch No</th>
+                    <ng-container *ngFor="let stage of stages">
+                        <th [attr.colspan]="stage.columns.length" class="stage-banner theme-{{ stage.theme }}-banner">
+                            {{ stage.label }}
+                        </th>
+                    </ng-container>
+                </tr>
+
+                <!-- ROW-2: Column Labels -->
+                <tr class="col-label-row">
+                    <ng-container *ngFor="let stage of stages">
+                        <th *ngFor="let col of stage.columns" class="col-label theme-{{ stage.theme }}-label">
+                            {{ col.label }}
+                        </th>
+                    </ng-container>
+                </tr>
+
+            </thead>
+
+            <!-- ── Data Rows ── -->
+            <tbody>
+                <tr *ngFor="let row of pagedRows; let i = index" [class.row-even]="i % 2 === 0"
+                    [class.row-odd]="i % 2 !== 0">
+
+                    <!-- Batch No sticky column -->
+                    <td class="col-batch">{{ row.batchNo }}</td>
+
+                    <!-- Stage data cells -->
+                    <ng-container *ngFor="let stage of stages">
+                        <td *ngFor="let col of stage.columns" class="data-cell theme-{{ stage.theme }}-cell"
+                            [class.no-data]="!hasData(row, stage.key)">
+                            {{ field(row, stage.key, col.key) }}
+                        </td>
+                    </ng-container>
+
+                </tr>
+            </tbody>
+
+        </table>
+    </div>
+
+    <!-- ═══════════════════ PAGINATION ═══════════════════ -->
+    <div class="hr-pagination" *ngIf="totalPages > 1">
+        <button class="pg-btn" (click)="prevPage()" [disabled]="currentPage === 1">⬅ Prev</button>
+
+        <ng-container *ngFor="let p of pageNumbers">
+            <button class="pg-btn pg-num" [class.pg-active]="p === currentPage" (click)="goToPage(p)">
+                {{ p }}
+            </button>
+        </ng-container>
+
+        <button class="pg-btn" (click)="nextPage()" [disabled]="currentPage === totalPages">Next ➡</button>
+
+        <span class="pg-info">
+            Page {{ currentPage }} of {{ totalPages }} &nbsp;|&nbsp; {{ allRows.length }} batch(es)
+        </span>
+    </div>
+
+    <!-- Single page summary -->
+    <div class="hr-summary" *ngIf="totalPages <= 1 && allRows.length > 0">
+        Showing {{ allRows.length }} batch(es)
+    </div>
+
+</div>

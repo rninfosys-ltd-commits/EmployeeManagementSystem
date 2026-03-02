@@ -1,0 +1,268 @@
+/* ==================================================
+   BASE & SAFETY (DO NOT TOUCH)
+================================================== */
+
+.receipt-container,
+.form-grid,
+.field {
+    overflow: visible !important;
+}
+
+/* ==================================================
+   CONTAINER
+================================================== */
+
+.receipt-container {
+    max-width: 1480px;
+    margin: 20px auto;
+    padding: 15px;
+    background-color: #f1f4f8;
+    border-radius: 14px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+    position: relative;
+}
+
+/* CLOSE BUTTON */
+.close-btn {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    background: #ff4d4d;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 7px 12px;
+    cursor: pointer;
+    font-size: 18px;
+}
+
+/* TITLE */
+.title {
+    text-align: center;
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 25px;
+    background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
+    padding: 10px 10px;
+    border-radius: 5px;
+    width: 250px;
+    color: white;
+}
+
+/* ==================================================
+   GRID
+================================================== */
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 22px;
+}
+
+.full {
+    grid-column: span 4;
+}
+
+.grid-spacer {
+    visibility: hidden;
+}
+
+/* ==================================================
+   FIELD & FLOAT LABEL
+================================================== */
+
+.field {
+    position: relative;
+}
+
+.field input,
+.field textarea {
+    width: 100%;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1.5px solid #cfcfcf;
+    font-size: 15px;
+    background: transparent;
+    outline: none;
+    transition: .25s;
+}
+
+/* LABEL */
+.field label {
+    position: absolute;
+    top: 12px;
+    left: 14px;
+    color: #777;
+    background: white;
+    padding: 0 6px;
+    pointer-events: none;
+    transition: .25s;
+    font-size: 20px;
+}
+
+/* FLOAT LABEL */
+.field.filled label,
+.field input:focus+label,
+.field textarea:focus+label,
+.custom-select .select-input.open+label {
+    top: -8px;
+    font-size: 18px;
+    color: #3f51b5;
+}
+
+/* DISABLED FIELD STYLE */
+.field input:disabled {
+    background: #e9ecef;
+    cursor: not-allowed;
+    border-color: #dee2e6;
+    color: #adb5bd;
+}
+
+.field input:disabled+label {
+    background: #e9ecef;
+    color: #adb5bd;
+}
+
+/* ==================================================
+   CUSTOM DROPDOWN (🔥 FINAL FIX)
+================================================== */
+
+.custom-select {
+    position: relative;
+    width: 100%;
+}
+
+/* INPUT LOOK */
+.select-input {
+    height: 46px;
+    padding: 12px;
+    border-radius: 10px;
+    border: 1.5px solid #cfcfcf;
+    background: #fff;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.select-input.open {
+    border-color: #3f51b5;
+    box-shadow: 0 0 6px rgba(63, 81, 181, 0.35);
+}
+
+/* DROPDOWN PANEL */
+.select-options {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    max-height: 220px;
+    overflow-y: auto;
+    background: #fff;
+    border-radius: 10px;
+    border: 1px solid #ccc;
+    z-index: 10000;
+}
+
+/* OPTION */
+.option {
+    padding: 10px 14px;
+    cursor: pointer;
+}
+
+.option:hover {
+    background: #f2f2ff;
+}
+
+/* ==================================================
+   SUBMIT BUTTON
+================================================== */
+
+.submit-btn {
+    width: 180px;
+    margin: 25px auto 0;
+    display: block;
+    padding: 12px;
+    background: #3f51b5;
+    color: white;
+    border-radius: 10px;
+    border: none;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.submit-btn:hover {
+    background: #2e3fa0;
+}
+
+/* ==================================================
+   TABLET VIEW (768px – 992px)
+================================================== */
+
+@media (min-width: 768px) and (max-width: 992px) {
+
+    .receipt-container {
+        padding: 24px;
+        margin: 16px;
+    }
+
+    .title {
+        font-size: 26px;
+    }
+
+    .form-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .full {
+        grid-column: span 2;
+    }
+
+    .grid-spacer {
+        display: none;
+    }
+}
+
+/* ==================================================
+   MOBILE VIEW (≤ 767px)
+================================================== */
+
+@media (max-width: 767px) {
+
+    .receipt-container {
+        padding: 20px;
+        margin: 12px;
+    }
+
+    .title {
+        font-size: 24px;
+    }
+
+    .form-grid {
+        grid-template-columns: 1fr;
+        gap: 18px;
+    }
+
+    .full {
+        grid-column: span 1;
+    }
+
+    .grid-spacer {
+        display: none;
+    }
+
+    .submit-btn {
+        width: 100%;
+        font-size: 20px;
+        margin-bottom: 50px;
+    }
+
+    .close-btn {
+        padding: 6px 10px;
+        font-size: 16px;
+    }
+
+    /* 🔥 MOBILE DROPDOWN FIX */
+    .select-options {
+        max-height: 180px;
+    }
+}
