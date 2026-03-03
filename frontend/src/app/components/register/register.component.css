@@ -173,6 +173,7 @@
 
 /* Role Dropdown Specific Styles */
 .role-wrapper {
+  position: relative;
   margin-bottom: 2.5rem;
 }
 

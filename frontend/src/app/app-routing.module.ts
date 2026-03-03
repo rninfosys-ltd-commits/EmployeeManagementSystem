@@ -73,10 +73,10 @@ const routes: Routes = [
   { path: 'km-list', component: KmListComponent, canActivate: [AuthGuard] },
 
 
-  { path: 'receipts', component: ReceiptListComponent },
-  { path: 'receipts/new', component: ReceiptFormComponent },
-  { path: 'receipts/edit/:id', component: ReceiptFormComponent },
-  { path: 'profile', component: ProfileComponent },
+  { path: 'receipts', component: ReceiptListComponent, canActivate: [AuthGuard] },
+  { path: 'receipts/new', component: ReceiptFormComponent, canActivate: [AuthGuard] },
+  { path: 'receipts/edit/:id', component: ReceiptFormComponent, canActivate: [AuthGuard] },
+  { path: 'profile', component: ProfileComponent, canActivate: [AuthGuard] },
   // WILDCARD MUST BE LAST
 
   { path: 'products', component: ProductListComponent, canActivate: [AuthGuard] },
@@ -87,30 +87,32 @@ const routes: Routes = [
   { path: 'price-list', component: PriceListComponent, canActivate: [AuthGuard] },
   { path: 'root-master', component: RootMasterComponent, canActivate: [AuthGuard] },
   { path: 'user-details', component: UserDetailsComponent, canActivate: [AuthGuard] },
-  { path: 'projects', component: ProjectComponent },
-  { path: 'leads', component: LeadComponent },
-  { path: 'inquiries', component: InquiryComponent },
+  { path: 'projects', component: ProjectComponent, canActivate: [AuthGuard] },
+  { path: 'leads', component: LeadComponent, canActivate: [AuthGuard] },
+  { path: 'inquiries', component: InquiryComponent, canActivate: [AuthGuard] },
 
-  { path: 'state-master', component: StateMasterComponent },
-  { path: 'district-master', component: DistrictMasterComponent },
-  { path: 'taluka-master', component: TalukaMasterComponent },
-  { path: 'city-master', component: CityMasterComponent },
+  { path: 'state-master', component: StateMasterComponent, canActivate: [AuthGuard] },
+  { path: 'district-master', component: DistrictMasterComponent, canActivate: [AuthGuard] },
+  { path: 'taluka-master', component: TalukaMasterComponent, canActivate: [AuthGuard] },
+  { path: 'city-master', component: CityMasterComponent, canActivate: [AuthGuard] },
 
-  { path: 'inquiry-schedule', component: InquiryScheduleComponent },
-  { path: 'home', component: HomeDashboardComponent },   // home dashboard
-  { path: 'production-entry', component: ProductionEntryComponent },
-  { path: 'casting-hall-report', component: CastingHallReportComponent },
-  { path: 'wire-cutting-report', component: WireCuttingReportComponent },
+  { path: 'inquiry-schedule', component: InquiryScheduleComponent, canActivate: [AuthGuard] },
+  { path: 'home', component: HomeDashboardComponent, canActivate: [AuthGuard] },   // home dashboard
+  { path: 'production-entry', component: ProductionEntryComponent, canActivate: [AuthGuard] },
+  { path: 'casting-hall-report', component: CastingHallReportComponent, canActivate: [AuthGuard] },
+  { path: 'wire-cutting-report', component: WireCuttingReportComponent, canActivate: [AuthGuard] },
   {
     path: 'autoclave',
-    component: AutoclaveComponent
+    component: AutoclaveComponent,
+    canActivate: [AuthGuard]
   },
-  { path: 'cube-test', component: CubeTestComponent },
-  { path: 'block-separating', component: BlockSeparatingComponent },
-  { path: 'rejection', component: RejectionComponentComponent },
+  { path: 'cube-test', component: CubeTestComponent, canActivate: [AuthGuard] },
+  { path: 'block-separating', component: BlockSeparatingComponent, canActivate: [AuthGuard] },
+  { path: 'rejection', component: RejectionComponentComponent, canActivate: [AuthGuard] },
   {
     path: 'production-dashboard',
-    component: ProductionDashboardComponent
+    component: ProductionDashboardComponent,
+    canActivate: [AuthGuard]
   },
   {
     path: 'transaction-export',

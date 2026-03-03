@@ -42,6 +42,9 @@ body {
   background-attachment: fixed;
   -webkit-font-smoothing: antialiased;
   scroll-behavior: smooth;
+}
+
+body.logged-in {
   padding-top: 80px !important;
 }
 

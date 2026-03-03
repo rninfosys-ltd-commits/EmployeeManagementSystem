@@ -26,12 +26,22 @@ export class NavbarComponent implements OnInit {
     // Initial check
     this.isLoggedIn = this.authService.isAuthenticated();
     this.currentUser = this.isLoggedIn ? this.authService.getCurrentUser() : null;
+    this.updateBodyClass();
 
     // Listen for updates
     this.authService.loginStatus$.subscribe(isLogged => {
       this.isLoggedIn = isLogged;
       this.currentUser = isLogged ? this.authService.getCurrentUser() : null;
+      this.updateBodyClass();
     });
+  }
+
+  private updateBodyClass(): void {
+    if (this.isLoggedIn) {
+      document.body.classList.add('logged-in');
+    } else {
+      document.body.classList.remove('logged-in');
+    }
   }
 
 
@@ -39,6 +49,7 @@ export class NavbarComponent implements OnInit {
     this.authService.logout();
     this.currentUser = null;
     this.isLoggedIn = false;
+    this.updateBodyClass();
     this.router.navigate(['/login']);
   }
 

@@ -1,32 +1,30 @@
-<!-- NAVBAR (ALWAYS RENDERED) -->
-<nav class="navbar" style="display: flex !important;">
+<!-- NAVBAR (HIDDEN ON LOGIN/SIGNUP) -->
+<nav class="navbar" style="display: flex !important;" *ngIf="isLoggedIn">
   <div class="navbar-container">
 
     <!-- HAMBURGER (MOBILE/TABLET ONLY) -->
-    <button class="menu-toggle" (click)="isMenuOpen = true">
+    <button class="menu-toggle" (click)="isMenuOpen = true" *ngIf="isLoggedIn">
       ☰
     </button>
 
-    <i class="fa fa-home home-icon" title="Home" routerLink="/home">
+    <i class="fa fa-home home-icon" title="Home" routerLink="/home" *ngIf="isLoggedIn">
     </i>
 
 
     <!-- BRAND -->
     <div class="navbar-brand">
-      <a routerLink="/home">Employee main</a>
+      <a [routerLink]="isLoggedIn ? '/home' : '/login'">Employee main</a>
     </div>
     <!-- HOME ICON -->
 
   </div>
 
 
-  <!-- DESKTOP NAV (UNCHANGED) -->
-  <div class="desktop-nav">
+  <!-- DESKTOP NAV -->
+  <div class="desktop-nav" *ngIf="isLoggedIn">
 
     <!-- MASTER -->
-    <!-- <select class="nav-select" (change)="navigate($event)" *ngIf="currentUser?.role === 'ROLE_COMPANY_OWNER'"> -->
-    <select class="nav-select" (change)="navigate($event)" *ngIf="isLoggedIn">
-
+    <select class="nav-select" (change)="navigate($event)">
       <option value="" disabled selected hidden>Master</option>
       <option value="/employees">Employees</option>
       <option value="/users">Users</option>
@@ -35,7 +33,6 @@
       <option value="/user-details">User Details</option>
       <option value="/products">Products</option>
       <option value="/projects">Project</option>
-
       <option value="/leads">Lead</option>
     </select>
 
@@ -50,22 +47,17 @@
       <option value="/rejection">Rejection</option>
       <option value="/production-dashboard">Production Dashboard</option>
       <option value="/horizontal-report">📊 Horizontal Report</option>
-
-
     </select>
 
 
     <!-- TRANSACTION -->
     <select class="nav-select" (change)="navigate($event)">
       <option value="" disabled selected hidden>Transaction details</option>
-
       <option value="/inquiries">Inquiry</option>
       <option value="/inquiry-schedule">Schedule</option>
-
       <option value="/purchase-orders">Purchase</option>
       <option value="/sell-orders">Sale</option>
       <option value="/receipts">Receipt</option>
-
       <option value="/customers">Batch</option>
       <option value="/km-list">Travel Details</option>
       <option value="/transaction-export">Transaction Export</option>
@@ -82,7 +74,7 @@
 
 
     <!-- USER INFO -->
-    <div class="user-info" *ngIf="isLoggedIn">
+    <div class="user-info">
       <span class="username" (click)="openProfile()">
         {{ currentUser?.username }}
       </span>
@@ -90,20 +82,17 @@
     </div>
 
   </div>
-  <!-- </div> -->
 </nav>
 
 <!-- MOBILE OVERLAY -->
-<div class="overlay" *ngIf="isMenuOpen" (click)="isMenuOpen = false">
+<div class="overlay" *ngIf="isMenuOpen && isLoggedIn" (click)="isMenuOpen = false">
 </div>
 
 <!-- MOBILE SIDE MENU -->
-<div class="mobile-menu" [class.open]="isMenuOpen">
+<div class="mobile-menu" [class.open]="isMenuOpen" *ngIf="isLoggedIn">
 
   <!-- MASTER -->
-  <!-- <select class="nav-select" (change)="navigate($event); isMenuOpen = false" *ngIf="currentUser?.role === 'ROLE_COMPANY_OWNER'"> -->
-  <select class="nav-select" (change)="navigate($event); isMenuOpen = false" *ngIf="isLoggedIn">
-
+  <select class="nav-select" (change)="navigate($event); isMenuOpen = false">
     <option value="" disabled selected hidden>Master</option>
     <option value="/employees">Employees</option>
     <option value="/users">Users</option>
@@ -112,7 +101,6 @@
     <option value="/user-details">User Details</option>
     <option value="/products">Products</option>
     <option value="/projects">Project</option>
-
     <option value="/leads">Lead</option>
   </select>
 
@@ -125,10 +113,8 @@
     <option value="/block-separating">Block Separating</option>
     <option value="/cube-test">Cube Test</option>
     <option value="/rejection">Rejection</option>
-
     <option value="/production-dashboard">Production Dashboard</option>
     <option value="/horizontal-report">📊 Horizontal Report</option>
-
   </select>
 
   <!-- TRANSACTION -->
@@ -153,7 +139,7 @@
   </select>
 
   <!-- USER INFO -->
-  <div class="user-info" *ngIf="isLoggedIn">
+  <div class="user-info">
     <span class="username">{{ currentUser?.username }}</span>
   </div>
 
