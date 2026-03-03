@@ -141,8 +141,7 @@ export class PurchaseOrderComponent implements OnInit {
   placeOrder(): void {
     if (!this.selectedParentId || this.cartItems.length === 0) return;
 
-    const dto: PlacePurchaseOrderDto = {
-      userId: this.selectedParentId,
+    const dto: any = {
       orderDescription: 'Purchase Order',
       address: 'Pune',
       email: 'test@gmail.com',
@@ -236,6 +235,14 @@ export class PurchaseOrderComponent implements OnInit {
   calculateGrandTotal(items: CartItem[] | undefined): number {
     if (!items) return 0;
     return items.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+  }
+
+  formatIndian(num: number | undefined): string {
+    if (num == null) return '0.00';
+    return new Intl.NumberFormat('en-IN', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(num);
   }
 
   /* ================= CART EDIT ================= */
@@ -382,8 +389,8 @@ export class PurchaseOrderComponent implements OnInit {
       i + 1,
       item.productName,
       item.quantity,
-      `Rs. ${item.price}`,
-      `Rs. ${item.price * item.quantity}`
+      `Rs. ${this.formatIndian(item.price)}`,
+      `Rs. ${this.formatIndian(item.price * item.quantity)}`
     ]);
 
     autoTable(doc, {
@@ -410,7 +417,7 @@ export class PurchaseOrderComponent implements OnInit {
 
     doc.setFontSize(12);
     doc.text(
-      `Grand Total: Rs. ${this.calculateGrandTotal(this.selectedOrder.cartItems)}`,
+      `Grand Total: Rs. ${this.formatIndian(this.calculateGrandTotal(this.selectedOrder.cartItems))}`,
       140,
       finalY
     );

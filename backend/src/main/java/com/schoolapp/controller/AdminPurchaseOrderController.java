@@ -21,9 +21,10 @@ public class AdminPurchaseOrderController {
     }
 
     @PostMapping("/purchase-order/place")
-    public ResponseEntity<?> placeOrder(@RequestBody PlacePurchaseOrderRequest request) {
+    public ResponseEntity<?> placeOrder(@RequestBody PlacePurchaseOrderRequest request,
+            java.security.Principal principal) {
         try {
-            PurchaseOrderDto result = purchaseOrderService.placeOrder(request);
+            PurchaseOrderDto result = purchaseOrderService.placeOrder(request, principal.getName());
             return ResponseEntity.ok(result);
         } catch (Exception e) {
             e.printStackTrace();

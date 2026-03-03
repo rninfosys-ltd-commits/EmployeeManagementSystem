@@ -36,21 +36,25 @@ public class PurchaseOrderService {
     private UserRepository userRepository;
 
     // ================= PLACE ORDER =================
-    public PurchaseOrderDto placeOrder(PlacePurchaseOrderRequest request) {
+    public PurchaseOrderDto placeOrder(PlacePurchaseOrderRequest request, String userEmail) {
         try {
-            UserEntity user = userRepository.findById(request.getUserId())
-                    .orElseThrow(() -> new RuntimeException("User not found: " + request.getUserId()));
+            UserEntity user = userRepository.findByEmail(userEmail)
+                    .orElseThrow(() -> new RuntimeException("User not found: " + userEmail));
 
             PurchaseOrders order = new PurchaseOrders();
             order.setUser(user);
             order.setCustomerId(request.getCustomerId());
+            if (request.getCustomerId() != null) {
+                userRepository.findById(request.getCustomerId()).ifPresent(cl -> {
+                    order.setEmail(cl.getEmail());
+                    order.setMobile(cl.getMobile());
+                });
+            }
             order.setOrderDescription(request.getOrderDescription());
             order.setAddress(request.getAddress());
             order.setDate(LocalDateTime.now());
             order.setOrderStatus(OrderStatus.PENDING);
             order.setTrackingId(UUID.randomUUID().toString());
-            order.setEmail(request.getEmail());
-            order.setMobile(request.getMobile());
             order.setPincode(request.getPincode());
 
             long totalAmount = 0;
@@ -84,7 +88,7 @@ public class PurchaseOrderService {
             return savedOrder.getPurchaseOrderDto();
         } catch (Exception e) {
             e.printStackTrace();
-            throw new RuntimeException("Error placing order for user " + request.getUserId() + ": " + e.getMessage(),
+            throw new RuntimeException("Error placing order for user " + userEmail + ": " + e.getMessage(),
                     e);
         }
     }

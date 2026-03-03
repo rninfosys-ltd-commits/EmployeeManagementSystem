@@ -78,7 +78,7 @@
                     <td>{{ (page - 1) * pageSize + i + 1 }}</td>
                     <td>{{ item.partyName }}</td>
                     <td>{{ item.productName }}</td>
-                    <td>₹ {{ item.price }}</td>
+                    <td>{{ item.price | currency:'INR' }}</td>
                     <td>
                         <button class="btn-edit" (click)="edit(item)">Edit</button>
                     </td>

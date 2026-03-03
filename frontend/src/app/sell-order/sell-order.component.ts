@@ -106,8 +106,7 @@ export class SellOrderComponent implements OnInit {
   }
 
   placeOrder() {
-    const dto: PlaceSellOrderDto = {
-      userId: this.selectedUserId!,
+    const dto: any = {
       customerId: this.selectedCustomerId!,
       cartItems: this.cartItems,
       orderDescription: 'Sell Order'
@@ -200,6 +199,14 @@ export class SellOrderComponent implements OnInit {
       (sum, item) => sum + (item.price * item.quantity),
       0
     );
+  }
+
+  formatIndian(num: number | undefined): string {
+    if (num == null) return '0.00';
+    return new Intl.NumberFormat('en-IN', {
+      minimumFractionDigits: 2,
+      maximumFractionDigits: 2
+    }).format(num);
   }
 
   // ================= DROPDOWN STATE =================

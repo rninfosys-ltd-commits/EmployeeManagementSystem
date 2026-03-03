@@ -43,6 +43,10 @@ public class SellOrder {
 	private Long customerId;
 
 	@ManyToOne(fetch = FetchType.LAZY)
+	@JoinColumn(name = "customer_id", insertable = false, updatable = false)
+	private UserEntity customer;
+
+	@ManyToOne(fetch = FetchType.LAZY)
 	@JoinColumn(name = "user_id")
 	private UserEntity user;
 
@@ -59,9 +63,18 @@ public class SellOrder {
 		dto.setOrderStatus(orderStatus);
 		dto.setTrackingId(trackingId);
 		dto.setUserId(user != null ? user.getId() : null);
-		dto.setUserName(user != null ? user.getUsername() : null);
-		dto.setEmail(email);
-		dto.setMobile(mobile);
+
+		// Show customer info in the main identity fields
+		if (customer != null) {
+			dto.setUserName(customer.getUsername());
+			dto.setEmail(customer.getEmail());
+			dto.setMobile(customer.getMobile());
+		} else {
+			dto.setUserName(user != null ? user.getUsername() : null);
+			dto.setEmail(email);
+			dto.setMobile(mobile);
+		}
+
 		dto.setPincode(pincode);
 		dto.setCustomerId(customerId);
 

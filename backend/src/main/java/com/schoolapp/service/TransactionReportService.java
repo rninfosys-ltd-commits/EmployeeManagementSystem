@@ -18,7 +18,8 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 
 import java.io.ByteArrayOutputStream;
-import java.text.DecimalFormat;
+import java.text.NumberFormat;
+import java.util.Locale;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
@@ -38,7 +39,11 @@ public class TransactionReportService {
 
     private static final SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
     private static final DateTimeFormatter ldtFormat = DateTimeFormatter.ofPattern("dd/MM/yyyy HH:mm");
-    private static final DecimalFormat amountFormatter = new DecimalFormat("₹ #,##,##0.00");
+    private static final NumberFormat amountFormatter = NumberFormat.getCurrencyInstance(new Locale("en", "IN"));
+
+    static {
+        // Ensure any extra custom rounding or formatting needs are met
+    }
 
     public byte[] exportTransactions(TransactionExportRequest request) throws Exception {
         if ("SALES".equalsIgnoreCase(request.getType())) {
@@ -146,7 +151,7 @@ public class TransactionReportService {
             itemDataStyle.setBorderBottom(BorderStyle.HAIR);
 
             CellStyle amountStyle = workbook.createCellStyle();
-            amountStyle.setDataFormat(workbook.createDataFormat().getFormat("#,##0.00"));
+            amountStyle.setDataFormat(workbook.createDataFormat().getFormat("[$-en-IN] #,##,##,##0.00"));
             amountStyle.setBorderBottom(BorderStyle.THIN);
 
             int rowIdx = 0;
@@ -254,7 +259,7 @@ public class TransactionReportService {
             itemDataStyle.setBorderBottom(BorderStyle.HAIR);
 
             CellStyle amountStyle = workbook.createCellStyle();
-            amountStyle.setDataFormat(workbook.createDataFormat().getFormat("#,##0.00"));
+            amountStyle.setDataFormat(workbook.createDataFormat().getFormat("[$-en-IN] #,##,##,##0.00"));
             amountStyle.setBorderBottom(BorderStyle.THIN);
 
             int rowIdx = 0;

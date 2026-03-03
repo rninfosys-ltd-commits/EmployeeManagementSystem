@@ -51,7 +51,7 @@
 
                 <div class="product-info">
                     <span class="info-label">Price:</span>
-                    <span class="info-value">₹{{ product.unitPrice }}</span>
+                    <span class="info-value">{{ product.unitPrice | currency:'INR' }}</span>
                 </div>
 
                 <mat-divider></mat-divider>

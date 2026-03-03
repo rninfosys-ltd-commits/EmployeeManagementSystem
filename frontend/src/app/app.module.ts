@@ -6,6 +6,11 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
+import { LOCALE_ID } from '@angular/core';
+import { registerLocaleData } from '@angular/common';
+import localeEnIN from '@angular/common/locales/en-IN';
+
+registerLocaleData(localeEnIN);
 
 /* ================= COMPONENTS ================= */
 
@@ -189,6 +194,7 @@ import { HorizontalReportComponent } from './horizontal-report/horizontal-report
     MatDialogModule
   ],
   providers: [
+    { provide: LOCALE_ID, useValue: 'en-IN' },
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

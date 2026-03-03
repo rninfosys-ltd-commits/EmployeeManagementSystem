@@ -33,18 +33,25 @@ public class SellOrderController {
     // ================= PLACE SELL ORDER =================
     @PostMapping("/sell-order/place")
     public ResponseEntity<SellOrderDto> placeOrder(
-            @RequestBody PlaceSellOrderRequest req) {
+            @RequestBody PlaceSellOrderRequest req, java.security.Principal principal) {
 
         SellOrder order = new SellOrder();
         order.setOrderDescription(req.getOrderDescription());
         order.setCustomerId(req.getCustomerId());
+        if (req.getCustomerId() != null) {
+            userRepo.findById(req.getCustomerId()).ifPresent(cl -> {
+                order.setEmail(cl.getEmail());
+                order.setMobile(cl.getMobile());
+            });
+        }
         order.setDate(LocalDateTime.now());
         order.setTrackingId(UUID.randomUUID());
         order.setOrderStatus(OrderStatus.PROCESSING);
 
-        if (req.getUserId() != null) {
-            UserEntity user = userRepo.findById(req.getUserId()).orElse(null);
-            order.setUser(user);
+        // Deriving creator (admin) from authenticated context
+        if (principal != null) {
+            UserEntity author = userRepo.findByEmail(principal.getName()).orElse(null);
+            order.setUser(author);
         }
 
         List<SellCartItems> items = req.getCartItems().stream().map(ci -> {
