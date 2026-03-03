@@ -19,6 +19,7 @@ export class HorizontalReportComponent implements OnInit {
     fromDate = '';
     toDate = '';
     batchNo = '';
+    plantFilter = '';
 
     // ─── Data ──────────────────────────────────────────────────────────────────
     allRows: HorizontalReportRow[] = [];
@@ -145,7 +146,8 @@ export class HorizontalReportComponent implements OnInit {
         this.reportService.getReport(
             this.fromDate || undefined,
             this.toDate || undefined,
-            this.batchNo || undefined
+            this.batchNo || undefined,
+            this.plantFilter || undefined
         ).subscribe({
             next: (data) => {
                 this.allRows = data;
@@ -164,6 +166,7 @@ export class HorizontalReportComponent implements OnInit {
         this.fromDate = '';
         this.toDate = '';
         this.batchNo = '';
+        this.plantFilter = '';
         this.loadReport();
     }
 

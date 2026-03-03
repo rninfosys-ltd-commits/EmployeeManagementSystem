@@ -29,6 +29,14 @@
                 <input type="date" [(ngModel)]="filterToDate" (change)="applyFilters()" />
             </div>
 
+            <div class="filter-select">
+                <select [(ngModel)]="filterPlant" (change)="applyFilters()">
+                    <option value="">All Plants</option>
+                    <option value="Plant 1">Plant 1</option>
+                    <option value="Plant 2">Plant 2</option>
+                </select>
+            </div>
+
 
             <div class="filter-select">
                 <select (change)="exportData($any($event.target).value)">
@@ -58,6 +66,7 @@
             <thead>
                 <tr>
                     <th>Batch No</th>
+                    <th>Plant</th>
                     <th>Date</th>
                     <th>Created By</th>
                     <th>Shift</th>
@@ -76,6 +85,7 @@
                         <td class="clickable" (click)="openProductionModal(p)">
                             {{ p.batchNo }}
                         </td>
+                        <td>{{ p.plantName || '—' }}</td>
                         <td>{{ p.createdDate | date:'dd-MM-yyyy' }}</td>
                         <td>{{ p.createdByName || getUserName(p.userId) }}</td>
                         <td>Shift {{ p.shift }}</td>
@@ -197,6 +207,15 @@
                     <option value="G">General Shift</option>
                 </select>
                 <label>Shift</label>
+            </div>
+
+            <div class="form-field plant">
+                <select formControlName="plantName" required>
+                    <option value="" disabled>Select Plant</option>
+                    <option value="Plant 1">Plant 1</option>
+                    <option value="Plant 2">Plant 2</option>
+                </select>
+                <label>Plant</label>
             </div>
         </div>
 

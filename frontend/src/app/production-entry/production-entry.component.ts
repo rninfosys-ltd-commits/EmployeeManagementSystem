@@ -38,6 +38,7 @@ export class ProductionEntryComponent implements OnInit {
 
   filterFromDate = '';
   filterToDate = '';
+  filterPlant = '';
   excelPreview: any[] = [];
   hasExcelErrors = false;
   apiMessage = '';
@@ -75,6 +76,7 @@ export class ProductionEntryComponent implements OnInit {
     this.filterToDate = today;
 
     this.productionForm = this.fb.group({
+      plantName: [''],
       shift: [''],
       productionDate: [today],
 
@@ -179,6 +181,9 @@ export class ProductionEntryComponent implements OnInit {
 
     this.filteredProductionList = this.productionList.filter(p => {
 
+      // ✅ PLANT FILTER
+      if (this.filterPlant && p.plantName !== this.filterPlant) return false;
+
       // ✅ DATE FILTER
       const date = new Date(p.createdDate).getTime();
       const dateOk =
@@ -251,6 +256,7 @@ export class ProductionEntryComponent implements OnInit {
   clearFilters() {
     this.filterFromDate = '';
     this.filterToDate = '';
+    this.filterPlant = '';
     this.filteredProductionList = [...this.productionList];
     this.currentPage = 1;
     this.updatePagination();
@@ -273,7 +279,7 @@ export class ProductionEntryComponent implements OnInit {
       return;
     }
 
-    this.workflowService.exportReport('PRODUCTION', this.filterFromDate, this.filterToDate, 'pdf').subscribe({
+    this.workflowService.exportReport('PRODUCTION', this.filterFromDate, this.filterToDate, 'pdf', this.filterPlant || undefined).subscribe({
       next: (blob) => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -299,7 +305,7 @@ export class ProductionEntryComponent implements OnInit {
       return;
     }
 
-    this.workflowService.exportReport('PRODUCTION', this.filterFromDate, this.filterToDate, 'excel').subscribe({
+    this.workflowService.exportReport('PRODUCTION', this.filterFromDate, this.filterToDate, 'excel', this.filterPlant || undefined).subscribe({
       next: (blob) => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');
@@ -348,6 +354,7 @@ export class ProductionEntryComponent implements OnInit {
     const today = new Date().toISOString().substring(0, 10);
 
     this.productionForm.reset({
+      plantName: '',
       productionDate: today,
       productionTime: this.getCurrentTime()
     });
@@ -381,6 +388,14 @@ export class ProductionEntryComponent implements OnInit {
       alert('User not logged in');
       return;
     }
+
+    // Validate plant selection
+    const plantVal = this.productionForm.value.plantName;
+    if (!plantVal) {
+      alert('Please select a Plant');
+      return;
+    }
+
     const currentTime = this.getCurrentTime();
 
     this.productionForm.patchValue({
@@ -567,7 +582,7 @@ export class ProductionEntryComponent implements OnInit {
       alert('Please select a date range first');
       return;
     }
-    this.horizontalReportService.downloadExcel(this.filterFromDate, this.filterToDate, undefined, 'PRODUCTION').subscribe({
+    this.horizontalReportService.downloadExcel(this.filterFromDate, this.filterToDate, undefined, 'PRODUCTION', this.filterPlant || undefined).subscribe({
       next: (blob) => {
         const url = URL.createObjectURL(blob);
         const a = document.createElement('a');

@@ -5,6 +5,7 @@ import java.util.List;
 public class ProductionEntryRequest {
 
 	public String shift;
+	public String plantName;
 
 	public String siloNo1;
 	public Double literWeight1;
@@ -43,6 +44,14 @@ public class ProductionEntryRequest {
 
 	public void setShift(String shift) {
 		this.shift = shift;
+	}
+
+	public String getPlantName() {
+		return plantName;
+	}
+
+	public void setPlantName(String plantName) {
+		this.plantName = plantName;
 	}
 
 	public String getSiloNo1() {

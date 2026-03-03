@@ -38,6 +38,9 @@ public class ProductionEntry {
 	private String shift;
 	private String batchNo;
 
+	@Column(name = "plant_name", length = 50)
+	private String plantName;
+
 	private String siloNo1;
 	private Double literWeight1;
 	private Double faSolid1;

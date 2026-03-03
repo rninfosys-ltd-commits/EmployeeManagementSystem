@@ -44,10 +44,12 @@ export class WorkflowService {
     /**
      * Download combined PDF or Excel report for a batch up to a stage
      */
-    downloadReport(batchNo: string, upToStage: string, format: string = 'pdf'): Observable<Blob> {
+    downloadReport(batchNo: string, upToStage: string, format: string = 'pdf', plantName?: string): Observable<Blob> {
         let reportsUrl = APP_CONFIG.BASE_URL + '/api/reports';
+        let params: any = { format };
+        if (plantName) params.plantName = plantName;
         return this.http.get(`${reportsUrl}/${batchNo}/${upToStage}`, {
-            params: { format },
+            params,
             responseType: 'blob'
         });
     }
@@ -55,10 +57,12 @@ export class WorkflowService {
     /**
      * Export production report for a stage and date range
      */
-    exportReport(stage: string, fromDate: string, toDate: string, format: string): Observable<Blob> {
+    exportReport(stage: string, fromDate: string, toDate: string, format: string, plantName?: string): Observable<Blob> {
         let exportUrl = APP_CONFIG.BASE_URL + `/api/reports/${stage}/export`;
+        let params: any = { fromDate, toDate, format };
+        if (plantName) params.plantName = plantName;
         return this.http.get(exportUrl, {
-            params: { fromDate, toDate, format },
+            params,
             responseType: 'blob'
         });
     }

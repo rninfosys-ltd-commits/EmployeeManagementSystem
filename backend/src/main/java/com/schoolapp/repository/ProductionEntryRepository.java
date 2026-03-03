@@ -13,4 +13,10 @@ public interface ProductionEntryRepository extends JpaRepository<ProductionEntry
     java.util.List<ProductionEntry> findByCreatedDateBetween(java.util.Date start, java.util.Date end);
 
     java.util.List<ProductionEntry> findByBatchNo(String batchNo);
+
+    // Plant-filtered queries
+    java.util.List<ProductionEntry> findByPlantName(String plantName);
+
+    java.util.List<ProductionEntry> findByCreatedDateBetweenAndPlantName(java.util.Date start, java.util.Date end,
+            String plantName);
 }

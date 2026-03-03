@@ -89,6 +89,7 @@ public class ProductionEntryServiceImpl implements ProductionEntryService {
     private void mapRequestToEntity(ProductionEntryRequest r, ProductionEntry e) {
 
         e.setShift(r.shift);
+        e.setPlantName(r.plantName);
 
         e.setSiloNo1(r.siloNo1);
         e.setLiterWeight1(r.literWeight1);

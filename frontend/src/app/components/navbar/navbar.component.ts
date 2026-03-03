@@ -28,10 +28,19 @@ export class NavbarComponent implements OnInit {
     this.currentUser = this.isLoggedIn ? this.authService.getCurrentUser() : null;
     this.updateBodyClass();
 
-    // Listen for updates
+    // Listen for login/logout updates
     this.authService.loginStatus$.subscribe(isLogged => {
       this.isLoggedIn = isLogged;
       this.currentUser = isLogged ? this.authService.getCurrentUser() : null;
+      this.updateBodyClass();
+    });
+
+    // Re-check on every route change
+    this.router.events.pipe(
+      filter(event => event instanceof NavigationEnd)
+    ).subscribe(() => {
+      this.isLoggedIn = this.authService.isAuthenticated();
+      this.currentUser = this.isLoggedIn ? this.authService.getCurrentUser() : null;
       this.updateBodyClass();
     });
   }

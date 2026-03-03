@@ -55,10 +55,11 @@ public class WorkflowReportController {
     public ResponseEntity<List<Map<String, Object>>> getHorizontalReport(
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
-            @RequestParam(required = false) String batchNo) {
+            @RequestParam(required = false) String batchNo,
+            @RequestParam(required = false) String plantName) {
 
         try {
-            List<Map<String, Object>> rows = reportService.getHorizontalReport(fromDate, toDate, batchNo);
+            List<Map<String, Object>> rows = reportService.getHorizontalReport(fromDate, toDate, batchNo, plantName);
             return ResponseEntity.ok(rows);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -75,10 +76,11 @@ public class WorkflowReportController {
             @RequestParam(required = false) @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
             @RequestParam(required = false) String batchNo,
             @RequestParam(required = false) String upToStage,
+            @RequestParam(required = false) String plantName,
             @RequestParam(defaultValue = "excel") String format) {
 
         try {
-            byte[] data = reportService.generateHorizontalExcel(fromDate, toDate, batchNo, upToStage);
+            byte[] data = reportService.generateHorizontalExcel(fromDate, toDate, batchNo, upToStage, plantName);
 
             String filename = batchNo != null && !batchNo.isBlank()
                     ? "horizontal_report_" + batchNo + ".xlsx"

@@ -25,6 +25,14 @@
             <label>Batch No</label>
             <input type="text" [(ngModel)]="batchNo" placeholder="e.g. B001" />
         </div>
+        <div class="filter-group">
+            <label>Plant</label>
+            <select [(ngModel)]="plantFilter">
+                <option value="">All Plants</option>
+                <option value="Plant 1">Plant 1</option>
+                <option value="Plant 2">Plant 2</option>
+            </select>
+        </div>
         <div class="filter-actions">
             <button class="btn-apply" (click)="loadReport()">Apply</button>
             <button class="btn-clear" (click)="clearFilters()">Clear</button>

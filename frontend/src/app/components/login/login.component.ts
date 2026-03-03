@@ -53,6 +53,7 @@ export class LoginComponent implements OnInit {
         console.log('Login successful, user role:', res.role); // ✅ log role for debugging
         console.log(res);
         // 🔒 SAME ROLE-BASED LOGIC (UNCHANGED)
+        // 🔒 ROLE-BASED REDIRECT
         if (res.role == 'ROLE_COMPANY_OWNER' || res.role == 'COMPANY_OWNER') {
           this.router.navigate(['/home']);
         } else if (
@@ -60,7 +61,10 @@ export class LoginComponent implements OnInit {
           res.role === 'ROLE_MANAGER' ||
           res.role === 'ROLE_SUPERVISOR'
         ) {
-          this.router.navigate(['/customers']); // or '/km-list'
+          this.router.navigate(['/customers']);
+        } else {
+          // ADMIN, USER, or any other role — go to home
+          this.router.navigate(['/home']);
         }
 
         this.isLoading = false;

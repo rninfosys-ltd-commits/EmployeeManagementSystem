@@ -99,33 +99,79 @@ public class WorkflowReportService {
      * Generate flat EXCEL for all batches in a date range
      */
     public byte[] generateFlatWorkflowExcelReport(Date fromDate, Date toDate, String upToStage) throws IOException {
-        return generateHorizontalExcel(fromDate, toDate, null, upToStage);
+        return generateHorizontalExcel(fromDate, toDate, null, upToStage, null);
     }
 
-    private List<String> getBatchesForStageInRange(Date from, Date to, String stage) {
+    public byte[] generateFlatWorkflowExcelReport(Date fromDate, Date toDate, String upToStage, String plantName)
+            throws IOException {
+        return generateHorizontalExcel(fromDate, toDate, null, upToStage, plantName);
+    }
+
+    private List<String> getBatchesForStageInRange(Date from, Date to, String stage, String plantName) {
         switch (stage.toUpperCase()) {
             case "PRODUCTION":
-                return productionRepo.findByCreatedDateBetween(from, to).stream()
+                List<ProductionEntry> prodEntries = (plantName != null && !plantName.isBlank())
+                        ? productionRepo.findByCreatedDateBetweenAndPlantName(from, to, plantName)
+                        : productionRepo.findByCreatedDateBetween(from, to);
+                return prodEntries.stream()
                         .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().sorted().toList();
             case "CASTING":
+                if (plantName != null && !plantName.isBlank()) {
+                    // Filter casting batches via production plant
+                    List<String> plantBatches = productionRepo.findByPlantName(plantName).stream()
+                            .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().toList();
+                    return castingRepo.findByCreatedDateBetween(from, to).stream()
+                            .map(CastingHallReport::getBatchNo).filter(b -> b != null && plantBatches.contains(b))
+                            .distinct().sorted().toList();
+                }
                 return castingRepo.findByCreatedDateBetween(from, to).stream()
                         .map(CastingHallReport::getBatchNo).filter(Objects::nonNull).distinct().sorted().toList();
             case "CUTTING":
+                if (plantName != null && !plantName.isBlank()) {
+                    List<String> plantBatches = productionRepo.findByPlantName(plantName).stream()
+                            .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().toList();
+                    return cuttingRepo.findByCreatedDateBetween(from, to).stream()
+                            .map(WireCuttingReport::getBatchNo).filter(b -> b != null && plantBatches.contains(b))
+                            .distinct().sorted().toList();
+                }
                 return cuttingRepo.findByCreatedDateBetween(from, to).stream()
                         .map(WireCuttingReport::getBatchNo).filter(Objects::nonNull).distinct().sorted().toList();
             case "BLOCK_SEPARATING":
+                if (plantName != null && !plantName.isBlank()) {
+                    List<String> plantBatches = productionRepo.findByPlantName(plantName).stream()
+                            .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().toList();
+                    return blockRepo.findByReportDateBetween(from, to).stream()
+                            .map(BlockSeparating::getBatchNumber).filter(b -> b != null && plantBatches.contains(b))
+                            .distinct().sorted().toList();
+                }
                 return blockRepo.findByReportDateBetween(from, to).stream()
                         .map(BlockSeparating::getBatchNumber).filter(Objects::nonNull).distinct().sorted().toList();
             case "CUBE_TEST":
+                if (plantName != null && !plantName.isBlank()) {
+                    List<String> plantBatches = productionRepo.findByPlantName(plantName).stream()
+                            .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().toList();
+                    return cubeRepo.findByTestingDateBetween(from, to).stream()
+                            .map(CubeTestEntity::getBatchNo).filter(b -> b != null && plantBatches.contains(b))
+                            .distinct().sorted().toList();
+                }
                 return cubeRepo.findByTestingDateBetween(from, to).stream()
                         .map(CubeTestEntity::getBatchNo).filter(Objects::nonNull).distinct().sorted().toList();
             case "REJECTION":
+                if (plantName != null && !plantName.isBlank()) {
+                    List<String> plantBatches = productionRepo.findByPlantName(plantName).stream()
+                            .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().toList();
+                    return rejectionRepo.findByDateBetween(from, to).stream()
+                            .map(RejectionDataEntity::getBatchNo).filter(b -> b != null && plantBatches.contains(b))
+                            .distinct().sorted().toList();
+                }
                 return rejectionRepo.findByDateBetween(from, to).stream()
                         .map(RejectionDataEntity::getBatchNo).filter(Objects::nonNull).distinct().sorted().toList();
             case "CONSOLIDATED":
             default:
-                // For consolidated, use production as the base
-                return productionRepo.findByCreatedDateBetween(from, to).stream()
+                List<ProductionEntry> consolEntries = (plantName != null && !plantName.isBlank())
+                        ? productionRepo.findByCreatedDateBetweenAndPlantName(from, to, plantName)
+                        : productionRepo.findByCreatedDateBetween(from, to);
+                return consolEntries.stream()
                         .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().sorted().toList();
         }
     }
@@ -134,7 +180,7 @@ public class WorkflowReportService {
      * Generate consolidated EXCEL for all batches in a date range (Flat Cumulative)
      */
     public byte[] generateConsolidatedExcelReport(Date fromDate, Date toDate) throws IOException {
-        return generateFlatWorkflowExcelReport(fromDate, toDate, "CONSOLIDATED");
+        return generateFlatWorkflowExcelReport(fromDate, toDate, "CONSOLIDATED", null);
     }
 
     /**
@@ -142,6 +188,11 @@ public class WorkflowReportService {
      * Stages)
      */
     public byte[] generateFlatWorkflowPdfReport(Date fromDate, Date toDate, String upToStage) throws Exception {
+        return generateFlatWorkflowPdfReport(fromDate, toDate, upToStage, null);
+    }
+
+    public byte[] generateFlatWorkflowPdfReport(Date fromDate, Date toDate, String upToStage, String plantName)
+            throws Exception {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         Document document = new Document(PageSize.A4.rotate());
         PdfWriter.getInstance(document, baos);
@@ -150,11 +201,14 @@ public class WorkflowReportService {
         // Main Title
         String mainTitleStr = upToStage.equalsIgnoreCase("CONSOLIDATED") ? "Consolidated Workflow Report"
                 : upToStage + " Production Report";
+        if (plantName != null && !plantName.isBlank()) {
+            mainTitleStr += " (" + plantName + ")";
+        }
         Paragraph mainTitle = new Paragraph(mainTitleStr, titleFont);
         mainTitle.setAlignment(Element.ALIGN_CENTER);
         document.add(mainTitle);
 
-        List<String> batchNumbers = getBatchesForStageInRange(fromDate, toDate, upToStage);
+        List<String> batchNumbers = getBatchesForStageInRange(fromDate, toDate, upToStage, plantName);
 
         for (String batchNo : batchNumbers) {
             Paragraph batchHeader = new Paragraph("BATCH NO: " + batchNo, sectionFont);
@@ -398,22 +452,29 @@ public class WorkflowReportService {
      * Each row is a Map<String, Object> with nested maps per stage.
      */
     public List<Map<String, Object>> getHorizontalReport(Date fromDate, Date toDate, String batchNo) {
+        return getHorizontalReport(fromDate, toDate, batchNo, null);
+    }
+
+    public List<Map<String, Object>> getHorizontalReport(Date fromDate, Date toDate, String batchNo, String plantName) {
         List<String> batches;
 
         if (batchNo != null && !batchNo.isBlank()) {
             batches = List.of(batchNo.trim());
         } else if (fromDate != null && toDate != null) {
-            batches = productionRepo.findByCreatedDateBetween(fromDate, toDate)
-                    .stream()
+            List<ProductionEntry> entries = (plantName != null && !plantName.isBlank())
+                    ? productionRepo.findByCreatedDateBetweenAndPlantName(fromDate, toDate, plantName)
+                    : productionRepo.findByCreatedDateBetween(fromDate, toDate);
+            batches = entries.stream()
                     .map(ProductionEntry::getBatchNo)
                     .filter(Objects::nonNull)
                     .distinct()
                     .sorted()
                     .collect(java.util.stream.Collectors.toList());
         } else {
-            // Return all batches if no filter given (sorted by batch number)
-            batches = productionRepo.findAll()
-                    .stream()
+            List<ProductionEntry> entries = (plantName != null && !plantName.isBlank())
+                    ? productionRepo.findByPlantName(plantName)
+                    : productionRepo.findAll();
+            batches = entries.stream()
                     .map(ProductionEntry::getBatchNo)
                     .filter(Objects::nonNull)
                     .distinct()
@@ -444,6 +505,7 @@ public class WorkflowReportService {
             return m;
         ProductionEntry p = list.get(0);
         m.put("date", formatDate(p.getCreatedDate()));
+        m.put("plantName", nvl(p.getPlantName()));
         m.put("shift", nvl(p.getShift()));
         m.put("siloNo1", nvl(p.getSiloNo1()));
         m.put("literWeight1", nvl(p.getLiterWeight1()));
@@ -577,7 +639,13 @@ public class WorkflowReportService {
      */
     public byte[] generateHorizontalExcel(Date fromDate, Date toDate, String batchNo, String upToStage)
             throws IOException {
-        List<Map<String, Object>> rows = getHorizontalReport(fromDate, toDate, batchNo);
+        return generateHorizontalExcel(fromDate, toDate, batchNo, upToStage, null);
+    }
+
+    public byte[] generateHorizontalExcel(Date fromDate, Date toDate, String batchNo, String upToStage,
+            String plantName)
+            throws IOException {
+        List<Map<String, Object>> rows = getHorizontalReport(fromDate, toDate, batchNo, plantName);
 
         try (XSSFWorkbook wb = new XSSFWorkbook()) {
             org.apache.poi.xssf.usermodel.XSSFSheet sheet = wb.createSheet("Horizontal Report");

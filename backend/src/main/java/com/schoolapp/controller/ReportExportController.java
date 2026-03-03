@@ -23,7 +23,8 @@ public class ReportExportController {
             @PathVariable String stage,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date fromDate,
             @RequestParam @DateTimeFormat(pattern = "yyyy-MM-dd") Date toDate,
-            @RequestParam String format) {
+            @RequestParam String format,
+            @RequestParam(required = false) String plantName) {
 
         byte[] fileContent;
         String fileName;
@@ -31,7 +32,7 @@ public class ReportExportController {
 
         if ("excel".equalsIgnoreCase(format) || "xlsx".equalsIgnoreCase(format)) {
             try {
-                fileContent = workflowReportService.generateFlatWorkflowExcelReport(fromDate, toDate, stage);
+                fileContent = workflowReportService.generateFlatWorkflowExcelReport(fromDate, toDate, stage, plantName);
                 fileName = (stage.equalsIgnoreCase("CONSOLIDATED") ? "Consolidated_Workflow" : stage) + "_Report.xlsx";
                 contentType = "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet";
             } catch (Exception e) {
@@ -40,7 +41,7 @@ public class ReportExportController {
             }
         } else {
             try {
-                fileContent = workflowReportService.generateFlatWorkflowPdfReport(fromDate, toDate, stage);
+                fileContent = workflowReportService.generateFlatWorkflowPdfReport(fromDate, toDate, stage, plantName);
                 fileName = (stage.equalsIgnoreCase("CONSOLIDATED") ? "Consolidated_Workflow" : stage) + "_Report.pdf";
                 contentType = MediaType.APPLICATION_PDF_VALUE;
             } catch (Exception e) {

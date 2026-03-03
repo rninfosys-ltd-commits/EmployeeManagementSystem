@@ -24,12 +24,14 @@ export class HorizontalReportService {
     getReport(
         fromDate?: string,
         toDate?: string,
-        batchNo?: string
+        batchNo?: string,
+        plantName?: string
     ): Observable<HorizontalReportRow[]> {
         let params = new HttpParams();
         if (fromDate) params = params.set('fromDate', fromDate);
         if (toDate) params = params.set('toDate', toDate);
         if (batchNo) params = params.set('batchNo', batchNo);
+        if (plantName) params = params.set('plantName', plantName);
         return this.http.get<HorizontalReportRow[]>(this.baseUrl, { params });
     }
 
@@ -38,13 +40,15 @@ export class HorizontalReportService {
         fromDate?: string,
         toDate?: string,
         batchNo?: string,
-        stage?: string
+        stage?: string,
+        plantName?: string
     ): Observable<Blob> {
         let params = new HttpParams();
         if (fromDate) params = params.set('fromDate', fromDate);
         if (toDate) params = params.set('toDate', toDate);
         if (batchNo) params = params.set('batchNo', batchNo);
         if (stage) params = params.set('upToStage', stage);
+        if (plantName) params = params.set('plantName', plantName);
         params = params.set('format', 'excel');
         return this.http.get(`${this.baseUrl}/download`, { params, responseType: 'blob' });
     }
