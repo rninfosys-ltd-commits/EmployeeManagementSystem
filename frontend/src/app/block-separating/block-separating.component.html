@@ -88,13 +88,10 @@
                     <td>
                         <button class="link-btn" (click)="edit(r)">Edit</button>
                         <button class="link-btn danger" (click)="delete(r.id)">Delete</button>
-                        <div class="report-actions">
-                            <button class="report-btn pdf" (click)="downloadBlock(r, 'pdf')">PDF</button>
-                            <button class="report-btn excel" (click)="downloadBlock(r, 'excel')">XLS</button>
-                            <button class="report-btn" style="background:#2e7d32;color:#fff"
-                                (click)="downloadHorizontalReport(r)"
-                                title="Download Combined Horizontal Report">HZ</button>
-                        </div>
+                        <button class="link-btn info" (click)="downloadBlock(r, 'pdf')">PDF</button>
+                        <button class="link-btn success" (click)="downloadBlock(r, 'excel')">XLS</button>
+                        <button class="link-btn hz" (click)="downloadHorizontalReport(r)"
+                            title="Combined Horizontal">HZ</button>
                     </td>
                 </tr>
 

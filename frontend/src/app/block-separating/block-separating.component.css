@@ -240,6 +240,18 @@
     border-radius: 10px;
 }
 
+.link-btn.info {
+    background-color: #7b1fa2;
+}
+
+.link-btn.success {
+    background-color: #2e7d32;
+}
+
+.link-btn.hz {
+    background-color: #2e7d32;
+}
+
 .main {
     background-color: #f1f4f8;
     padding: 10px 15px;
@@ -316,17 +328,15 @@ hr {
 .filters {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 14px;
-    /* tighter & balanced spacing */
     padding: 14px 18px;
 
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 14px;
 
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex-wrap: wrap;
     margin-bottom: 10px;
 }
 
@@ -453,7 +463,7 @@ hr {
     height: 42px;
     padding: 0 14px;
 
-    font-size: 18px;
+    font-size: 16px;
 
     border-radius: 12px;
     border: 1.5px solid #cbd5e1;
@@ -480,7 +490,7 @@ hr {
     /* ✅ same width everywhere */
 
     padding: 0 14px;
-    font-size: 20px;
+    font-size: 16px;
 
     border-radius: 10px;
     border: 1px solid #d1d5db;

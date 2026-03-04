@@ -97,14 +97,11 @@
                         <td class="action-cell">
                             <button class="link-btn" (click)="edit(r)">Edit</button>
                             <button class="link-btn danger" (click)="delete(r.id)">Delete</button>
-                            <div class="report-actions">
-                                <button class="report-btn pdf"
-                                    (click)="selectedCube = r; downloadCube('pdf')">PDF</button>
-                                <button class="report-btn excel"
-                                    (click)="selectedCube = r; downloadCube('excel')">XLS</button>
-                                <button class="report-btn" style="background:#2e7d32;color:#fff"
-                                    (click)="downloadHorizontalReport(r)" title="Combined Horizontal">HZ</button>
-                            </div>
+                            <button class="link-btn info" (click)="selectedCube = r; downloadCube('pdf')">PDF</button>
+                            <button class="link-btn success"
+                                (click)="selectedCube = r; downloadCube('excel')">XLS</button>
+                            <button class="link-btn hz" (click)="downloadHorizontalReport(r)"
+                                title="Combined Horizontal">HZ</button>
                         </td>
 
                     </tr>
@@ -374,16 +371,9 @@
                     Approve
                 </button>
 
-                <button class="report-btn pdf" (click)="downloadCube('pdf')">
-                    PDF
-                </button>
-                <button class="report-btn excel" (click)="downloadCube('excel')">
-                    XLS
-                </button>
-                <button class="report-btn" style="background:#2e7d32;color:#fff" (click)="downloadHorizontalReport()"
-                    title="Combined Horizontal">
-                    HZ
-                </button>
+                <button class="link-btn info" (click)="downloadCube('pdf')">PDF</button>
+                <button class="link-btn success" (click)="downloadCube('excel')">XLS</button>
+                <button class="link-btn hz" (click)="downloadHorizontalReport()" title="Combined Horizontal">HZ</button>
 
                 <button class="btn btn-warning btn-sm" *ngIf="canReject(selectedCube)" (click)="rejectCube()">
                     Reject

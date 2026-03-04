@@ -81,9 +81,6 @@ export class WireCuttingReportComponent implements OnInit {
     const today = new Date().toISOString().substring(0, 10);
     this.loadCurrentUserRole();
 
-    this.filterFromDate = today;
-    this.filterToDate = today;
-
     this.form = this.fb.group({
       cuttingDate: [today, Validators.required],
       batchNo: ['', Validators.required],

@@ -1,94 +1,78 @@
-<div class="container my-5">
-    <div class="card shadow-lg export-card">
-        <div class="card-header text-white text-center py-4 bg-gradient-brand">
-            <h2 class="mb-0">Transaction Export</h2>
-            <p class="mb-0 opacity-75">Filter and download your Sales/Purchase reports</p>
+<div class="container">
+    <div class="main">
+
+        <div class="header">
+            <h2 class="page-title">Transaction Export</h2>
         </div>
 
-        <div class="card-body p-4">
-            <div class="row g-4">
+        <p style="color:#666; font-size:14px; margin-bottom:14px;">Filter and download your Sales / Purchase reports</p>
 
-                <!-- Type Selection -->
-                <div class="col-md-6 mb-3">
-                    <div class="field" [class.filled]="type">
-                        <select class="form-control" [(ngModel)]="type">
-                            <option value="SALES">Sales Transactions</option>
-                            <option value="PURCHASE">Purchase Transactions</option>
-                        </select>
-                        <label>Transaction Type</label>
-                    </div>
-                </div>
+        <!-- FILTERS ROW -->
+        <div class="filters">
 
-                <!-- Date Range -->
-                <div class="col-md-3 mb-3">
-                    <div class="field" [class.filled]="fromDate">
-                        <input type="date" class="form-control" [(ngModel)]="fromDate">
-                        <label>From Date</label>
-                    </div>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <div class="field" [class.filled]="toDate">
-                        <input type="date" class="form-control" [(ngModel)]="toDate">
-                        <label>To Date</label>
-                    </div>
-                </div>
-
-                <!-- Party Selection (Searchable) -->
-                <div class="col-md-12 mb-3">
-                    <div class="field custom-select" [class.filled]="partyName">
-                        <div class="select-input" (click)="showPartyDropdown = !showPartyDropdown">
-                            {{ partyName || 'All Parties' }}
-                        </div>
-                        <label>Party Name (Customer/Supplier)</label>
-
-                        <div class="select-options" *ngIf="showPartyDropdown">
-                            <input type="text" class="form-control mb-2" placeholder="Search Party..."
-                                [(ngModel)]="partyName" (keyup)="filterCustomers()">
-                            <div class="option" (click)="partyName = ''; showPartyDropdown = false">All Parties (Clear)
-                            </div>
-                            <div class="option" *ngFor="let c of filteredCustomers" (click)="selectParty(c)">
-                                {{ c.custName }} {{ c.ownerName ? '(' + c.ownerName + ')' : '' }}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Amount Range -->
-                <div class="col-md-6 mb-3">
-                    <div class="field" [class.filled]="minAmount !== null">
-                        <input type="number" class="form-control" [(ngModel)]="minAmount">
-                        <label>Minimum Amount</label>
-                    </div>
-                </div>
-                <div class="col-md-6 mb-3">
-                    <div class="field" [class.filled]="maxAmount !== null">
-                        <input type="number" class="form-control" [(ngModel)]="maxAmount">
-                        <label>Maximum Amount</label>
-                    </div>
-                </div>
-
+            <div class="filter-select">
+                <select [(ngModel)]="type">
+                    <option value="SALES">Sales Transactions</option>
+                    <option value="PURCHASE">Purchase Transactions</option>
+                </select>
             </div>
 
-            <!-- Export Actions -->
-            <div class="d-flex justify-content-center gap-3 mt-4">
-                <div class="btn-group dropdown">
-                    <button type="button" class="btn btn-primary btn-lg px-5 shadow export-btn" [disabled]="loading"
-                        (click)="showFormats = !showFormats">
-                        <span *ngIf="!loading">Export Report</span>
-                        <span *ngIf="loading" class="spinner-border spinner-border-sm me-2"></span>
-                        <span *ngIf="loading">Generating...</span>
-                    </button>
+            <div class="date-field top-label">
+                <label>From Date</label>
+                <input type="date" [(ngModel)]="fromDate" />
+            </div>
 
-                    <ul class="dropdown-menu shadow" [class.show]="showFormats">
-                        <li><a class="dropdown-item py-2" (click)="export('excel'); showFormats = false">
-                                <i class="bi bi-file-earmark-excel-fill text-success me-2"></i> Export to Excel (.xlsx)
-                            </a></li>
-                        <li><a class="dropdown-item py-2" (click)="export('pdf'); showFormats = false">
-                                <i class="bi bi-file-earmark-pdf-fill text-danger me-2"></i> Export to PDF (.pdf)
-                            </a></li>
-                    </ul>
+            <div class="date-field top-label">
+                <label>To Date</label>
+                <input type="date" [(ngModel)]="toDate" />
+            </div>
+
+            <div class="date-field top-label">
+                <label>Min Amount</label>
+                <input type="number" placeholder=" " [(ngModel)]="minAmount" />
+            </div>
+
+            <div class="date-field top-label">
+                <label>Max Amount</label>
+                <input type="number" placeholder=" " [(ngModel)]="maxAmount" />
+            </div>
+
+        </div>
+
+        <!-- PARTY SELECTOR -->
+        <div class="filters" style="margin-top:10px;">
+
+            <div class="form-field custom-select" style="flex:1; min-width:300px;" [class.filled]="partyName">
+                <div class="select-input" (click)="showPartyDropdown = !showPartyDropdown">
+                    {{ partyName || 'All Parties' }}
                 </div>
+                <label>Party Name (Customer/Supplier)</label>
+
+                <div class="select-options" *ngIf="showPartyDropdown">
+                    <input type="text" placeholder="Search Party..." [(ngModel)]="partyName" (keyup)="filterCustomers()"
+                        style="width:100%; padding:10px; border:1px solid #ccc; border-radius:8px; margin-bottom:8px; font-size:15px;">
+                    <div class="option" (click)="partyName = ''; showPartyDropdown = false">All Parties (Clear)</div>
+                    <div class="option" *ngFor="let c of filteredCustomers" (click)="selectParty(c)">
+                        {{ c.custName }} {{ c.ownerName ? '(' + c.ownerName + ')' : '' }}
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- EXPORT ACTIONS -->
+        <div class="actions" style="margin-top:20px;">
+            <button class="add-btn export-btn" [disabled]="loading" (click)="showFormats = !showFormats"
+                style="position:relative;">
+                <span *ngIf="!loading">Export Report ▾</span>
+                <span *ngIf="loading">Generating...</span>
+            </button>
+
+            <div class="export-dropdown" *ngIf="showFormats">
+                <div class="option" (click)="export('excel'); showFormats = false">📗 Export to Excel (.xlsx)</div>
+                <div class="option" (click)="export('pdf'); showFormats = false">📕 Export to PDF (.pdf)</div>
             </div>
         </div>
+
     </div>
 </div>

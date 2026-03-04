@@ -146,6 +146,12 @@ button {
     border: 1px solid #e5e7eb;
 }
 
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 /* HEADER */
 .lead-table th {
     background: blue;
@@ -160,6 +166,7 @@ button {
     padding: 8px;
     border: 1px solid #e5e7eb;
     font-size: 14px;
+    white-space: nowrap !important;
 }
 
 /* ROW HOVER */
@@ -168,9 +175,9 @@ button {
 }
 
 .badge {
-    padding: 6px 14px;
+    padding: 4px 10px;
     border-radius: 999px;
-    font-size: 20px;
+    font-size: 14px;
     font-weight: 600;
 }
 
@@ -243,17 +250,15 @@ button {
 .filters {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 14px;
-    /* tighter & balanced spacing */
     padding: 14px 18px;
 
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 14px;
     margin-bottom: 10px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex-wrap: wrap;
 }
 
 /* ================= DATE FIELD (LABEL + INPUT) ================= */
@@ -460,10 +465,7 @@ button {
         display: flex;
         align-items: center;
         gap: 15px;
-        flex-wrap: nowrap;
-        /* keep single row */
-        overflow-x: hidden;
-        /* remove scroll */
+        flex-wrap: wrap;
         justify-content: flex-start;
         padding: 10px 12px;
     }
@@ -821,21 +823,68 @@ button {
 
 /* space between buttons */
 .action-cell button {
-    margin-right: 10px;
+    margin-right: 4px;
+}
+
+.link-btn {
+    background: blue;
+    border: none;
+    padding: 4px 12px;
+    margin-right: 12px;
+    font-weight: 600;
+    cursor: pointer;
+    color: white;
+    border-radius: 7px;
+    font-size: 14px;
+}
+
+.link-btn.danger {
+    padding: 4px 12px;
+    margin-right: 12px;
+    background-color: red;
+    color: white;
+    border-radius: 10px;
+    font-size: 14px;
+}
+
+.link-btn.info {
+    background-color: #7b1fa2;
+}
+
+.link-btn.success {
+    background-color: #2e7d32;
+}
+
+.link-btn.hz {
+    background-color: #2e7d32;
 }
 
 /* delete button red */
 .link-btn.danger {
-    background: #e53935;
+    background: red;
     color: white;
     border: none;
-    padding: 12px 32px;
-    border-radius: 25px;
+    padding: 4px 12px;
+    margin-right: 6px;
+    border-radius: 10px;
+    font-size: 14px;
     cursor: pointer;
 }
 
 .link-btn.danger:hover {
     background: #c62828;
+}
+
+.link-btn.info {
+    background-color: #7b1fa2;
+}
+
+.link-btn.success {
+    background-color: #2e7d32;
+}
+
+.link-btn.hz {
+    background-color: #2e7d32;
 }
 
 /* FORCE TABLE CELLS TO RECEIVE CLICKS */

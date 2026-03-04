@@ -78,8 +78,7 @@
                             <button class="link-btn danger" (click)="delete(r.id)">Delete</button>
                             <button class="link-btn info" (click)="selected = r; download('pdf')">PDF</button>
                             <button class="link-btn success" (click)="selected = r; download('excel')">XLS</button>
-                            <button class="link-btn" style="background:#2e7d32;color:#fff"
-                                (click)="selected = r; downloadHorizontalReport(r)"
+                            <button class="link-btn hz" (click)="selected = r; downloadHorizontalReport(r)"
                                 title="Combined Horizontal">HZ</button>
                         </td>
                     </tr>

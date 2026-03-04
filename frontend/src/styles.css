@@ -109,39 +109,41 @@ a {
   transition: color 0.2s;
 }
 
-/* Report Action Buttons */
-.report-actions {
-  display: flex;
-  gap: 8px;
-  justify-content: center;
-}
-
-.report-btn {
-  padding: 4px 10px;
+/* ================= GLOBAL ACTION BUTTONS (Wire Cutting Style) ================= */
+.link-btn {
+  background: blue;
   border: none;
-  border-radius: 6px;
-  font-size: 12px;
+  padding: 4px 12px;
+  margin-right: 6px;
   font-weight: 600;
   cursor: pointer;
-  transition: all 0.2s ease;
-  min-width: 45px;
   color: white;
+  border-radius: 7px;
+  font-size: 14px;
+  display: inline-block;
+  transition: opacity 0.2s ease;
 }
 
-.report-btn.pdf {
-  background-color: #ef4444;
-  /* Red for PDF */
+.link-btn:hover {
+  opacity: 0.85;
 }
 
-.report-btn.pdf:hover {
-  background-color: #dc2626;
+.link-btn.danger {
+  background-color: red;
+  border-radius: 10px;
 }
 
-.report-btn.excel {
-  background-color: #22c55e;
-  /* Green for Excel */
+.link-btn.info {
+  background-color: #7b1fa2;
+  /* Purple for PDF */
 }
 
-.report-btn.excel:hover {
-  background-color: #16a34a;
+.link-btn.success {
+  background-color: #2e7d32;
+  /* Green for XLS */
+}
+
+.link-btn.hz {
+  background-color: #2e7d32;
+  /* Green for Horizontal */
 }

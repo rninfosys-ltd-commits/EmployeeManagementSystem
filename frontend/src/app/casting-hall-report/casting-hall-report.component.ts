@@ -74,8 +74,6 @@ export class CastingHallReportComponent implements OnInit {
     this.loadCurrentUserRole(); // 🔥 REQUIRED
 
     const today = new Date().toISOString().substring(0, 10);
-    this.filterFromDate = today;
-    this.filterToDate = today;
 
     this.reportForm = this.fb.group({
       reportDate: [today],

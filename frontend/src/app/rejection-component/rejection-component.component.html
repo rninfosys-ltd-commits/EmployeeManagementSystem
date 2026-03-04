@@ -90,12 +90,10 @@
                         <td class="action-cell">
                             <button class="link-btn" (click)="edit(r)">Edit</button>
                             <button class="link-btn danger" (click)="delete(r.id)">Delete</button>
-                            <div class="report-actions">
-                                <button class="report-btn pdf" (click)="downloadRejection(r, 'pdf')">PDF</button>
-                                <button class="report-btn excel" (click)="downloadRejection(r, 'excel')">XLS</button>
-                                <button class="report-btn" style="background:#2e7d32;color:#fff"
-                                    (click)="downloadHorizontalReport(r)" title="Combined Horizontal">HZ</button>
-                            </div>
+                            <button class="link-btn info" (click)="downloadRejection(r, 'pdf')">PDF</button>
+                            <button class="link-btn success" (click)="downloadRejection(r, 'excel')">XLS</button>
+                            <button class="link-btn hz" (click)="downloadHorizontalReport(r)"
+                                title="Combined Horizontal">HZ</button>
                         </td>
                     </tr>
                 </tbody>

@@ -80,12 +80,10 @@
                         <td>
                             <button class="link-btn" (click)="edit(r)">Edit</button>
                             <button class="link-btn danger" (click)="delete(r.id)">Delete</button>
-                            <div class="report-actions">
-                                <button class="report-btn pdf"
-                                    (click)="selectedCasting = r; downloadCasting('pdf')">PDF</button>
-                                <button class="report-btn excel"
-                                    (click)="selectedCasting = r; downloadCasting('excel')">XLS</button>
-                            </div>
+                            <button class="link-btn info"
+                                (click)="selectedCasting = r; downloadCasting('pdf')">PDF</button>
+                            <button class="link-btn success"
+                                (click)="selectedCasting = r; downloadCasting('excel')">XLS</button>
                         </td>
                     </tr>
                 </ng-container>
@@ -467,12 +465,8 @@
                         Edit
                     </button>
 
-                    <button class="report-btn pdf" (click)="downloadCasting('pdf')">
-                        PDF
-                    </button>
-                    <button class="report-btn excel" (click)="downloadCasting('excel')">
-                        XLS
-                    </button>
+                    <button class="link-btn info" (click)="downloadCasting('pdf')">PDF</button>
+                    <button class="link-btn success" (click)="downloadCasting('excel')">XLS</button>
 
                     <button class="btn btn-success btn-sm" *ngIf="canApproveCasting(selectedCasting)"
                         (click)="approveCasting()">

@@ -190,4 +190,9 @@
   .page-title {
     font-size: 1.5rem;
   }
+
+  .lead-table th,
+  .lead-table td {
+    white-space: nowrap !important;
+  }
 }

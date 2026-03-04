@@ -227,11 +227,13 @@
 
     .employee-table {
         font-size: 12px;
+        white-space: nowrap !important;
     }
 
     .employee-table th,
     .employee-table td {
         padding: 10px 8px;
+        white-space: nowrap !important;
     }
 }
 

@@ -184,6 +184,12 @@
     border-collapse: collapse;
 }
 
+.table-scroll {
+    width: 100%;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+}
+
 /* HEADER */
 .custom-table thead tr {
     background-color: #2563eb;
@@ -196,6 +202,7 @@
     text-align: left;
     background-color: blue;
     font-size: 16px;
+    white-space: nowrap !important;
 }
 
 /* BODY */
@@ -203,6 +210,7 @@
     padding: 10px 14px;
     border-top: 1px solid #e5e7eb;
     font-size: 15px;
+    white-space: nowrap !important;
 }
 
 /* ODD ROWS */
@@ -243,6 +251,18 @@
     color: white;
     border-radius: 10px;
     font-size: 14px;
+}
+
+.link-btn.info {
+    background-color: #7b1fa2;
+}
+
+.link-btn.success {
+    background-color: #2e7d32;
+}
+
+.link-btn.hz {
+    background-color: #2e7d32;
 }
 
 .main {
@@ -321,17 +341,15 @@ hr {
 .filters {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     gap: 14px;
-    /* tighter & balanced spacing */
     padding: 14px 18px;
 
     background: #ffffff;
     border: 1px solid #e5e7eb;
     border-radius: 14px;
 
-    flex-wrap: nowrap;
-    overflow-x: auto;
+    flex-wrap: wrap;
 }
 
 /* ================= DATE FIELD (LABEL + INPUT) ================= */
@@ -457,7 +475,7 @@ hr {
     height: 42px;
     padding: 0 14px;
 
-    font-size: 15px;
+    font-size: 16px;
 
     border-radius: 12px;
     border: 1.5px solid #cbd5e1;
@@ -474,71 +492,7 @@ hr {
 }
 
 
-/* ================= INPUTS & SELECTS ================= */
-
-.filters input[type="date"],
-.filters select {
-    height: 42px;
-    /* ✅ same height everywhere */
-    width: 280px;
-    /* ✅ same width everywhere */
-
-    padding: 0 14px;
-    font-size: 20px;
-
-    border-radius: 10px;
-    border: 1px solid #d1d5db;
-    background: #ffffff;
-    color: #374151;
-
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* ================= FOCUS (CLEAN & SOFT) ================= */
-
-.filters input:focus,
-.filters select:focus {
-    outline: none;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-}
-
-/* ================= SELECT ARROW (CONSISTENT) ================= */
-
-.filters select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%236b7280' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    background-size: 16px;
-    padding-right: 40px;
-}
-
-/* ================= CLEAR BUTTON ================= */
-
-.clear-btn {
-    height: 42px;
-    /* matches inputs */
-    padding: 0 35px;
-
-    border-radius: 15px;
-    border: none;
-
-    font-size: 20px;
-    font-weight: 600;
-
-    background: #ff0000;
-    color: #ffffff;
-
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.clear-btn:hover {
-    background: #dc2626;
-    transform: translateY(-1px);
-}
+/* (Duplicate block removed – styles defined above) */
 
 /* ================= SCROLLBAR (CLEAN) ================= */
 
@@ -794,6 +748,11 @@ hr {
         width: 100%;
         overflow-x: auto;
         white-space: nowrap;
+    }
+
+    .custom-table thead th,
+    .custom-table tbody td {
+        white-space: nowrap !important;
     }
 
     .custom-table thead th,

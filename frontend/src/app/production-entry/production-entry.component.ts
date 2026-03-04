@@ -72,8 +72,6 @@ export class ProductionEntryComponent implements OnInit {
     this.siloList = Array.from({ length: 5 }, (_, i) => i + 1);
 
     const today = new Date().toISOString().substring(0, 10);
-    this.filterFromDate = today;
-    this.filterToDate = today;
 
     this.productionForm = this.fb.group({
       plantName: [''],

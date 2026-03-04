@@ -155,16 +155,10 @@
 
                         <!-- DOWNLOAD REPORT -->
                         <td>
-                            <div class="report-actions">
-                                <button class="report-btn pdf" title="Combined PDF"
-                                    (click)="downloadReport(row.batchNo, 'REJECTION', 'pdf')">
-                                    PDF
-                                </button>
-                                <button class="report-btn excel" title="Combined Excel"
-                                    (click)="downloadReport(row.batchNo, 'REJECTION', 'excel')">
-                                    XLS
-                                </button>
-                            </div>
+                            <button class="link-btn info" title="Combined PDF"
+                                (click)="downloadReport(row.batchNo, 'REJECTION', 'pdf')">PDF</button>
+                            <button class="link-btn success" title="Combined Excel"
+                                (click)="downloadReport(row.batchNo, 'REJECTION', 'excel')">XLS</button>
                         </td>
 
                     </tr>

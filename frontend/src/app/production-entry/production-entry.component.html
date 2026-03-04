@@ -61,68 +61,61 @@
 
         </div>
 
-        <!-- TABLE -->
-        <table class="table custom-table">
-            <thead>
-                <tr>
-                    <th>Batch No</th>
-                    <th>Plant</th>
-                    <th>Date</th>
-                    <th>Created By</th>
-                    <th>Shift</th>
-                    <th>Total Solid</th>
-                    <!-- Dynamic Material Columns in list -->
-                    <th *ngFor="let m of materialList">{{ m.materialName }}</th>
-                    <th>Production Time</th>
-                    <th>Action</th>
-                </tr>
-            </thead>
-
-            <tbody>
-                <ng-container *ngFor="let p of pagedProductionList">
-
-                    <tr *ngIf="canViewProduction(p)">
-                        <td class="clickable" (click)="openProductionModal(p)">
-                            {{ p.batchNo }}
-                        </td>
-                        <td>{{ p.plantName || '—' }}</td>
-                        <td>{{ p.createdDate | date:'dd-MM-yyyy' }}</td>
-                        <td>{{ p.createdByName || getUserName(p.userId) }}</td>
-                        <td>Shift {{ p.shift }}</td>
-                        <td>{{ p.totalSolid }}</td>
-                        <!-- Dynamic Material Values -->
-                        <td *ngFor="let m of materialList">
-                            {{ getMaterialValue(p, m.id) }}
-                        </td>
-                        <td>{{ p.productionTime }}</td>
-                        <td>
-                            <button class="link-btn" *ngIf="canEditDelete()" (click)="edit(p)">
-                                Edit
-                            </button>
-                            <button class="link-btn danger" *ngIf="canEditDelete()" (click)="delete(p.id)">
-                                Delete
-                            </button>
-                            <div class="report-actions">
-                                <button class="report-btn pdf"
-                                    (click)="selectedProduction = p; downloadProduction('pdf')">
-                                    PDF
-                                </button>
-                                <button class="report-btn excel"
-                                    (click)="selectedProduction = p; downloadProduction('excel')">
-                                    XLS
-                                </button>
-                                <button class="report-btn" style="background:#2e7d32;color:#fff"
-                                    (click)="downloadHorizontalReport(p.batchNo)"
-                                    title="Download Combined Horizontal Report">
-                                    HZ
-                                </button>
-                            </div>
-                        </td>
+        <div class="table-scroll">
+            <!-- TABLE -->
+            <table class="table custom-table">
+                <thead>
+                    <tr>
+                        <th>Batch No</th>
+                        <th>Plant</th>
+                        <th>Date</th>
+                        <th>Created By</th>
+                        <th>Shift</th>
+                        <th>Total Solid</th>
+                        <!-- Dynamic Material Columns in list -->
+                        <th *ngFor="let m of materialList">{{ m.materialName }}</th>
+                        <th>Production Time</th>
+                        <th>Action</th>
                     </tr>
-                </ng-container>
+                </thead>
 
-            </tbody>
-        </table>
+                <tbody>
+                    <ng-container *ngFor="let p of pagedProductionList">
+
+                        <tr *ngIf="canViewProduction(p)">
+                            <td class="clickable" (click)="openProductionModal(p)">
+                                {{ p.batchNo }}
+                            </td>
+                            <td>{{ p.plantName || '—' }}</td>
+                            <td>{{ p.createdDate | date:'dd-MM-yyyy' }}</td>
+                            <td>{{ p.createdByName || getUserName(p.userId) }}</td>
+                            <td>Shift {{ p.shift }}</td>
+                            <td>{{ p.totalSolid }}</td>
+                            <!-- Dynamic Material Values -->
+                            <td *ngFor="let m of materialList">
+                                {{ getMaterialValue(p, m.id) }}
+                            </td>
+                            <td>{{ p.productionTime }}</td>
+                            <td>
+                                <button class="link-btn" *ngIf="canEditDelete()" (click)="edit(p)">
+                                    Edit
+                                </button>
+                                <button class="link-btn danger" *ngIf="canEditDelete()" (click)="delete(p.id)">
+                                    Delete
+                                </button>
+                                <button class="link-btn info"
+                                    (click)="selectedProduction = p; downloadProduction('pdf')">PDF</button>
+                                <button class="link-btn success"
+                                    (click)="selectedProduction = p; downloadProduction('excel')">XLS</button>
+                                <button class="link-btn hz" (click)="downloadHorizontalReport(p.batchNo)"
+                                    title="Combined Horizontal">HZ</button>
+                            </td>
+                        </tr>
+                    </ng-container>
+
+                </tbody>
+            </table>
+        </div>
         <div class="import-backdrop" *ngIf="showImportModal"></div>
 
         <div class="import-modal" *ngIf="showImportModal">
@@ -472,17 +465,10 @@
                     </button>
 
 
-                    <button class="report-btn pdf" (click)="downloadProduction('pdf')">
-                        PDF
-                    </button>
-                    <button class="report-btn excel" (click)="downloadProduction('excel')">
-                        XLS
-                    </button>
-                    <button class="report-btn" style="background:#2e7d32;color:#fff"
-                        (click)="downloadHorizontalReport(selectedProduction?.batchNo)"
-                        title="Download Combined Horizontal Report">
-                        HZ
-                    </button>
+                    <button class="link-btn info" (click)="downloadProduction('pdf')">PDF</button>
+                    <button class="link-btn success" (click)="downloadProduction('excel')">XLS</button>
+                    <button class="link-btn hz" (click)="downloadHorizontalReport(selectedProduction?.batchNo)"
+                        title="Combined Horizontal">HZ</button>
 
                     <button class="btn btn-success btn-sm" *ngIf="canApprove(selectedProduction)"
                         (click)="approveProduction()">

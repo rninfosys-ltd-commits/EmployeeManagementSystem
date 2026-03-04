@@ -245,6 +245,14 @@
     font-size: 14px;
 }
 
+.link-btn.info {
+    background-color: #7b1fa2;
+}
+
+.link-btn.success {
+    background-color: #2e7d32;
+}
+
 .main {
     background-color: #f1f4f8;
     padding: 15px 15px;

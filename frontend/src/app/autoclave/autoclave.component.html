@@ -1,23 +1,22 @@
 <div class="container">
 
-    <div class="header" *ngIf="!showForm">
-        <h2 class="page-title">Autoclave Cycle</h2>
-
-        <div>
-            <button class="add-btn" (click)="openForm()">
-                + Add Cycle
-            </button>
-
-            <button class="add-btn" style="margin-left:10px" (click)="goToDashboard()">
-                Go To Dashboard
-            </button>
-        </div>
-    </div>
-
-
-
     <!-- ================= LIST VIEW ================= -->
     <div class="main" *ngIf="!showForm">
+
+        <div class="header">
+            <h2 class="page-title">Autoclave Cycle</h2>
+
+            <div>
+                <button class="add-btn" (click)="openForm()">
+                    + Add Cycle
+                </button>
+
+                <button class="add-btn" style="margin-left:10px" (click)="goToDashboard()">
+                    Go To Dashboard
+                </button>
+            </div>
+        </div>
+
 
         <div class="filters">
 
@@ -73,13 +72,10 @@
                     <td>
                         <button class="link-btn" (click)="edit(r)">Edit</button>
                         <button class="link-btn danger" (click)="delete(r.id)">Delete</button>
-                        <div class="report-actions">
-                            <button class="report-btn pdf" (click)="downloadAutoclave(r, 'pdf')">PDF</button>
-                            <button class="report-btn excel" (click)="downloadAutoclave(r, 'excel')">XLS</button>
-                            <button class="report-btn" style="background:#2e7d32;color:#fff"
-                                (click)="downloadHorizontalReport(r)"
-                                title="Download Combined Horizontal Report">HZ</button>
-                        </div>
+                        <button class="link-btn info" (click)="downloadAutoclave(r, 'pdf')">PDF</button>
+                        <button class="link-btn success" (click)="downloadAutoclave(r, 'excel')">XLS</button>
+                        <button class="link-btn hz" (click)="downloadHorizontalReport(r)"
+                            title="Combined Horizontal">HZ</button>
                     </td>
                 </tr>
             </tbody>

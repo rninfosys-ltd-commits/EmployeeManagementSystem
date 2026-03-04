@@ -6,8 +6,8 @@ import { BehaviorSubject } from 'rxjs';
 })
 export class FilterService {
 
-    private fromDateSubject = new BehaviorSubject<string>(this.getDefaultFromDate());
-    private toDateSubject = new BehaviorSubject<string>(this.getDefaultToDate());
+    private fromDateSubject = new BehaviorSubject<string>('');
+    private toDateSubject = new BehaviorSubject<string>('');
     private currentStageSubject = new BehaviorSubject<string>('');
 
     fromDate$ = this.fromDateSubject.asObservable();
@@ -35,8 +35,8 @@ export class FilterService {
     }
 
     clearDates() {
-        this.setFromDate(this.getDefaultFromDate());
-        this.setToDate(this.getDefaultToDate());
+        this.setFromDate('');
+        this.setToDate('');
     }
 
     private getDefaultFromDate(): string {
