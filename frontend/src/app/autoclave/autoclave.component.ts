@@ -44,7 +44,7 @@ export class AutoclaveComponent implements OnInit {
   // ================= FILTER =================
   filterFromDate = '';
   filterToDate = '';
-
+  filterPlant = 'Plant 1';
   // ================= PAGINATION =================
   pageSize = 5;
   currentPage = 1;
@@ -74,6 +74,8 @@ export class AutoclaveComponent implements OnInit {
     this.form = this.fb.group({
       // autoclaveNo: ['', Validators.required],
       runNo: [''],
+      shift: ['', Validators.required],
+      plantName: ['Plant 1', Validators.required],
       startedAt: [''],
       startedDate: [today],
       completedAt: [''],
@@ -82,30 +84,17 @@ export class AutoclaveComponent implements OnInit {
     });
 
     this.wagonForm = this.fb.group({
-      eBatch: ['', Validators.required],
-      eSize: [''],
-      mBatch: [''],
+      mBatch: [null],
       mSize: [''],
-      wBatch: [''],
+      eBatch: [null],
+      eSize: [''],
+      wBatch: [null],
       wSize: [''],
       wagons: this.fb.array([])
     });
 
-    this.wagonForm.valueChanges.subscribe(() => {
-
-      (['eBatch', 'mBatch', 'wBatch'] as const).forEach(side => {
-
-        const control = this.wagonForm.get(side);
-        if (!control) return;
-
-        const value = control.value;
-
-        if (value && !this.getAvailableBatchesFor(side[0] as 'e' | 'm' | 'w').includes(value)) {
-          control.setValue(null, { emitEvent: false });
-        }
-
-      });
-
+    this.form.get('plantName')?.valueChanges.subscribe(() => {
+      this.filterBatchesByPlant();
     });
 
     this.form.get('completedDate')?.valueChanges.subscribe(val => {
@@ -139,41 +128,54 @@ export class AutoclaveComponent implements OnInit {
     return this.wagonForm.get('wagons') as FormArray;
   }
 
+  allCuttingReports: any[] = [];
+
   loadCuttingBatches(): void {
     this.wireCuttingService.getAll().subscribe(res => {
-
-      console.log('CUTTING API RESPONSE:', res);
-
-      // ✅ NO FILTER – take ALL batch numbers
-      this.availableBatches = [
-        ...new Set(res.map(r => r.batchNo))
-      ];
-
-      console.log('AVAILABLE BATCHES (ALL):', this.availableBatches);
+      this.allCuttingReports = res || [];
+      this.availableBatches = [...new Set(this.allCuttingReports.map(r => r.batchNo))];
     });
   }
 
+
+  filterBatchesByPlant(): void {
+    const selectedPlant = this.form?.get('plantName')?.value;
+    const plantId = selectedPlant?.replace('Plant ', '');
+
+    let filtered = this.allCuttingReports;
+    if (selectedPlant) {
+      filtered = this.allCuttingReports.filter(r =>
+        r.plantName === selectedPlant || r.plantName === plantId
+      );
+    }
+    this.availableBatches = [...new Set(filtered.map(r => r.batchNo))];
+  }
+
+  onPlantChange(): void {
+    this.wagons.clear();
+    this.filterBatchesByPlant();
+  }
 
   addWagon(): void {
     if (this.wagons.length >= 14) return;
 
     const wagon = this.fb.group({
-      eBatch: this.wagonForm.value.eBatch,
-      eSize: this.wagonForm.value.eSize,
-      mBatch: this.wagonForm.value.mBatch,
-      mSize: this.wagonForm.value.mSize,
-      wBatch: this.wagonForm.value.wBatch,
-      wSize: this.wagonForm.value.wSize
+      mBatch: [this.wagonForm.value.mBatch],
+      mSize:  [this.wagonForm.value.mSize],
+      eBatch: [this.wagonForm.value.eBatch],
+      eSize:  [this.wagonForm.value.eSize],
+      wBatch: [this.wagonForm.value.wBatch],
+      wSize:  [this.wagonForm.value.wSize]
     });
 
     this.wagons.push(wagon);
 
     // clear input fields after add
     this.wagonForm.patchValue({
-      eBatch: null,
-      eSize: '',
       mBatch: null,
       mSize: '',
+      eBatch: null,
+      eSize: '',
       wBatch: null,
       wSize: ''
     });
@@ -189,7 +191,7 @@ export class AutoclaveComponent implements OnInit {
 
   isBatchUsed(batch: string): boolean {
     return this.wagons.controls.some(ctrl =>
-      Object.values(ctrl.value).includes(batch)
+      ctrl.get('batchNo')?.value === batch
     );
   }
 
@@ -216,6 +218,12 @@ export class AutoclaveComponent implements OnInit {
       : null;
 
     this.filteredList = this.list.filter(r => {
+      // ✅ PLANT FILTER (handle both 'Plant 1' and '1')
+      if (this.filterPlant) {
+        const plantId = this.filterPlant.replace('Plant ', '');
+        if (r.plantName !== this.filterPlant && r.plantName !== plantId) return false;
+      }
+
       const d = new Date(r.startedDate).getTime();
       return (!from || d >= from) && (!to || d <= to);
     });
@@ -235,6 +243,7 @@ export class AutoclaveComponent implements OnInit {
   clearFilters(): void {
     this.filterFromDate = '';
     this.filterToDate = '';
+    this.filterPlant = 'Plant 1';
     this.onDateChange();
   }
 
@@ -271,6 +280,7 @@ export class AutoclaveComponent implements OnInit {
     const now = this.getCurrentTime();
     this.form.reset({
       startedDate: new Date().toISOString().substring(0, 10),
+      plantName: 'Plant 1',
       startedAt: this.getCurrentTime()
     });
 
@@ -417,11 +427,11 @@ export class AutoclaveComponent implements OnInit {
 
   downloadAutoclave(r: any, format: string = 'pdf') {
     if (!r) return;
-    let batchNo = "";
+    let batchNo = '';
     if (r.wagons && r.wagons.length > 0) {
-      batchNo = r.wagons[0].eBatch || r.wagons[0].mBatch || r.wagons[0].wBatch;
+      batchNo = r.wagons[0].mBatch || r.wagons[0].eBatch || r.wagons[0].wBatch || '';
     }
-    if (!batchNo) { alert("No batch number found in this autoclave cycle."); return; }
+    if (!batchNo) { alert('No batch number found in this autoclave cycle.'); return; }
     this.workflowService.downloadReport(batchNo, 'AUTOCLAVE', format).subscribe({
       next: (blob) => {
         const url = URL.createObjectURL(blob);
@@ -440,7 +450,7 @@ export class AutoclaveComponent implements OnInit {
   downloadHorizontalReport(r: any) {
     let batchNo = '';
     if (r?.wagons?.length > 0) {
-      batchNo = r.wagons[0].eBatch || r.wagons[0].mBatch || r.wagons[0].wBatch || '';
+      batchNo = r.wagons[0].mBatch || r.wagons[0].eBatch || r.wagons[0].wBatch || '';
     }
     if (!batchNo) { alert('No batch number found.'); return; }
     this.horizontalReportService.downloadLifecycleExcel(batchNo, 'AUTOCLAVE').subscribe({
@@ -510,44 +520,18 @@ export class AutoclaveComponent implements OnInit {
 
   getUsedBatches(): string[] {
     const used: string[] = [];
-
     this.wagons.controls.forEach(ctrl => {
       const v = ctrl.value;
-      if (v.eBatch) used.push(v.eBatch);
       if (v.mBatch) used.push(v.mBatch);
+      if (v.eBatch) used.push(v.eBatch);
       if (v.wBatch) used.push(v.wBatch);
     });
-
     return used;
-  }
-
-  getAvailableBatchesFor(side: 'e' | 'm' | 'w'): string[] {
-
-    const current = this.wagonForm.value;
-
-    const used = this.getUsedBatches().filter(b =>
-      b !== current.eBatch &&
-      b !== current.mBatch &&
-      b !== current.wBatch
-    );
-
-    return this.availableBatches.filter(b => {
-
-      if (used.includes(b)) return false;
-
-      if (side !== 'e' && current.eBatch === b) return false;
-      if (side !== 'm' && current.mBatch === b) return false;
-      if (side !== 'w' && current.wBatch === b) return false;
-
-      return true;
-
-    });
-
   }
 
   canAddWagon(): boolean {
     const v = this.wagonForm.value;
-    return v.eBatch && v.mBatch && v.wBatch;
+    return !!(v.mBatch || v.eBatch || v.wBatch);  // at least one batch is required
   }
 
 

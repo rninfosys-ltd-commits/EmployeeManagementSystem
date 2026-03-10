@@ -27,8 +27,8 @@ public class AutoclaveCycle {
     private Date completedDate;
 
     private String remarks;
-
-    private String shift; // Morning / Afternoon / Night
+    private String shift;
+    private String plantName;
 
     // 🔥 REQUIRED FIELDS
     private int userId;

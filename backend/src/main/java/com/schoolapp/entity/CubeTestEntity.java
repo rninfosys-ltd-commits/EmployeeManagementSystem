@@ -39,6 +39,9 @@ public class CubeTestEntity {
     @Column(name = "shift")
     private String shift;
 
+    @Column(name = "plant_name", length = 50)
+    private String plantName;
+
     @Column(name = "cube_dimension_immediate")
     private String cubeDimensionImmediate;
 

@@ -126,6 +126,8 @@ public class WireCuttingReportServiceImpl implements WireCuttingReportService {
         r.setUserId(d.getUserId());
         r.setBranchId(d.getBranchId());
         r.setOrgId(d.getOrgId());
+        r.setPlantName(d.getPlantName());
+        r.setShift(d.getShift());
     }
 
     @Override

@@ -59,8 +59,23 @@ public class CastingHallReportRequestDto {
 	public void setOrgId(int orgId) {
 		this.orgId = orgId;
 	}
-	private int branchId;
+    private int branchId;
     private int orgId;
+    private String plantName;
+    private String shift;
+
+    public String getPlantName() {
+        return plantName;
+    }
+    public void setPlantName(String plantName) {
+        this.plantName = plantName;
+    }
+    public String getShift() {
+        return shift;
+    }
+    public void setShift(String shift) {
+        this.shift = shift;
+    }
 
     
 	public Long getId() {

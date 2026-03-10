@@ -29,6 +29,28 @@
                 <input type="date" [(ngModel)]="filterToDate" (change)="onDateChange()" />
             </div>
 
+            <div class="date-field top-label">
+                <label>Plant Name</label>
+                <select [(ngModel)]="filterPlant" (change)="applyFilters()">
+                    <option value="Plant 1">Plant 1</option>
+                    <option value="Plant 2">Plant 2</option>
+                </select>
+            </div>
+            <!-- HIDDEN FILE INPUT -->
+            <input type="file" accept=".xlsx,.xls" hidden #fileInput (change)="onExcelSelect($event)" />
+            <select [(ngModel)]="filterShift" (change)="applyFilters()">
+                <option value="">All Shifts</option>
+                <option value="1">Shift 1</option>
+                <option value="2">Shift 2</option>
+                <option value="3">Shift 3</option>
+                <option value="G">General Shift</option>
+            </select>
+            <select [(ngModel)]="filterBlockSize" (change)="applyFilters()">
+                <option value="">All Block Sizes</option>
+                <option *ngFor="let s of blockSizes" [value]="s">
+                    {{ s }}
+                </option>
+            </select>
             <select (change)="onExportChange($event)">
                 <option value="">Export</option>
                 <option value="pdf">Export PDF</option>
@@ -41,21 +63,7 @@
                 <option value="excel">Import Excel</option>
             </select>
 
-            <!-- HIDDEN FILE INPUT -->
-            <input type="file" accept=".xlsx,.xls" hidden #fileInput (change)="onExcelSelect($event)" />
-            <select [(ngModel)]="filterShift" (change)="applyFilters()">
-                <option value="">All Shifts</option>
-                <option value="1">Shift 1</option>
-                <option value="2">Shift 2</option>
-                <option value="3">Shift 3</option>
-                <option value="G">General</option>
-            </select>
-            <select [(ngModel)]="filterBlockSize" (change)="applyFilters()">
-                <option value="">All Block Sizes</option>
-                <option *ngFor="let s of blockSizes" [value]="s">
-                    {{ s }}
-                </option>
-            </select>
+
 
 
             <button class="clear-btn" (click)="clearFilters()">Clear</button>
@@ -80,7 +88,7 @@
 
                     <td>{{ r.batchNumber }}</td>
                     <td>{{ r.castingDate | date:'dd-MM-yyyy' }}</td>
-                    <td>{{ r.shift }}</td>
+                    <td>{{ r.shift === 'G' ? 'General Shift' : r.shift ? 'Shift ' + r.shift : '—' }}</td>
                     <td>{{ r.blockSize }}</td>
                     <td>{{ r.time }}</td>
                     <td>{{ r.remark || '—' }}</td>
@@ -143,7 +151,14 @@
                 <label>Shift</label>
             </div>
 
-            <div></div>
+            <div class="form-field plant">
+                <select formControlName="plantName" (change)="onPlantChange()">
+                    <option value="" disabled>Select Plant</option>
+                    <option value="Plant 1">Plant 1</option>
+                    <option value="Plant 2">Plant 2</option>
+                </select>
+                <label>Plant</label>
+            </div>
         </div>
 
         <hr>
@@ -155,7 +170,7 @@
                 <label>Casting Date</label>
             </div>
             <div class="form-field">
-                <select formControlName="batchNumber" [disabled]="noBatchAvailable">
+                <select formControlName="batchNumber" [disabled]="noBatchAvailable" required>
 
                     <option value="" disabled *ngIf="noBatchAvailable">
                         No batch available
@@ -181,7 +196,7 @@
             </div>
 
             <div class="form-field">
-                <input formControlName="time" readonly>
+                <input formControlName="time" readonly placeholder=" ">
                 <label>Time</label>
             </div>
 

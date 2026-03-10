@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { RejectionService } from '../services/RejectionService';
 import { CubeTestService } from '../services/CubeTestService';
 import * as XLSX from 'xlsx';
@@ -33,6 +33,7 @@ export class RejectionComponentComponent implements OnInit {
   filterFromDate = '';
   filterToDate = '';
   filterShift = '';
+  filterPlant = 'Plant 1';
 
   currentPage = 1;
   pageSize = 5;
@@ -54,8 +55,9 @@ export class RejectionComponentComponent implements OnInit {
 
     this.form = this.fb.group({
       date: [today],          // 👈 default today
-      batchNo: [''],
-      shift: [''],
+      plantName: ['Plant 1', Validators.required],
+      batchNo: ['', Validators.required],
+      shift: ['', Validators.required],
       blockSize: [''],
       qty: [''],
       cornerDamage: [0],
@@ -97,11 +99,27 @@ export class RejectionComponentComponent implements OnInit {
   get noBatchAvailable(): boolean {
     return !this.cubeTests || this.cubeTests.length === 0;
   }
+  allCubeTests: any[] = [];
+
   loadCubeTests() {
     this.cubeTestService.getAll().subscribe((res: any[]) => {
-      console.log('Cube tests:', res);   // 🔥 debug
-      this.cubeTests = res;
+      this.allCubeTests = res || [];
+      this.filterBatchesByPlant();
     });
+  }
+
+  filterBatchesByPlant() {
+    const selectedPlant = this.form?.get('plantName')?.value;
+    let filtered = this.allCubeTests;
+    if (selectedPlant) {
+      filtered = this.allCubeTests.filter(c => c.plantName === selectedPlant);
+    }
+    this.cubeTests = filtered;
+  }
+
+  onPlantChange() {
+    this.form.patchValue({ batchNo: '', date: new Date().toISOString().split('T')[0] });
+    this.filterBatchesByPlant();
   }
 
   goToDashboard() {
@@ -167,6 +185,9 @@ export class RejectionComponentComponent implements OnInit {
       // ✅ Shift filter
       if (this.filterShift && r.shift != this.filterShift) return false;
 
+      // ✅ Plant filter
+      if (this.filterPlant && r.plantName != this.filterPlant) return false;
+
       return true;
     });
 
@@ -195,6 +216,7 @@ export class RejectionComponentComponent implements OnInit {
     this.filterFromDate = '';
     this.filterToDate = '';
     this.filterShift = '';
+    this.filterPlant = 'Plant 1';
     this.onDateChange();
   }
 
@@ -204,6 +226,7 @@ export class RejectionComponentComponent implements OnInit {
 
     this.form.reset({
       date: today,     // ✅ keep today after reset
+      plantName: 'Plant 1',
       isActive: 1
     });
 
@@ -212,11 +235,11 @@ export class RejectionComponentComponent implements OnInit {
   }
 
   edit(r: any) {
-
     const date = r.date ? r.date.split('T')[0] : '';
 
     this.form.patchValue({
       date: date,
+      plantName: r.plantName,
       batchNo: r.batchNo,
       blockSize: r.blockSize,
       qty: r.qty,
@@ -229,6 +252,23 @@ export class RejectionComponentComponent implements OnInit {
       centreCrack: +r.centreCrack || 0,
       bottomUncutBlocks: +r.bottomUncutBlocks || 0
     });
+
+    // Filter batches by the plant of the row
+    const selectedPlant = r.plantName;
+    if (selectedPlant) {
+      this.cubeTests = this.allCubeTests.filter(c => c.plantName === selectedPlant);
+    } else {
+      this.cubeTests = [...this.allCubeTests];
+    }
+
+    // Ensure current batch is present in dropdown
+    if (!this.cubeTests.find(c => c.batchNo === r.batchNo)) {
+      this.cubeTests.unshift({
+        batchNo: r.batchNo,
+        castDate: r.date,
+        plantName: r.plantName
+      });
+    }
 
     this.editId = r.id;
     this.showLeads = false;

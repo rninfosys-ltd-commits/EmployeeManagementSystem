@@ -27,6 +27,14 @@
                 <input type="date" [(ngModel)]="filterToDate" (change)="onDateChange()" />
             </div>
 
+            <div class="date-field top-label">
+                <label>Plant Name</label>
+                <select [(ngModel)]="filterPlant" (change)="applyFilters()">
+                    <option value="Plant 1">Plant 1</option>
+                    <option value="Plant 2">Plant 2</option>
+                </select>
+            </div>
+
             <select (change)="onExportChange($event)">
                 <option value="">Export</option>
                 <option value="pdf">Export PDF</option>
@@ -46,7 +54,7 @@
                 <option value="1">Shift 1</option>
                 <option value="2">Shift 2</option>
                 <option value="3">Shift 3</option>
-                <option value="G">General</option>
+                <option value="G">General Shift</option>
             </select>
 
             <button class="clear-btn" (click)="clearFilters()">Clear</button>
@@ -77,7 +85,7 @@
                         <td>{{r.batchNo}}</td>
                         <td>{{r.blockSize}}</td>
                         <td>{{r.qty}}</td>
-                        <td>{{r.shift}}</td>
+                        <td>{{ r.shift === 'G' ? 'General Shift' : r.shift ? 'Shift ' + r.shift : '—' }}</td>
                         <td>{{r.topSideDamages}}</td>
                         <td>{{r.totalBreakages}}</td>
 
@@ -137,6 +145,15 @@
                             <option value="G">General Shift</option>
                         </select>
                         <label>Shift</label>
+                    </div>
+
+                    <div class="form-field plant">
+                        <select formControlName="plantName" (change)="onPlantChange()">
+                            <option value="" disabled>Select Plant</option>
+                            <option value="Plant 1">Plant 1</option>
+                            <option value="Plant 2">Plant 2</option>
+                        </select>
+                        <label>Plant</label>
                     </div>
 
                 </div>

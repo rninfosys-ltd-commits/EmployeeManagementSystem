@@ -3,6 +3,7 @@ export interface WireCuttingReport {
     id?: number;
 
     batchNo: string;
+    plantName: string;
     cuttingDate: string | Date;
 
     mouldNo: number;

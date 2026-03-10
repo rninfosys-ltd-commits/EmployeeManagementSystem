@@ -19,12 +19,18 @@ public class AutoclaveWagon {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Integer eBatch;
-    private Integer eSize;
+    private Integer batchNo;
+    private Integer size;
 
+    // Morning batch slot
     private Integer mBatch;
     private Integer mSize;
 
+    // Evening batch slot
+    private Integer eBatch;
+    private Integer eSize;
+
+    // West batch slot
     private Integer wBatch;
     private Integer wSize;
 

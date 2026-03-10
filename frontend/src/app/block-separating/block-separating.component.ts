@@ -23,6 +23,7 @@ export class BlockSeparatingComponent implements OnInit {
   isEdit = false;
   filterFromDate = '';
   filterToDate = '';
+  filterPlant = 'Plant 1';
   autoclaveBatches: any[] = [];
   // ================= PAGINATION =================
   pageSize = 5;        // records per page
@@ -57,6 +58,7 @@ export class BlockSeparatingComponent implements OnInit {
 
     this.form = this.fb.group({
       reportDate: [today, Validators.required],
+      plantName: ['Plant 1', Validators.required],
       batchNumber: ['', Validators.required],
       castingDate: ['', Validators.required],
       blockSize: ['', Validators.required],
@@ -83,14 +85,26 @@ export class BlockSeparatingComponent implements OnInit {
     this.isEdit = true;
     this.editId = row.id;
 
-    // 🔥 Allow current batch in dropdown
-    this.autoclaveBatches = [
-      { batchNo: row.batchNumber },
-      ...this.autoclaveBatches
-    ];
+    // 🔥 Filter batches by the plant of the row being edited
+    const selectedPlant = row.plantName;
+    let filtered = this.allCuttingReports.filter(r => r.plantName === selectedPlant);
+
+    this.autoclaveBatches = filtered.map(r => ({
+      batchNo: r.batchNo,
+      castingDate: r.cuttingDate
+    }));
+
+    // If the current batch is not in the filtered list (e.g. it was already used), add it
+    if (!this.autoclaveBatches.find(b => b.batchNo === row.batchNumber)) {
+      this.autoclaveBatches.unshift({
+        batchNo: row.batchNumber,
+        castingDate: row.castingDate
+      });
+    }
 
     this.form.patchValue({
       reportDate: row.reportDate,
+      plantName: row.plantName,
       batchNumber: row.batchNumber,
       castingDate: row.castingDate,
       blockSize: row.blockSize,
@@ -165,21 +179,38 @@ export class BlockSeparatingComponent implements OnInit {
 
 
 
+  allCuttingReports: any[] = [];
+
   loadCuttingBatches() {
     this.service.getCuttingBatches().subscribe({
       next: (res: any[]) => {
-
-        // 🔥 REMOVE already used batch numbers
-        this.autoclaveBatches = res
-          .filter(r => !this.usedBatchNumbers.includes(r.batchNo))
-          .map(r => ({ batchNo: r.batchNo }));
-
+        this.allCuttingReports = res || [];
+        this.filterBatchesByPlant();
       },
       error: (err: any) => {
         console.error('Batch load error:', err);
         alert('Failed to load batches');
       }
     });
+  }
+
+  filterBatchesByPlant() {
+    const selectedPlant = this.form?.get('plantName')?.value;
+    let filtered = this.allCuttingReports.filter(r => !this.usedBatchNumbers.includes(r.batchNo));
+
+    if (selectedPlant) {
+      filtered = filtered.filter(r => r.plantName === selectedPlant);
+    }
+
+    this.autoclaveBatches = filtered.map(r => ({
+      batchNo: r.batchNo,
+      castingDate: r.cuttingDate
+    }));
+  }
+
+  onPlantChange() {
+    this.form.patchValue({ batchNumber: '', castingDate: '' });
+    this.filterBatchesByPlant();
   }
 
 
@@ -194,6 +225,7 @@ export class BlockSeparatingComponent implements OnInit {
 
     this.form.reset({
       reportDate: today,
+      plantName: 'Plant 1',
       time: this.getCurrentTime()   // 🔥 AUTO TIME
     });
   }
@@ -202,6 +234,7 @@ export class BlockSeparatingComponent implements OnInit {
 
     this.form.reset({
       reportDate: today,
+      plantName: 'Plant 1',
       shift: ''     // or 'G' if you want default General
     });
   }
@@ -212,7 +245,7 @@ export class BlockSeparatingComponent implements OnInit {
     this.isEdit = false;
 
     const today = new Date().toISOString().split('T')[0];
-    this.form.reset({ reportDate: today });
+    this.form.reset({ reportDate: today, plantName: 'Plant 1' });
   }
 
 
@@ -309,6 +342,10 @@ export class BlockSeparatingComponent implements OnInit {
         ok = ok && r.shift === this.filterShift;
       }
 
+      if (this.filterPlant) {
+        ok = ok && r.plantName === this.filterPlant;
+      }
+
       if (this.filterBlockSize) {
         ok = ok && r.blockSize === this.filterBlockSize;
       }
@@ -333,6 +370,7 @@ export class BlockSeparatingComponent implements OnInit {
     this.filterToDate = '';
     this.filterShift = '';
     this.filterBlockSize = '';
+    this.filterPlant = 'Plant 1';
     this.onDateChange();
   }
 

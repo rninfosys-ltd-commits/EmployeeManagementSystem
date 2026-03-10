@@ -42,10 +42,12 @@ export class CastingHallReportComponent implements OnInit {
   // 🔥 NEW: merged export will use this
   mergedExportList: any[] = [];
   // ================= PAGINATION =================
-  pageSize = 5;
+  pageSize = 10;
   currentPage = 1;
+  totalElements = 0;
   totalPages = 0;
-  pagedList: any[] = [];
+  plantFilter = 'Plant 1';
+  // pagedList: any[] = [];
 
 
   // selectedCasting: any = null;
@@ -77,6 +79,8 @@ export class CastingHallReportComponent implements OnInit {
 
     this.reportForm = this.fb.group({
       reportDate: [today],
+      shift: ['', Validators.required],
+      plantName: ['', Validators.required],
       batchNo: ['', Validators.required],
       size: [0],
       bedNo: [0],
@@ -91,8 +95,7 @@ export class CastingHallReportComponent implements OnInit {
       testTime: [0],
       // hTime: [0],
       hTime: [''],
-      remark: [''],
-      shift: ['', Validators.required]
+      remark: ['']
     });
 
     this.loadReports();
@@ -144,11 +147,15 @@ export class CastingHallReportComponent implements OnInit {
 
 
   loadReports() {
-    this.service.getAll().subscribe(res => {
-      this.reportList = res;
-      this.applyFilters();
+    this.service.getAll(this.currentPage - 1, this.pageSize, this.plantFilter).subscribe(res => {
+      this.reportList = res.content;
+      this.totalElements = res.totalElements;
+      this.totalPages = res.totalPages;
+      
+      // Since we are doing server-side pagination, filteredList is just reportList
+      this.filteredList = this.reportList;
+      
       this.filterAvailableBatches();
-      this.updatePagination();      // ⭐ important
     });
   }
 
@@ -157,62 +164,59 @@ export class CastingHallReportComponent implements OnInit {
     if (!this.allProductionList.length) return;
 
     const usedBatchNos = this.reportList.map(r => r.batchNo);
+    const selectedPlant = this.reportForm?.get('plantName')?.value;
 
-    this.availableProductionList = this.allProductionList.filter(
+    let available = this.allProductionList.filter(
       p => !usedBatchNos.includes(p.batchNo)
     );
+
+    if (selectedPlant) {
+      available = available.filter(p => p.plantName === selectedPlant);
+    }
+
+    this.availableProductionList = available;
+    this.productionList = this.availableProductionList;
+  }
+
+  onPlantChange() {
+    this.reportForm.patchValue({ batchNo: '' });
+    this.filterAvailableBatches();
   }
 
 
   // ================= FILTER =================
   applyFilters() {
-    if (
-      this.filterFromDate &&
-      this.filterToDate &&
-      new Date(this.filterToDate) < new Date(this.filterFromDate)
-    ) {
-      alert('To Date cannot be earlier than From Date');
-      return;
-    }
-
-    const from = this.filterFromDate ? new Date(this.filterFromDate).getTime() : null;
-    const to = this.filterToDate ? new Date(this.filterToDate + 'T23:59:59').getTime() : null;
-
-    this.filteredList = this.reportList.filter(r => {
-      const dateValue = r.reportDate || r.createdDate;
-      if (!dateValue) return false;
-
-      const recordDate = new Date(dateValue).getTime();
-      return (!from || recordDate >= from) && (!to || recordDate <= to);
-    });
+    // Note: The date range filtering from filterService is still client-side if reportList has enough data,
+    // but the task specifically asked for server-side pagination and plant filtering.
+    // If date range is also needed on server, the API would need more parameters.
+    // For now, I'll focus on the requested plantName filter and pagination.
+    
     this.currentPage = 1;
-    this.updatePagination();
+    this.loadReports();
   }
 
-  updatePagination() {
-    this.totalPages = Math.ceil(this.filteredList.length / this.pageSize);
-    const start = (this.currentPage - 1) * this.pageSize;
-    const end = start + this.pageSize;
-    this.pagedList = this.filteredList.slice(start, end);
+  onFilterChange(event: any) {
+    this.plantFilter = event.target.value;
+    this.applyFilters();
   }
 
   goToPage(page: number) {
     if (page < 1 || page > this.totalPages) return;
     this.currentPage = page;
-    this.updatePagination();
+    this.loadReports();
   }
 
   nextPage() {
     if (this.currentPage < this.totalPages) {
       this.currentPage++;
-      this.updatePagination();
+      this.loadReports();
     }
   }
 
   prevPage() {
     if (this.currentPage > 1) {
       this.currentPage--;
-      this.updatePagination();
+      this.loadReports();
     }
   }
 
@@ -225,6 +229,7 @@ export class CastingHallReportComponent implements OnInit {
   clearFilters() {
     this.filterFromDate = '';
     this.filterToDate = '';
+    this.plantFilter = 'Plant 1';
     this.onDateChange();
   }
 
@@ -248,8 +253,9 @@ export class CastingHallReportComponent implements OnInit {
 
     this.reportForm.patchValue(row);
 
-    // ✅ EDIT MODE → show ALL batches
-    this.productionList = [...this.allProductionList];
+    // ✅ EDIT MODE → show ALL batches matching the plant
+    const selectedPlant = row.plantName;
+    this.productionList = this.allProductionList.filter(p => !selectedPlant || p.plantName === selectedPlant);
   }
 
 

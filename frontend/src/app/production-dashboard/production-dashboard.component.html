@@ -19,6 +19,14 @@
                     <input type="date" [(ngModel)]="toDate" (change)="onDateChange()" />
                 </div>
 
+                <div class="date-field top-label">
+                    <label>Plant Name</label>
+                    <select [(ngModel)]="filterPlant" (change)="applyFilters()">
+                        <option value="Plant 1">Plant 1</option>
+                        <option value="Plant 2">Plant 2</option>
+                    </select>
+                </div>
+
                 <button class="toggle-btn" (click)="toggleHideCompleted()">
                     {{ hideCompleted ? 'Show All' : 'Hide Completed' }}
                 </button>

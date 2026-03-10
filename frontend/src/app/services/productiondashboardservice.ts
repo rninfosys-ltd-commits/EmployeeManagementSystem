@@ -23,7 +23,7 @@ export class ProductionDashboardService {
     // ✅ CASTING
     getCasting(): Observable<any[]> {
         return this.http.get<any[]>(
-            this.BASE_URL + APP_CONFIG.API.CASTING_REPORT
+            this.BASE_URL + APP_CONFIG.API.CASTING_REPORT + '?size=1000'
         );
     }
 

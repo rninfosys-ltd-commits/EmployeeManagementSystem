@@ -16,4 +16,8 @@ public interface RejectionDataRepository extends JpaRepository<RejectionDataEnti
     List<RejectionDataEntity> findByDateBetween(Date start, Date end);
 
     List<RejectionDataEntity> findByBatchNo(String batchNo);
+
+    List<RejectionDataEntity> findByPlantName(String plantName);
+
+    List<RejectionDataEntity> findByDateBetweenAndPlantName(Date start, Date end, String plantName);
 }

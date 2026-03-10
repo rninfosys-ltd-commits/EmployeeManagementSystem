@@ -39,6 +39,9 @@ public class BlockSeparating {
     private String shift; // 1, 2, 3, G
     private String remark;
 
+    @Column(name = "plant_name", length = 50)
+    private String plantName;
+
     @Temporal(TemporalType.DATE)
     @Column(name = "report_date", nullable = false)
     private Date reportDate;

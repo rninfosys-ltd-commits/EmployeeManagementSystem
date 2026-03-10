@@ -29,6 +29,14 @@
                 <input type="date" [(ngModel)]="filterToDate" (change)="onDateChange()" />
             </div>
 
+            <div class="date-field top-label">
+                <label>Plant Name</label>
+                <select [ngModel]="plantFilter" (change)="onFilterChange($event)">
+                    <option value="Plant 1">Plant 1</option>
+                    <option value="Plant 2">Plant 2</option>
+                </select>
+            </div>
+
             <select (change)="onExportChange($event)">
                 <option value="">Export</option>
                 <option value="pdf">Export PDF</option>
@@ -43,7 +51,6 @@
 
             <!-- HIDDEN FILE INPUT -->
             <input type="file" accept=".xlsx,.xls" hidden #fileInput (change)="onExcelSelect($event)" />
-
 
             <button class="clear-btn" (click)="clearFilters()">Clear</button>
         </div>
@@ -63,7 +70,7 @@
             </thead>
 
             <tbody>
-                <ng-container *ngFor="let r of pagedList">
+                <ng-container *ngFor="let r of reportList">
 
                     <tr *ngIf="canViewCasting(r)">
 
@@ -98,10 +105,7 @@
                 ⬅ Prev
             </button>
 
-            <button *ngFor="let p of [].constructor(totalPages); let i = index" (click)="goToPage(i + 1)"
-                [class.active]="currentPage === i + 1">
-                {{ i + 1 }}
-            </button>
+            <span class="page-info">Page {{currentPage}} of {{totalPages}} (Total: {{totalElements}})</span>
 
             <button (click)="nextPage()" [disabled]="currentPage === totalPages">
                 Next ➡
@@ -123,7 +127,25 @@
                 <label>Date</label>
             </div>
 
-            <div></div>
+            <div class="form-field shift">
+                <select formControlName="shift">
+                    <option value="" disabled></option>
+                    <option value="1">Shift 1</option>
+                    <option value="2">Shift 2</option>
+                    <option value="3">Shift 3</option>
+                    <option value="G">General Shift</option>
+                </select>
+                <label>Shift</label>
+            </div>
+
+            <div class="form-field plant">
+                <select formControlName="plantName" (change)="onPlantChange()">
+                    <option value="" disabled>Select Plant</option>
+                    <option value="Plant 1">Plant 1</option>
+                    <option value="Plant 2">Plant 2</option>
+                </select>
+                <label>Plant</label>
+            </div>
         </div>
 
         <hr>
@@ -246,15 +268,7 @@
                 <label>Remark</label>
             </div>
 
-            <div class="form-field">
-                <select formControlName="shift" [class.has-value]="reportForm.get('shift')?.value">
-                    <option value="" disabled>Select Shift</option>
-                    <option value="Morning">Morning (6 AM – 2 PM)</option>
-                    <option value="Afternoon">Afternoon (2 PM – 10 PM)</option>
-                    <option value="Night">Night (10 PM – 6 AM)</option>
-                </select>
-                <label>Shift</label>
-            </div>
+            <div></div>
 
             <div></div>
         </div>

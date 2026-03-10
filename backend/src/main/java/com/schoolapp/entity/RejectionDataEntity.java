@@ -33,6 +33,9 @@ public class RejectionDataEntity {
 	@Column(name = "shift")
 	private String shift;
 
+	@Column(name = "plant_name", length = 50)
+	private String plantName;
+
 	@Column(name = "corner_damage")
 	private Integer cornerDamage;
 

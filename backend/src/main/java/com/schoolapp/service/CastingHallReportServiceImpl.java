@@ -1,6 +1,8 @@
 package com.schoolapp.service;
 
 // import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import com.schoolapp.entity.CastingHallReport;
 import com.schoolapp.repository.CastingHallReportRepository;
@@ -43,8 +45,11 @@ public class CastingHallReportServiceImpl implements CastingHallReportService {
     }
 
     @Override
-    public List<CastingHallReport> getAll() {
-        return repository.findAll();
+    public Page<CastingHallReport> getAll(Pageable pageable, String plantName) {
+        if (plantName != null && !plantName.isEmpty()) {
+            return repository.findByPlantNameContainingIgnoreCase(plantName, pageable);
+        }
+        return repository.findAll(pageable);
     }
 
     @Override
@@ -132,6 +137,8 @@ public class CastingHallReportServiceImpl implements CastingHallReportService {
         r.setUserId(dto.getUserId());
         r.setBranchId(dto.getBranchId());
         r.setOrgId(dto.getOrgId());
+        r.setPlantName(dto.getPlantName());
+        r.setShift(dto.getShift());
     }
 
     @Override

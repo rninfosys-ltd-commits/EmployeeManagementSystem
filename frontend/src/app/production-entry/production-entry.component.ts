@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductionService } from '../services/ProductionService';
 import { MaterialMasterService, MaterialMaster } from '../services/MaterialMasterService';
 import * as bootstrap from 'bootstrap';
@@ -38,10 +38,11 @@ export class ProductionEntryComponent implements OnInit {
 
   filterFromDate = '';
   filterToDate = '';
-  filterPlant = '';
+  filterPlant = 'Plant 1';
   excelPreview: any[] = [];
   hasExcelErrors = false;
   apiMessage = '';
+  showSilo2 = false;
 
   // ================= PAGINATION =================
   pageSize = 5;
@@ -74,8 +75,8 @@ export class ProductionEntryComponent implements OnInit {
     const today = new Date().toISOString().substring(0, 10);
 
     this.productionForm = this.fb.group({
-      plantName: [''],
-      shift: [''],
+      plantName: ['Plant 1', Validators.required],
+      shift: ['', Validators.required],
       productionDate: [today],
 
       siloNo1: [''],
@@ -179,8 +180,11 @@ export class ProductionEntryComponent implements OnInit {
 
     this.filteredProductionList = this.productionList.filter(p => {
 
-      // ✅ PLANT FILTER
-      if (this.filterPlant && p.plantName !== this.filterPlant) return false;
+      // ✅ PLANT FILTER (handle both 'Plant 1' and '1')
+      if (this.filterPlant) {
+        const plantId = this.filterPlant.replace('Plant ', '');
+        if (p.plantName !== this.filterPlant && p.plantName !== plantId) return false;
+      }
 
       // ✅ DATE FILTER
       const date = new Date(p.createdDate).getTime();
@@ -254,7 +258,7 @@ export class ProductionEntryComponent implements OnInit {
   clearFilters() {
     this.filterFromDate = '';
     this.filterToDate = '';
-    this.filterPlant = '';
+    this.filterPlant = 'Plant 1';
     this.filteredProductionList = [...this.productionList];
     this.currentPage = 1;
     this.updatePagination();
@@ -323,6 +327,19 @@ export class ProductionEntryComponent implements OnInit {
       (+this.productionForm.value.faSolid2 || 0);
   }
 
+  toggleSilo2() {
+    this.showSilo2 = true;
+  }
+
+  removeSilo2() {
+    this.showSilo2 = false;
+    this.productionForm.patchValue({
+      siloNo2: '',
+      literWeight2: '',
+      faSolid2: ''
+    });
+  }
+
   userMap: { [key: string]: string } = {};
 
 
@@ -352,10 +369,11 @@ export class ProductionEntryComponent implements OnInit {
     const today = new Date().toISOString().substring(0, 10);
 
     this.productionForm.reset({
-      plantName: '',
+      plantName: 'Plant 1',
       productionDate: today,
       productionTime: this.getCurrentTime()
     });
+    this.showSilo2 = false;
 
     // Reset dynamic material values
     this.materialList.forEach(m => {
@@ -444,6 +462,8 @@ export class ProductionEntryComponent implements OnInit {
         }
       });
     }
+
+    this.showSilo2 = !!(row.siloNo2 || row.literWeight2 || row.faSolid2);
   }
 
   delete(id: number) {
@@ -768,10 +788,9 @@ export class ProductionEntryComponent implements OnInit {
   saveExcelToDB() {
     const payload = {
       productions: this.excelRows.map(r => ({
-        shift: r['Shift'],
-        siloNo1: r['Silo No 1'],
-        literWeight1: Number(r['Liter Weight 1'] || 0),
-        faSolid1: Number(r['FA Solid 1'] || 0),
+        siloNo1: r['Silo No 1'] || r['Silo No'],
+        literWeight1: Number(r['Liter Weight 1'] || r['Liter Weight'] || 0),
+        faSolid1: Number(r['FA Solid 1'] || r['FA Solid'] || 0),
 
         siloNo2: r['Silo No 2'],
         literWeight2: Number(r['Liter Weight 2'] || 0),

@@ -23,7 +23,7 @@ public class AutoclaveExportServiceImpl implements StageReportService {
     @Override
     public String[] getHeaders() {
         return new String[] { "Autoclave No", "Run No", "Started At", "Started Date", "Completed At", "Completed Date",
-                "Shift", "Remarks" };
+                "Remarks" };
     }
 
     @Override
@@ -37,7 +37,6 @@ public class AutoclaveExportServiceImpl implements StageReportService {
             map.put("Started Date", r.getStartedDate());
             map.put("Completed At", r.getCompletedAt());
             map.put("Completed Date", r.getCompletedDate());
-            map.put("Shift", r.getShift());
             map.put("Remarks", r.getRemarks());
             return map;
         }).collect(Collectors.toList());

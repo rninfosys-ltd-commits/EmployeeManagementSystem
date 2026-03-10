@@ -116,55 +116,49 @@ public class WorkflowReportService {
                 return prodEntries.stream()
                         .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().sorted().toList();
             case "CASTING":
-                if (plantName != null && !plantName.isBlank()) {
-                    // Filter casting batches via production plant
-                    List<String> plantBatches = productionRepo.findByPlantName(plantName).stream()
-                            .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().toList();
-                    return castingRepo.findByCreatedDateBetween(from, to).stream()
-                            .map(CastingHallReport::getBatchNo).filter(b -> b != null && plantBatches.contains(b))
-                            .distinct().sorted().toList();
-                }
-                return castingRepo.findByCreatedDateBetween(from, to).stream()
+                List<CastingHallReport> castingEntries = (plantName != null && !plantName.isBlank())
+                        ? castingRepo.findByCreatedDateBetweenAndPlantName(from, to, plantName)
+                        : castingRepo.findByCreatedDateBetween(from, to);
+                return castingEntries.stream()
                         .map(CastingHallReport::getBatchNo).filter(Objects::nonNull).distinct().sorted().toList();
             case "CUTTING":
-                if (plantName != null && !plantName.isBlank()) {
-                    List<String> plantBatches = productionRepo.findByPlantName(plantName).stream()
-                            .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().toList();
-                    return cuttingRepo.findByCreatedDateBetween(from, to).stream()
-                            .map(WireCuttingReport::getBatchNo).filter(b -> b != null && plantBatches.contains(b))
-                            .distinct().sorted().toList();
-                }
-                return cuttingRepo.findByCreatedDateBetween(from, to).stream()
+                List<WireCuttingReport> cuttingEntries = (plantName != null && !plantName.isBlank())
+                        ? cuttingRepo.findByCreatedDateBetweenAndPlantName(from, to, plantName)
+                        : cuttingRepo.findByCreatedDateBetween(from, to);
+                return cuttingEntries.stream()
                         .map(WireCuttingReport::getBatchNo).filter(Objects::nonNull).distinct().sorted().toList();
+            case "AUTOCLAVE":
+                List<AutoclaveCycle> autoclaveEntries = (plantName != null && !plantName.isBlank())
+                        ? autoclaveRepo.findByStartedDateBetweenAndPlantName(from, to, plantName)
+                        : autoclaveRepo.findByStartedDateBetween(from, to);
+                // Autoclave batches are stored in wagons, we need a special way to extract them
+                // if possible
+                // For now, let's use the batchNo field we added to AutoclaveCycle if it exists,
+                // or extract from wagons
+                // Wait, I added batchNo to AutoclaveCycle entity? No, it has wagons.
+                // But generates reports based on batchNo passed in.
+                // For this filtering, we return all batches that had a cycle in this range.
+                return autoclaveEntries.stream()
+                        .flatMap(ac -> ac.getWagons().stream())
+                        .map(aw -> String.valueOf(aw.getBatchNo()))
+                        .filter(Objects::nonNull).distinct().sorted().toList();
             case "BLOCK_SEPARATING":
-                if (plantName != null && !plantName.isBlank()) {
-                    List<String> plantBatches = productionRepo.findByPlantName(plantName).stream()
-                            .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().toList();
-                    return blockRepo.findByReportDateBetween(from, to).stream()
-                            .map(BlockSeparating::getBatchNumber).filter(b -> b != null && plantBatches.contains(b))
-                            .distinct().sorted().toList();
-                }
-                return blockRepo.findByReportDateBetween(from, to).stream()
+                List<BlockSeparating> blockEntries = (plantName != null && !plantName.isBlank())
+                        ? blockRepo.findByReportDateBetweenAndPlantName(from, to, plantName)
+                        : blockRepo.findByReportDateBetween(from, to);
+                return blockEntries.stream()
                         .map(BlockSeparating::getBatchNumber).filter(Objects::nonNull).distinct().sorted().toList();
             case "CUBE_TEST":
-                if (plantName != null && !plantName.isBlank()) {
-                    List<String> plantBatches = productionRepo.findByPlantName(plantName).stream()
-                            .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().toList();
-                    return cubeRepo.findByTestingDateBetween(from, to).stream()
-                            .map(CubeTestEntity::getBatchNo).filter(b -> b != null && plantBatches.contains(b))
-                            .distinct().sorted().toList();
-                }
-                return cubeRepo.findByTestingDateBetween(from, to).stream()
+                List<CubeTestEntity> cubeEntries = (plantName != null && !plantName.isBlank())
+                        ? cubeRepo.findByTestingDateBetweenAndPlantName(from, to, plantName)
+                        : cubeRepo.findByTestingDateBetween(from, to);
+                return cubeEntries.stream()
                         .map(CubeTestEntity::getBatchNo).filter(Objects::nonNull).distinct().sorted().toList();
             case "REJECTION":
-                if (plantName != null && !plantName.isBlank()) {
-                    List<String> plantBatches = productionRepo.findByPlantName(plantName).stream()
-                            .map(ProductionEntry::getBatchNo).filter(Objects::nonNull).distinct().toList();
-                    return rejectionRepo.findByDateBetween(from, to).stream()
-                            .map(RejectionDataEntity::getBatchNo).filter(b -> b != null && plantBatches.contains(b))
-                            .distinct().sorted().toList();
-                }
-                return rejectionRepo.findByDateBetween(from, to).stream()
+                List<RejectionDataEntity> rejectionEntries = (plantName != null && !plantName.isBlank())
+                        ? rejectionRepo.findByDateBetweenAndPlantName(from, to, plantName)
+                        : rejectionRepo.findByDateBetween(from, to);
+                return rejectionEntries.stream()
                         .map(RejectionDataEntity::getBatchNo).filter(Objects::nonNull).distinct().sorted().toList();
             case "CONSOLIDATED":
             default:
@@ -284,12 +278,9 @@ public class WorkflowReportService {
         ProductionEntry p = entries.get(0);
         addRow(table, "Date", formatDate(p.getCreatedDate()));
         addRow(table, "Shift", p.getShift() != null ? p.getShift() : "—");
-        addRow(table, "Silo 1", p.getSiloNo1() != null ? p.getSiloNo1() : "—");
-        addRow(table, "Liter Wt 1", String.valueOf(p.getLiterWeight1()));
-        addRow(table, "FA Solid 1", String.valueOf(p.getFaSolid1()));
-        addRow(table, "Silo 2", p.getSiloNo2() != null ? p.getSiloNo2() : "—");
-        addRow(table, "Liter Wt 2", String.valueOf(p.getLiterWeight2()));
-        addRow(table, "FA Solid 2", String.valueOf(p.getFaSolid2()));
+        addRow(table, "Silo", p.getSiloNo1() != null ? p.getSiloNo1() : "—");
+        addRow(table, "Liter Wt", String.valueOf(p.getLiterWeight1()));
+        addRow(table, "FA Solid", String.valueOf(p.getFaSolid1()));
         addRow(table, "Total Solid", String.valueOf(p.getTotalSolid()));
         addRow(table, "Water (L)", String.valueOf(p.getWaterLiter()));
         addRow(table, "Cement (kg)", String.valueOf(p.getCementKg()));
@@ -367,6 +358,7 @@ public class WorkflowReportService {
         addRow(table, "Autoclave No", c.getAutoclaveNo() != null ? c.getAutoclaveNo() : "—");
         addRow(table, "Run No", c.getRunNo() != null ? c.getRunNo() : "—");
         addRow(table, "Shift", c.getShift() != null ? c.getShift() : "—");
+        addRow(table, "Plant", c.getPlantName() != null ? c.getPlantName() : "—");
         addRow(table, "Start Date", formatDate(c.getStartedDate()));
         addRow(table, "Started At", c.getStartedAt() != null ? c.getStartedAt() : "—");
         addRow(table, "Completed Date", formatDate(c.getCompletedDate()));
@@ -458,12 +450,25 @@ public class WorkflowReportService {
     public List<Map<String, Object>> getHorizontalReport(Date fromDate, Date toDate, String batchNo, String plantName) {
         List<String> batches;
 
+        // Normalize plantName (handle both 'Plant 1' and '1')
+        String altPlantName = null;
+        if (plantName != null && plantName.startsWith("Plant ")) {
+            altPlantName = plantName.replace("Plant ", "");
+        } else if (plantName != null && !plantName.isBlank()) {
+            altPlantName = "Plant " + plantName;
+        }
+
         if (batchNo != null && !batchNo.isBlank()) {
             batches = List.of(batchNo.trim());
         } else if (fromDate != null && toDate != null) {
-            List<ProductionEntry> entries = (plantName != null && !plantName.isBlank())
-                    ? productionRepo.findByCreatedDateBetweenAndPlantName(fromDate, toDate, plantName)
-                    : productionRepo.findByCreatedDateBetween(fromDate, toDate);
+            List<ProductionEntry> entries;
+            if (plantName != null && !plantName.isBlank()) {
+                entries = (altPlantName != null)
+                        ? productionRepo.findByCreatedDateBetweenAndPlantNameIn(fromDate, toDate, List.of(plantName, altPlantName))
+                        : productionRepo.findByCreatedDateBetweenAndPlantName(fromDate, toDate, plantName);
+            } else {
+                entries = productionRepo.findByCreatedDateBetween(fromDate, toDate);
+            }
             batches = entries.stream()
                     .map(ProductionEntry::getBatchNo)
                     .filter(Objects::nonNull)
@@ -471,9 +476,14 @@ public class WorkflowReportService {
                     .sorted()
                     .collect(java.util.stream.Collectors.toList());
         } else {
-            List<ProductionEntry> entries = (plantName != null && !plantName.isBlank())
-                    ? productionRepo.findByPlantName(plantName)
-                    : productionRepo.findAll();
+            List<ProductionEntry> entries;
+            if (plantName != null && !plantName.isBlank()) {
+                entries = (altPlantName != null)
+                        ? productionRepo.findByPlantNameIn(List.of(plantName, altPlantName))
+                        : productionRepo.findByPlantName(plantName);
+            } else {
+                entries = productionRepo.findAll();
+            }
             batches = entries.stream()
                     .map(ProductionEntry::getBatchNo)
                     .filter(Objects::nonNull)
@@ -510,9 +520,6 @@ public class WorkflowReportService {
         m.put("siloNo1", nvl(p.getSiloNo1()));
         m.put("literWeight1", nvl(p.getLiterWeight1()));
         m.put("faSolid1", nvl(p.getFaSolid1()));
-        m.put("siloNo2", nvl(p.getSiloNo2()));
-        m.put("literWeight2", nvl(p.getLiterWeight2()));
-        m.put("faSolid2", nvl(p.getFaSolid2()));
         m.put("totalSolid", nvl(p.getTotalSolid()));
         m.put("waterLiter", nvl(p.getWaterLiter()));
         m.put("cementKg", nvl(p.getCementKg()));
@@ -576,6 +583,7 @@ public class WorkflowReportService {
         m.put("autoclaveNo", nvl(a.getAutoclaveNo()));
         m.put("runNo", nvl(a.getRunNo()));
         m.put("shift", nvl(a.getShift()));
+        m.put("plantName", nvl(a.getPlantName()));
         m.put("startDate", formatDate(a.getStartedDate()));
         m.put("startedAt", nvl(a.getStartedAt()));
         m.put("compDate", formatDate(a.getCompletedDate()));
@@ -693,8 +701,7 @@ public class WorkflowReportService {
             // ── Column order per stage ────────────────────────────────────────────
             LinkedHashMap<String, String[]> stageFields = new LinkedHashMap<>();
             stageFields.put("production",
-                    new String[] { "date", "shift", "siloNo1", "literWeight1", "faSolid1", "siloNo2", "literWeight2",
-                            "faSolid2", "totalSolid", "waterLiter", "cementKg", "limeKg", "gypsumKg", "solOilKg",
+                    new String[] { "date", "shift", "siloNo1", "literWeight1", "faSolid1", "totalSolid", "waterLiter", "cementKg", "limeKg", "gypsumKg", "solOilKg",
                             "alPowerGm", "tempC", "productionTime", "remark" });
             stageFields.put("casting",
                     new String[] { "date", "shift", "size", "bedNo", "mouldNo", "castingTime", "consistency",

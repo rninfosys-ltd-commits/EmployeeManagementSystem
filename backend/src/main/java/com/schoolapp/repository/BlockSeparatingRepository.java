@@ -24,4 +24,8 @@ public interface BlockSeparatingRepository extends JpaRepository<BlockSeparating
   List<BlockSeparating> findByReportDateBetween(Date start, Date end);
 
   List<BlockSeparating> findByBatchNumber(String batchNumber);
+
+  List<BlockSeparating> findByPlantName(String plantName);
+
+  List<BlockSeparating> findByReportDateBetweenAndPlantName(Date start, Date end, String plantName);
 }

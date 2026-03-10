@@ -18,6 +18,7 @@ export class ProductionDashboardComponent implements OnInit {
   fromDate = '';
   toDate = '';
   hideCompleted = true; // ✅ Auto-hide fully completed batches
+  filterPlant = 'Plant 1';
 
   // Pagination
   currentPage = 1;
@@ -58,20 +59,29 @@ export class ProductionDashboardComponent implements OnInit {
       batchStatus: this.workflowService.getAllBatchStatus()
     }).subscribe(res => {
 
-      // Build workflow status map
-      res.batchStatus.forEach((b: any) => {
+      // ✅ Build workflow status map
+      res.batchStatus?.forEach((b: any) => {
         this.workflowStatusMap[b.batchNo] = b.stages;
       });
 
-      this.rows = res.production.map(p => {
-        const cast = res.casting.find(c => c.batchNo == p.batchNo);
-        const cut = res.cutting.find(c => c.batchNo == p.batchNo);
-        const cube = res.cube.find(c => c.batchNo == p.batchNo);
-        const rej = res.rejection.find(r => r.batchNo == p.batchNo);
-        const block = res.block.find(b => b.batchNumber == p.batchNo);
+      // ✅ Safely extract arrays (handle paged response if any)
+      const productions = (res.production as any)?.content || res.production || [];
+      const castings = (res.casting as any)?.content || res.casting || [];
+      const cuttings = (res.cutting as any)?.content || res.cutting || [];
+      const autoclaves = (res.autoclave as any)?.content || res.autoclave || [];
+      const blocks = (res.block as any)?.content || res.block || [];
+      const cubes = (res.cube as any)?.content || res.cube || [];
+      const rejections = (res.rejection as any)?.content || res.rejection || [];
 
-        const auto = res.autoclave.find((a: any) =>
-          a.wagons?.some((w: any) => w.eBatch == p.batchNo)
+      this.rows = productions.map((p: any) => {
+        const cast = castings.find((c: any) => c.batchNo == p.batchNo);
+        const cut = cuttings.find((c: any) => c.batchNo == p.batchNo);
+        const cube = cubes.find((c: any) => c.batchNo == p.batchNo);
+        const rej = rejections.find((r: any) => r.batchNo == p.batchNo);
+        const block = blocks.find((b: any) => b.batchNumber == p.batchNo);
+
+        const auto = autoclaves.find((a: any) =>
+          a.wagons?.some((w: any) => w.mBatch == p.batchNo || w.eBatch == p.batchNo || w.wBatch == p.batchNo)
         );
 
         const productionTime = new Date(p.createdDate);
@@ -89,6 +99,7 @@ export class ProductionDashboardComponent implements OnInit {
 
         return {
           batchNo: p.batchNo,
+          plantName: p.plantName,
           productionTimeObj: productionTime,
           castingTimeObj: castingTime,
           cuttingTimeObj: cuttingTime,
@@ -172,6 +183,12 @@ export class ProductionDashboardComponent implements OnInit {
       // ✅ Auto-hide fully completed batches
       if (this.hideCompleted && r.isFullyCompleted) return false;
 
+      // ✅ PLANT FILTER (handle both 'Plant 1' and '1')
+      if (this.filterPlant) {
+        const plantId = this.filterPlant.replace('Plant ', '');
+        if (r.plantName !== this.filterPlant && r.plantName !== plantId) return false;
+      }
+
       const time = new Date(r.productionTimeObj).getTime();
       return (!from || time >= from) && (!to || time <= to);
     });
@@ -193,6 +210,7 @@ export class ProductionDashboardComponent implements OnInit {
   clear() {
     this.fromDate = '';
     this.toDate = '';
+    this.filterPlant = 'Plant 1';
     this.onDateChange();
   }
 
@@ -228,7 +246,7 @@ export class ProductionDashboardComponent implements OnInit {
       return;
     }
 
-    this.workflowService.exportReport('CONSOLIDATED', this.fromDate, this.toDate, format).subscribe(blob => {
+    this.workflowService.exportReport('CONSOLIDATED', this.fromDate, this.toDate, format, this.filterPlant).subscribe(blob => {
       this.saveBlob(blob, `consolidated_workflow_report.${format === 'excel' ? 'xlsx' : 'pdf'}`);
     });
   }

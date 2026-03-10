@@ -19,7 +19,7 @@ export class HorizontalReportComponent implements OnInit {
     fromDate = '';
     toDate = '';
     batchNo = '';
-    plantFilter = '';
+    plantFilter = 'Plant 1';
 
     // ─── Data ──────────────────────────────────────────────────────────────────
     allRows: HorizontalReportRow[] = [];
@@ -39,12 +39,9 @@ export class HorizontalReportComponent implements OnInit {
             columns: [
                 { key: 'date', label: 'Date' },
                 { key: 'shift', label: 'Shift' },
-                { key: 'siloNo1', label: 'Silo 1' },
-                { key: 'literWeight1', label: 'Lit.Wt 1' },
-                { key: 'faSolid1', label: 'FA Solid 1' },
-                { key: 'siloNo2', label: 'Silo 2' },
-                { key: 'literWeight2', label: 'Lit.Wt 2' },
-                { key: 'faSolid2', label: 'FA Solid 2' },
+                { key: 'siloNo1', label: 'Silo' },
+                { key: 'literWeight1', label: 'Lit.Wt' },
+                { key: 'faSolid1', label: 'FA Solid' },
                 { key: 'totalSolid', label: 'Total Solid' },
                 { key: 'waterLiter', label: 'Water (L)' },
                 { key: 'cementKg', label: 'Cement (kg)' },
@@ -166,7 +163,7 @@ export class HorizontalReportComponent implements OnInit {
         this.fromDate = '';
         this.toDate = '';
         this.batchNo = '';
-        this.plantFilter = '';
+        this.plantFilter = 'Plant 1';
         this.loadReport();
     }
 

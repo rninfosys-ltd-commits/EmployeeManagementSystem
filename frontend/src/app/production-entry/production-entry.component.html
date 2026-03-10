@@ -31,7 +31,6 @@
 
             <div class="filter-select">
                 <select [(ngModel)]="filterPlant" (change)="applyFilters()">
-                    <option value="">All Plants</option>
                     <option value="Plant 1">Plant 1</option>
                     <option value="Plant 2">Plant 2</option>
                 </select>
@@ -89,7 +88,7 @@
                             <td>{{ p.plantName || '—' }}</td>
                             <td>{{ p.createdDate | date:'dd-MM-yyyy' }}</td>
                             <td>{{ p.createdByName || getUserName(p.userId) }}</td>
-                            <td>Shift {{ p.shift }}</td>
+                            <td>{{ p.shift === 'G' ? 'General Shift' : 'Shift ' + p.shift }}</td>
                             <td>{{ p.totalSolid }}</td>
                             <!-- Dynamic Material Values -->
                             <td *ngFor="let m of materialList">
@@ -240,23 +239,37 @@
                 <label>Total Solid</label>
             </div>
 
-            <div class="form-field">
-                <select formControlName="siloNo2">
-                    <option value="" disabled></option>
-                    <option *ngFor="let s of siloList" [value]="s">{{ s }}</option>
-                </select>
-                <label>Silo No 2</label>
+            <div class="form-field" *ngIf="!showSilo2">
+                <button type="button" class="link-btn" (click)="toggleSilo2()"
+                    style="margin-top: 15px; border: 1px dashed #ccc; width: 100%; height: 35px; background: transparent; color: #666;">
+                    + Add Another Silo
+                </button>
             </div>
 
-            <div class="form-field">
-                <input type="number" formControlName="literWeight2">
-                <label>Liter Weight 2</label>
-            </div>
+            <ng-container *ngIf="showSilo2">
+                <div class="form-field" style="position: relative;">
+                    <select formControlName="siloNo2">
+                        <option value="" disabled></option>
+                        <option *ngFor="let s of siloList" [value]="s">{{ s }}</option>
+                    </select>
+                    <label>Silo No 2</label>
+                    <button type="button" (click)="removeSilo2()"
+                        style="position: absolute; right: -25px; top: 10px; background: none; border: none; color: red; font-weight: bold; cursor: pointer;"
+                        title="Remove Silo 2">
+                        ✖
+                    </button>
+                </div>
 
-            <div class="form-field">
-                <input type="number" formControlName="faSolid2">
-                <label>FA Solid 2</label>
-            </div>
+                <div class="form-field">
+                    <input type="number" formControlName="literWeight2">
+                    <label>Liter Weight 2</label>
+                </div>
+
+                <div class="form-field">
+                    <input type="number" formControlName="faSolid2">
+                    <label>FA Solid 2</label>
+                </div>
+            </ng-container>
         </div>
 
         <hr>
@@ -362,9 +375,9 @@
                                 <td>{{ selectedProduction?.literWeight1 }}</td>
                                 <td>{{ selectedProduction?.faSolid1 }}</td>
 
-                                <td>{{ selectedProduction?.siloNo2 }}</td>
-                                <td>{{ selectedProduction?.literWeight2 }}</td>
-                                <td>{{ selectedProduction?.faSolid2 }}</td>
+                                <td>{{ selectedProduction?.siloNo2 || '—' }}</td>
+                                <td>{{ selectedProduction?.literWeight2 || '—' }}</td>
+                                <td>{{ selectedProduction?.faSolid2 || '—' }}</td>
 
                                 <td>{{ selectedProduction?.totalSolid }}</td>
                                 <td>{{ selectedProduction?.productionTime }}</td>

@@ -33,6 +33,9 @@ public class WireCuttingReport {
 
 	private String shift; // Morning / Afternoon / Night
 
+	@Column(name = "plant_name", length = 50)
+	private String plantName;
+
 	// ===== APPROVAL FLOW =====
 	private String approvalStage; // L1, L2, L3, APPROVED, REJECTED
 

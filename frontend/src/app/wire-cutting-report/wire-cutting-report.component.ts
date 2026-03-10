@@ -44,6 +44,7 @@ export class WireCuttingReportComponent implements OnInit {
 
   filterFromDate = '';
   filterToDate = '';
+  filterPlant = 'Plant 1';
   castingList: any[] = [];
 
   allProductionList: any[] = [];
@@ -83,6 +84,8 @@ export class WireCuttingReportComponent implements OnInit {
 
     this.form = this.fb.group({
       cuttingDate: [today, Validators.required],
+      shift: ['', Validators.required],
+      plantName: ['Plant 1', Validators.required],
       batchNo: ['', Validators.required],
       mouldNo: [0],
       size: [0],
@@ -165,10 +168,23 @@ export class WireCuttingReportComponent implements OnInit {
     if (!this.allProductionList.length) return;
 
     const usedBatchNos = this.list.map(r => r.batchNo);
+    const selectedPlant = this.form?.get('plantName')?.value;
 
-    this.availableProductionList = this.allProductionList.filter(
+    let available = this.allProductionList.filter(
       p => !usedBatchNos.includes(p.batchNo)
     );
+
+    if (selectedPlant) {
+      available = available.filter(p => p.plantName === selectedPlant);
+    }
+
+    this.availableProductionList = available;
+    this.productionList = this.availableProductionList;
+  }
+
+  onPlantChange() {
+    this.form.patchValue({ batchNo: '' });
+    this.filterAvailableBatches();
   }
 
   // ================= FILTER =================
@@ -188,6 +204,9 @@ export class WireCuttingReportComponent implements OnInit {
       : null;
 
     this.filteredList = this.list.filter(r => {
+      // ✅ PLANT FILTER
+      if (this.filterPlant && r.plantName !== this.filterPlant) return false;
+
       if (!r.createdDate) return false;
       const d = new Date(r.createdDate).getTime();
       return (!from || d >= from) && (!to || d <= to);
@@ -232,6 +251,7 @@ export class WireCuttingReportComponent implements OnInit {
   clearFilters() {
     this.filterFromDate = '';
     this.filterToDate = '';
+    this.filterPlant = 'Plant 1';
     this.onDateChange();
   }
 
@@ -241,6 +261,7 @@ export class WireCuttingReportComponent implements OnInit {
 
     this.form.reset({
       cuttingDate: new Date().toISOString().substring(0, 10),
+      plantName: 'Plant 1',
       time: this.getCurrentTime()
     });
 
@@ -254,8 +275,9 @@ export class WireCuttingReportComponent implements OnInit {
 
     this.form.patchValue(row);
 
-    // ✅ EDIT MODE → show ALL batches
-    this.productionList = [...this.allProductionList];
+    // ✅ EDIT MODE → show ALL batches matching the plant
+    const selectedPlant = row.plantName;
+    this.productionList = this.allProductionList.filter(p => !selectedPlant || p.plantName === selectedPlant);
   }
 
 
@@ -667,6 +689,7 @@ export class WireCuttingReportComponent implements OnInit {
       this.importPreviewList = rawRows.map(row => {
         const dto: WireCuttingReport = {
           batchNo: row['Batch No'],
+          plantName: row['Plant Name'] || this.filterPlant,
           cuttingDate: this.toBackendDate(row['Cutting Date']),
           mouldNo: Number(row['Mould No']),
           size: Number(row['Size']),

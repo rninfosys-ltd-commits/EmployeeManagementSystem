@@ -27,6 +27,14 @@
                 <input type="date" [(ngModel)]="filterToDate" (change)="onDateChange()" />
             </div>
 
+            <div class="date-field top-label">
+                <label>Plant Name</label>
+                <select [(ngModel)]="filterPlant" (change)="applyFilters()">
+                    <option value="Plant 1">Plant 1</option>
+                    <option value="Plant 2">Plant 2</option>
+                </select>
+            </div>
+
             <select (change)="onExportChange($event)">
                 <option value="">Export</option>
                 <option value="pdf">Export PDF</option>
@@ -46,7 +54,7 @@
                 <option value="1">Shift 1</option>
                 <option value="2">Shift 2</option>
                 <option value="3">Shift 3</option>
-                <option value="G">General</option>
+                <option value="G">General Shift</option>
             </select>
 
 
@@ -86,7 +94,7 @@
                         <td>{{r.compStrengthovenDry}}</td>
                         <td>{{r.cubeDimensionImmediate}}</td>
                         <td>{{r.densityKgM3}}</td>
-                        <td>{{ r.shift }}</td>
+                        <td>{{ r.shift === 'G' ? 'General Shift' : r.shift ? 'Shift ' + r.shift : '—' }}</td>
 
                         <td>
                             <span class="badge" [ngClass]="r.isActive ? 'active':'inactive'">
@@ -146,6 +154,15 @@
                             <option value="G">General Shift</option>
                         </select>
                         <label>Shift</label>
+                    </div>
+
+                    <div class="form-field plant">
+                        <select formControlName="plantName" (change)="onPlantChange()">
+                            <option value="" disabled>Select Plant</option>
+                            <option value="Plant 1">Plant 1</option>
+                            <option value="Plant 2">Plant 2</option>
+                        </select>
+                        <label>Plant</label>
                     </div>
 
                 </div>
@@ -281,7 +298,7 @@
 
                     <div class="meta-text">
                         <strong>Shift:</strong>
-                        {{ selectedCube?.shift }}
+                        {{ selectedCube?.shift === 'G' ? 'General Shift' : selectedCube?.shift ? 'Shift ' + selectedCube?.shift : '—' }}
                     </div>
 
                 </div>

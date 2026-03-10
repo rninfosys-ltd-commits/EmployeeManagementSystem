@@ -1,6 +1,7 @@
 package com.schoolapp.service;
 
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import com.schoolapp.dao.CastingHallReportRequestDto;
 import com.schoolapp.dao.CastingImportRequestDto;
@@ -15,7 +16,7 @@ public interface CastingHallReportService {
 
 	void delete(Long id);
 
-	List<CastingHallReport> getAll();
+	Page<CastingHallReport> getAll(Pageable pageable, String plantName);
 
 	CastingHallReport approve(Long id, Long userId, String role);
 

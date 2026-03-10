@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder } from '@angular/forms';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { CubeTestService } from '../services/CubeTestService';
 import * as XLSX from 'xlsx';
 import jsPDF from 'jspdf';
@@ -35,6 +35,7 @@ export class CubeTestComponent implements OnInit {
   filterFromDate = '';
   filterToDate = '';
   filterShift = '';
+  filterPlant = 'Plant 1';
 
   currentPage = 1;
   pageSize = 5;
@@ -58,7 +59,8 @@ export class CubeTestComponent implements OnInit {
       reportDate: [today],     // ✅ fixed name
       castDate: [''],          // ✅ must exist
       testingDate: [''],
-      shift: [''],
+      shift: ['', Validators.required],
+      plantName: ['Plant 1', Validators.required],
 
       cubeDimensionImmediate: [''],
       cubeDimensionOvenDry1: [''],
@@ -119,11 +121,27 @@ export class CubeTestComponent implements OnInit {
     const start = (this.currentPage - 1) * this.pageSize;
     this.paginated = this.filtered.slice(start, start + this.pageSize);
   }
+  allBatches: any[] = [];
+
   loadBatches() {
     this.blockService.getAll().subscribe(res => {
-      this.batches = res;
-      console.log('Batches:', this.batches); // 🔥 debug
+      this.allBatches = res || [];
+      this.filterBatchesByPlant();
     });
+  }
+
+  filterBatchesByPlant() {
+    const selectedPlant = this.form?.get('plantName')?.value;
+    let filtered = this.allBatches;
+    if (selectedPlant) {
+      filtered = this.allBatches.filter(b => b.plantName === selectedPlant);
+    }
+    this.batches = filtered;
+  }
+
+  onPlantChange() {
+    this.form.patchValue({ batchNo: '', castDate: '' });
+    this.filterBatchesByPlant();
   }
 
   nextPage() {
@@ -175,6 +193,9 @@ export class CubeTestComponent implements OnInit {
       // SHIFT FILTER
       if (this.filterShift && r.shift !== this.filterShift) return false;
 
+      // ✅ PLANT FILTER
+      if (this.filterPlant && r.plantName !== this.filterPlant) return false;
+
       return true;
     });
 
@@ -192,6 +213,7 @@ export class CubeTestComponent implements OnInit {
     this.filterFromDate = '';
     this.filterToDate = '';
     this.filterShift = '';
+    this.filterPlant = 'Plant 1';
     this.onDateChange();
   }
 
@@ -201,6 +223,7 @@ export class CubeTestComponent implements OnInit {
 
     this.form.reset({
       reportDate: today,   // ✅ keep today after reset
+      plantName: 'Plant 1',
       isActive: 1
     });
 
@@ -213,6 +236,23 @@ export class CubeTestComponent implements OnInit {
     this.form.patchValue(row);
     this.editId = row.id;
     this.showLeads = false;
+
+    // Filter batches by the plant of the row
+    const selectedPlant = row.plantName;
+    if (selectedPlant) {
+      this.batches = this.allBatches.filter(b => b.plantName === selectedPlant);
+    } else {
+      this.batches = [...this.allBatches];
+    }
+
+    // Ensure current batch is present in dropdown
+    if (!this.batches.find(b => b.batchNumber === row.batchNo)) {
+      this.batches.unshift({
+        batchNumber: row.batchNo,
+        castingDate: row.castDate,
+        plantName: row.plantName
+      });
+    }
   }
 
   submit() {

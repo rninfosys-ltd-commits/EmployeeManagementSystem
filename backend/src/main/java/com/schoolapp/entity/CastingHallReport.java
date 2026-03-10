@@ -38,6 +38,9 @@ public class CastingHallReport {
 
     private String shift; // Morning / Afternoon / Night
 
+    @Column(name = "plant_name", length = 50)
+    private String plantName;
+
     // ================= APPROVAL FLOW =================
 
     @Column(name = "approved_byl1")

@@ -18,6 +18,21 @@ public class WireCuttingReportRequestDto {
     private int branchId;
     private int orgId;
     private int updatedBy;
+    private String plantName;
+    private String shift;
+
+    public String getPlantName() {
+        return plantName;
+    }
+    public void setPlantName(String plantName) {
+        this.plantName = plantName;
+    }
+    public String getShift() {
+        return shift;
+    }
+    public void setShift(String shift) {
+        this.shift = shift;
+    }
 	public String getBatchNo() {
 		return batchNo;
 	}

@@ -32,6 +32,8 @@ public class AutoclaveServiceImpl implements AutoclaveService {
         a.setCompletedAt(dto.completedAt);
         a.setCompletedDate(dto.completedDate);
         a.setRemarks(dto.remarks);
+        a.setShift(dto.shift);
+        a.setPlantName(dto.plantName);
 
         a.setUserId(dto.userId);
         a.setBranchId(dto.branchId);
@@ -43,10 +45,12 @@ public class AutoclaveServiceImpl implements AutoclaveService {
 
         for (AutoclaveWagonDTO w : dto.wagons) {
             AutoclaveWagon aw = new AutoclaveWagon();
-            aw.setEBatch(w.eBatch);
-            aw.setESize(w.eSize);
+            aw.setBatchNo(w.batchNo);
+            aw.setSize(w.size);
             aw.setMBatch(w.mBatch);
             aw.setMSize(w.mSize);
+            aw.setEBatch(w.eBatch);
+            aw.setESize(w.eSize);
             aw.setWBatch(w.wBatch);
             aw.setWSize(w.wSize);
 
@@ -82,15 +86,19 @@ public class AutoclaveServiceImpl implements AutoclaveService {
             d.completedAt = a.getCompletedAt();
             d.completedDate = a.getCompletedDate();
             d.remarks = a.getRemarks();
+            d.shift = a.getShift();
+            d.plantName = a.getPlantName();
 
             // 🔥 THIS IS THE FIX
             if (a.getWagons() != null) {
                 d.wagons = a.getWagons().stream().map(w -> {
                     AutoclaveWagonDTO wd = new AutoclaveWagonDTO();
-                    wd.eBatch = w.getEBatch();
-                    wd.eSize = w.getESize();
+                    wd.batchNo = w.getBatchNo();
+                    wd.size = w.getSize();
                     wd.mBatch = w.getMBatch();
                     wd.mSize = w.getMSize();
+                    wd.eBatch = w.getEBatch();
+                    wd.eSize = w.getESize();
                     wd.wBatch = w.getWBatch();
                     wd.wSize = w.getWSize();
                     return wd;
@@ -116,13 +124,17 @@ public class AutoclaveServiceImpl implements AutoclaveService {
         d.completedAt = a.getCompletedAt();
         d.completedDate = a.getCompletedDate();
         d.remarks = a.getRemarks();
+        d.shift = a.getShift();
+        d.plantName = a.getPlantName();
 
         d.wagons = a.getWagons().stream().map(w -> {
             AutoclaveWagonDTO wd = new AutoclaveWagonDTO();
-            wd.eBatch = w.getEBatch();
-            wd.eSize = w.getESize();
+            wd.batchNo = w.getBatchNo();
+            wd.size = w.getSize();
             wd.mBatch = w.getMBatch();
             wd.mSize = w.getMSize();
+            wd.eBatch = w.getEBatch();
+            wd.eSize = w.getESize();
             wd.wBatch = w.getWBatch();
             wd.wSize = w.getWSize();
             return wd;
@@ -149,6 +161,8 @@ public class AutoclaveServiceImpl implements AutoclaveService {
         a.setCompletedAt(dto.completedAt);
         a.setCompletedDate(dto.completedDate);
         a.setRemarks(dto.remarks);
+        a.setShift(dto.shift);
+        a.setPlantName(dto.plantName);
 
         a.setUpdatedDate(new Date());
         a.setUpdatedBy(dto.userId);
@@ -161,10 +175,12 @@ public class AutoclaveServiceImpl implements AutoclaveService {
             for (AutoclaveWagonDTO w : dto.wagons) {
 
                 AutoclaveWagon aw = new AutoclaveWagon();
-                aw.setEBatch(w.eBatch);
-                aw.setESize(w.eSize);
+                aw.setBatchNo(w.batchNo);
+                aw.setSize(w.size);
                 aw.setMBatch(w.mBatch);
                 aw.setMSize(w.mSize);
+                aw.setEBatch(w.eBatch);
+                aw.setESize(w.eSize);
                 aw.setWBatch(w.wBatch);
                 aw.setWSize(w.wSize);
 

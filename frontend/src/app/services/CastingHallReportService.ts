@@ -26,9 +26,13 @@ export class CastingHallReportService {
     }
 
     // ================= CRUD =================
-    getAll(): Observable<any[]> {
-        return this.http.get<any[]>(
-            this.baseUrl,
+    getAll(page: number = 0, size: number = 10, plantName: string = ''): Observable<any> {
+        let url = `${this.baseUrl}?page=${page}&size=${size}`;
+        if (plantName) {
+            url += `&plantName=${encodeURIComponent(plantName)}`;
+        }
+        return this.http.get<any>(
+            url,
             this.getAuthHeaders()
         );
     }

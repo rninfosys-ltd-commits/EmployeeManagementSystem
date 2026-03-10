@@ -16,6 +16,8 @@ public class AutoclaveDTO {
     public String completedAt;
     public Date completedDate;
     public String remarks;
+    public String shift;
+    public String plantName;
 
     public int userId;
     public int branchId;

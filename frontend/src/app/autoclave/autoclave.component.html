@@ -30,6 +30,13 @@
                 <input type="date" [(ngModel)]="filterToDate" (change)="onDateChange()" />
             </div>
 
+            <div class="date-field top-label">
+                <label>Plant Name</label>
+                <select [(ngModel)]="filterPlant" (change)="applyFilters()">
+                    <option value="Plant 1">Plant 1</option>
+                    <option value="Plant 2">Plant 2</option>
+                </select>
+            </div>
             <select (change)="onExportChange($event)">
                 <option value="">Export</option>
                 <option value="pdf">Export PDF</option>
@@ -56,6 +63,8 @@
                     <th>Autoclave No</th>
                     <th> Autoclave Run No</th>
                     <th>Start Date</th>
+                    <th>Plant</th>
+                    <th>Shift</th>
                     <th>Completed Date</th>
                     <th>Remarks</th>
                     <th>Action</th>
@@ -67,6 +76,8 @@
                     <td>{{ r.autoclaveNo }}</td>
                     <td>{{ r.runNo }}</td>
                     <td>{{ r.startedDate | date:'dd-MM-yyyy' }}</td>
+                    <td>{{ r.plantName || '—' }}</td>
+                    <td>{{ r.shift === 'G' ? 'General Shift' : r.shift ? 'Shift ' + r.shift : '—' }}</td>
                     <td>{{ r.completedDate | date:'dd-MM-yyyy' }}</td>
                     <td>{{ r.remarks || '—' }}</td>
                     <td>
@@ -110,6 +121,26 @@
                 <div class="form-field date">
                     <input type="date" formControlName="startedDate">
                     <label>Date</label>
+                </div>
+
+                <div class="form-field shift">
+                    <select formControlName="shift">
+                        <option value="" disabled>Select Shift</option>
+                        <option value="1">Shift 1</option>
+                        <option value="2">Shift 2</option>
+                        <option value="3">Shift 3</option>
+                        <option value="G">General Shift</option>
+                    </select>
+                    <label>Shift</label>
+                </div>
+
+                <div class="form-field plant">
+                    <select formControlName="plantName" (change)="onPlantChange()">
+                        <option value="" disabled>Select Plant</option>
+                        <option value="Plant 1">Plant 1</option>
+                        <option value="Plant 2">Plant 2</option>
+                    </select>
+                    <label>Plant</label>
                 </div>
             </div>
 
@@ -169,12 +200,13 @@
         <!-- ================= ADD WAGON ================= -->
         <form [formGroup]="wagonForm" class="card mt-3">
 
-            <div class="row row-30">
+            <div class="row row-30" [formGroup]="wagonForm">
 
+                <!-- E SIDE BATCH -->
                 <div class="form-field">
                     <select formControlName="eBatch">
-                        <option [ngValue]="null">Select</option>
-                        <option *ngFor="let b of getAvailableBatchesFor('e')" [ngValue]="b">
+                        <option [ngValue]="null">Select E-Batch</option>
+                        <option *ngFor="let b of availableBatches" [ngValue]="b" [disabled]="isBatchUsed(b)">
                             {{ b }}
                         </option>
                     </select>
@@ -186,10 +218,11 @@
                     <label>E Size</label>
                 </div>
 
+                <!-- M SIDE BATCH -->
                 <div class="form-field">
                     <select formControlName="mBatch">
-                        <option [ngValue]="null">Select</option>
-                        <option *ngFor="let b of getAvailableBatchesFor('m')" [ngValue]="b">
+                        <option [ngValue]="null">Select M-Batch</option>
+                        <option *ngFor="let b of availableBatches" [ngValue]="b" [disabled]="isBatchUsed(b)">
                             {{ b }}
                         </option>
                     </select>
@@ -201,10 +234,11 @@
                     <label>M Size</label>
                 </div>
 
+                <!-- W SIDE BATCH -->
                 <div class="form-field">
                     <select formControlName="wBatch">
-                        <option [ngValue]="null">Select</option>
-                        <option *ngFor="let b of getAvailableBatchesFor('w')" [ngValue]="b">
+                        <option [ngValue]="null">Select W-Batch</option>
+                        <option *ngFor="let b of availableBatches" [ngValue]="b" [disabled]="isBatchUsed(b)">
                             {{ b }}
                         </option>
                     </select>
@@ -215,13 +249,14 @@
                     <input formControlName="wSize">
                     <label>W Size</label>
                 </div>
+
                 <div class="actions1">
-                    <button type="button" (click)="addWagon()" [disabled]="wagons.length >= 14">
+                    <button type="button" (click)="addWagon()" [disabled]="wagons.length >= 14 || !canAddWagon()">
                         Add Wagon
                     </button>
                 </div>
 
-            </div>
+        </div>
 
 
 
@@ -233,12 +268,12 @@
             <thead>
                 <tr>
                     <th>Wagon No</th>
-                    <th>E Batch</th>
-                    <th>E Size</th>
-                    <th>M Batch</th>
-                    <th>M Size</th>
-                    <th>W Batch</th>
-                    <th>W Size</th>
+                    <th>E-Batch</th>
+                    <th>E-Size</th>
+                    <th>M-Batch</th>
+                    <th>M-Size</th>
+                    <th>W-Batch</th>
+                    <th>W-Size</th>
                     <th>Action</th>
                 </tr>
             </thead>
@@ -246,12 +281,12 @@
             <tbody>
                 <tr *ngFor="let w of wagons.controls; let i = index">
                     <td>{{ i + 1 }}</td>
-                    <td>{{ w.value.eBatch }}</td>
-                    <td>{{ w.value.eSize }}</td>
-                    <td>{{ w.value.mBatch }}</td>
-                    <td>{{ w.value.mSize }}</td>
-                    <td>{{ w.value.wBatch }}</td>
-                    <td>{{ w.value.wSize }}</td>
+                    <td>{{ w.value.eBatch || '—' }}</td>
+                    <td>{{ w.value.eSize || '—' }}</td>
+                    <td>{{ w.value.mBatch || '—' }}</td>
+                    <td>{{ w.value.mSize || '—' }}</td>
+                    <td>{{ w.value.wBatch || '—' }}</td>
+                    <td>{{ w.value.wSize || '—' }}</td>
                     <td>
                         <button class="link-btn danger" (click)="removeWagon(i)">
                             Remove
