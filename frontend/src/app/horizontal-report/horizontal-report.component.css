@@ -516,6 +516,58 @@
     border-color: #667eea !important;
 }
 
+/* ================= MOBILE FIXES ================= */
+@media (max-width: 768px) {
+    .hr-page {
+        padding: 10px;
+    }
+
+    .hr-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .hr-filters {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+        gap: 12px;
+    }
+
+    .filter-group input, .btn-apply, .btn-clear {
+        width: 100% !important;
+        min-width: 0 !important;
+    }
+
+    .filter-actions {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .hr-legend {
+        justify-content: center;
+    }
+
+    .hr-scroll-wrapper {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .hr-pagination {
+        flex-direction: column;
+        gap: 10px;
+        align-items: stretch;
+    }
+
+    .pg-info {
+        margin: 0;
+        text-align: center;
+    }
+}
+
 .pg-info {
     margin-left: auto;
     font-size: 0.8rem;

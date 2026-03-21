@@ -264,11 +264,10 @@ select:focus {
     align-items: center;
     gap: 14px;
     margin-top: 24px;
-    font-size: 20px;
 }
 
 .pagination button {
-    padding: 8px 20px;
+    padding: 8px 18px;
     border-radius: 999px;
     border: none;
     font-weight: 600;
@@ -281,6 +280,97 @@ select:focus {
 .pagination button:disabled {
     background: #94a3b8;
     cursor: not-allowed;
+}
+
+/* ================= MOBILE FIXES ================= */
+@media (max-width: 768px) {
+    .project-wrapper {
+        padding: 10px;
+    }
+
+    .project-card {
+        padding: 15px;
+        margin: 0;
+    }
+
+    .title1 {
+        width: 100%;
+        margin-bottom: 15px;
+    }
+
+    .header-top,
+    .form-header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .field.full,
+    .field.span-3 {
+        grid-column: span 1;
+    }
+
+    .field.floating label {
+        font-size: 14px;
+    }
+
+    .field.floating input:not(:placeholder-shown)+label,
+    .field.floating textarea:not(:placeholder-shown)+label {
+        font-size: 14px;
+    }
+
+    .filters {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+        gap: 12px;
+        overflow-x: hidden;
+    }
+
+    .filters input[type="date"],
+    .filters select,
+    .clear-btn,
+    .date-field.top-label {
+        width: 100% !important;
+        min-width: 0 !important;
+        height: 42px;
+        font-size: 16px !important;
+    }
+
+    .date-field label,
+    .date-field.top-label label {
+        font-size: 14px !important;
+    }
+
+    .actions {
+        width: 100%;
+        margin-top: 20px;
+    }
+
+    .actions button {
+        width: 100%;
+        min-width: 0;
+    }
+
+    .project-table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    .project-table th {
+        font-size: 14px;
+    }
+
+    .pagination {
+        font-size: 16px;
+    }
 }
 
 /* ================= TABLE SCROLL ================= */
@@ -299,402 +389,8 @@ select:focus {
     border-radius: 6px;
 }
 
-/* ================= RESPONSIVE ================= */
-@media (max-width: 1100px) {
-    .grid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .field.full {
-        grid-column: span 2;
+/* ================= RESPONSIVE ================#endregion
+   text-align: center;
     }
 }
-
-@media (max-width: 600px) {
-    .grid {
-        grid-template-columns: 1fr;
-    }
-
-    .field.full {
-        grid-column: span 1;
-    }
-
-    .actions button {
-        width: 100%;
-    }
-}
-
-.filters {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 14px;
-    /* tighter & balanced spacing */
-    padding: 14px 18px;
-
-    background: #ffffff;
-    border: 1px solid #e5e7eb;
-    border-radius: 14px;
-    margin-bottom: 10px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-}
-
-/* ================= DATE FIELD (LABEL + INPUT) ================= */
-
-.date-field {
-    display: flex;
-    flex-direction: column;
-    gap: 6px;
-}
-
-/* LABEL */
-.date-field label {
-    font-size: 19px;
-    font-weight: 500;
-    color: #374151;
-}
-
-/* ================= INPUTS & SELECTS ================= */
-
-.filters input[type="date"],
-.filters select {
-    height: 40px;
-    /* ✅ same height everywhere */
-    width: 280px;
-    /* ✅ same width everywhere */
-
-    padding: 0 14px;
-    font-size: 15px;
-
-    border-radius: 10px;
-    border: 1px solid #d1d5db;
-    background: #ffffff;
-    color: #374151;
-
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* ================= FOCUS (CLEAN & SOFT) ================= */
-
-.filters input:focus,
-.filters select:focus {
-    outline: none;
-    border-color: #6366f1;
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.15);
-}
-
-/* ================= SELECT ARROW (CONSISTENT) ================= */
-
-.filters select {
-    appearance: none;
-    background-image: url("data:image/svg+xml,%3Csvg fill='none' stroke='%236b7280' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
-    background-repeat: no-repeat;
-    background-position: right 14px center;
-    background-size: 16px;
-    padding-right: 40px;
-}
-
-/* ================= CLEAR BUTTON ================= */
-
-.clear-btn {
-    height: 40px;
-    /* matches inputs */
-    padding: 0 35px;
-
-    border-radius: 999px;
-    border: none;
-
-    font-size: 16px;
-    font-weight: 600;
-
-    background: #ff0000;
-    color: #ffffff;
-
-    cursor: pointer;
-    white-space: nowrap;
-    transition: background 0.2s ease, transform 0.2s ease;
-}
-
-.clear-btn:hover {
-    background: #dc2626;
-    transform: translateY(-1px);
-}
-
-/* ================= SCROLLBAR (CLEAN) ================= */
-
-.filters::-webkit-scrollbar {
-    height: 4px;
-}
-
-.filters::-webkit-scrollbar-thumb {
-    background: #e5e7eb;
-    border-radius: 4px;
-}
-
-
-
-
-
-
-
-
-
-/* ================= TOP LINE LABEL INPUT ================= */
-
-.date-field.top-label {
-    position: relative;
-    min-width: 280px;
-}
-
-/* LABEL ON BORDER LINE */
-.date-field.top-label label {
-    position: absolute;
-    top: -9px;
-    /* 👈 sits on border line */
-    left: 14px;
-    background: #ffffff;
-    /* cuts border behind */
-    padding: 0 6px;
-
-    font-size: 19px;
-    font-weight: 600;
-    color: #2563eb;
-    z-index: 2;
-}
-
-/* INPUT */
-.date-field.top-label input {
-    width: 100%;
-    height: 42px;
-    padding: 0 14px;
-    font-size: 19px;
-
-    border-radius: 12px;
-    border: 1.5px solid #cbd5e1;
-    background: #f8fafc;
-
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-/* FOCUS */
-.date-field.top-label input:focus {
-    outline: none;
-    background: #ffffff;
-    border-color: #2563eb;
-    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
-}
-
-
-/* ================= CLOSE BUTTON ================= */
-
-.close-btn {
-    background: red;
-    color: white;
-    border: none;
-    font-size: 22px;
-    cursor: pointer;
-}
-
-
-/* ================= MODAL BACKDROP ================= */
-.modal-backdrop-custom {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 9999;
-}
-
-/* ================= MODAL ================= */
-.modal-custom {
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10000;
-
-    width: 92%;
-    max-width: 1200px;
-}
-
-/* ================= MODAL CARD ================= */
-.modal-card {
-    background: #ffffff;
-    border-radius: 16px;
-    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.45);
-
-    max-height: 85vh;
-    display: flex;
-    flex-direction: column;
-    padding: 15px;
-}
-
-/* ================= MODAL FOOTER ================= */
-.modal-footer {
-    display: flex;
-    justify-content: space-between;
-    /* ⬅ left & right */
-    align-items: center;
-    padding: 16px 20px;
-    border-top: 1px solid #e5e7eb;
-}
-
-/* Optional: keep button sizes consistent */
-.modal-footer .toggle-btn,
-.modal-footer .clear-btn {
-    min-width: 220px;
-}
-
-/* ================= MODAL HEADER ================= */
-.modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    /* ⬅ left & right */
-    padding: 16px 20px;
-    border-bottom: 1px solid #e5e7eb;
-}
-
-/* Title */
-.modal-header h3 {
-    margin: 0;
-    font-size: 22px;
-    font-weight: 600;
-    color: #0f172a;
-}
-
-/* Close button */
-.modal-header .close-btn {
-    background: #ef4444;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    width: 36px;
-    height: 36px;
-    font-size: 20px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.modal-header .close-btn:hover {
-    background: #dc2626;
-}
-
-/* ================= COMPACT FILTERS – SCHEDULE LIST ================= */
-
-@media (max-width: 1200px) {
-
-    .filters {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        /* tighter spacing */
-        flex-wrap: nowrap;
-        /* ❌ no wrapping */
-        overflow-x: hidden;
-        /* ❌ no scroll */
-        padding: 10px 12px;
-    }
-
-    /* DATE FIELDS */
-    .filters .date-field.top-label {
-        min-width: unset;
-    }
-
-    .filters .date-field.top-label input {
-        width: 150px;
-        /* 🔽 reduced date width */
-        height: 34px;
-        font-size: 16px;
-        padding: 0 10px;
-    }
-
-    .filters .date-field.top-label label {
-        font-size: 18px;
-        top: -10px;
-    }
-
-    /* SELECT DROPDOWNS */
-    .filters select {
-        width: 140px;
-        /* 🔽 smaller select */
-        height: 34px;
-        font-size: 18px;
-        padding: 0 10px;
-    }
-
-    /* CLEAR BUTTON */
-    .filters .clear-btn {
-        height: 34px;
-        padding: 0 18px;
-        font-size: 18px;
-        white-space: nowrap;
-    }
-}
-
-.project-table tbody tr:nth-child(odd) {
-    background-color: #bfd6edab;
-
-    font-size: 20px;
-}
-
-.project-table tbody tr:nth-child(even) {
-    background-color: white;
-    font-size: 20px;
-
-}
-
-/* ================= MOBILE FILTER RESPONSIVE – SCHEDULE ================= */
-
-@media (max-width: 768px) {
-
-    /* FILTER CONTAINER */
-    .filters {
-        flex-wrap: wrap;
-        /* allow wrapping */
-        gap: 12px;
-        justify-content: flex-start;
-        overflow-x: visible;
-        /* remove horizontal scroll */
-        padding: 12px;
-    }
-
-    /* EACH FILTER ITEM FULL WIDTH */
-    .filters>* {
-        flex: 1 1 100%;
-        max-width: 100%;
-    }
-
-    /* DATE FIELDS */
-    .filters .date-field.top-label {
-        width: 100%;
-    }
-
-    .filters .date-field.top-label input {
-        width: 100%;
-        height: 40px;
-        font-size: 18px;
-    }
-
-    .filters .date-field.top-label label {
-        font-size: 18px;
-        top: -10px;
-    }
-
-    /* SELECT DROPDOWNS */
-    .filters select {
-        width: 100%;
-        height: 40px;
-        font-size: 18px;
-    }
-
-    /* CLEAR BUTTON */
-    .filters .clear-btn {
-        width: 100%;
-        height: 42px;
-        font-size: 20px;
-        text-align: center;
-    }
-}
+*/

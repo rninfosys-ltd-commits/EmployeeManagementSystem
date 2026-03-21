@@ -547,27 +547,25 @@ textarea {
     /* HEADER + TOGGLE IN ONE LINE */
     .header-top,
     .form-header {
-        display: flex;
-        flex-direction: row;
+        flex-direction: column;
         align-items: center;
-        justify-content: space-between;
-        gap: 8px;
+        text-align: center;
+        gap: 12px;
     }
 
     .header-top h2,
     .form-header h2 {
         font-size: 18px;
-        padding: 6px 10px;
-        width: auto;
-        white-space: nowrap;
+        width: 100%;
+        text-align: center;
+        margin: 0;
     }
 
     .toggle-btn {
-        font-size: 17px;
-        padding: 12px 14px;
-        white-space: nowrap;
-        border-radius: 10px;
-        margin-top: -18px;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px;
+        margin: 0;
     }
 
     /* FORM GRID SINGLE COLUMN */
@@ -601,25 +599,28 @@ textarea {
 
     /* FILTER BAR STACK */
     .filters {
-        flex-wrap: wrap;
-        gap: 18px;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+        gap: 12px;
     }
 
-    .filters>* {
-        width: 100%;
+    .filters > * {
+        width: 100% !important;
     }
 
     .filters select,
     .filters input {
         width: 100%;
-        height: 40px;
-        font-size: 18px;
+        height: 42px;
+        font-size: 16px;
     }
 
     .filters .clear-btn {
         width: 100%;
         height: 42px;
-        font-size: 25px;
+        font-size: 16px;
+        border-radius: 8px;
     }
 
     /* TABLE SCROLL */

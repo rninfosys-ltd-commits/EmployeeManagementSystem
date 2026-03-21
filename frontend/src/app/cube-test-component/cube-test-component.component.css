@@ -596,16 +596,15 @@ button {
 }
 
 .page-title1 {
-    font-size: 26px;
+    font-size: 20px;
     font-weight: 700;
     background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
-
     color: white;
-    padding: 13px 25px;
+    padding: 10px 20px;
     border-radius: 10px;
-    width: 200px;
+    width: auto;
     margin-top: 5px;
-    margin-left: 10px;
+    margin-left: 0;
 }
 
 /* 🔥 Full width textarea inside grid rows */
@@ -903,86 +902,65 @@ button {
     pointer-events: auto !important;
 }
 
-/* ================= CUBE TEST MOBILE FIX (MATCH AUTOCLAVE) ================= */
+/* ================= CUBE TEST MOBILE FIX (MATCH/* ================= MOBILE FIXES ================= */
 @media (max-width: 768px) {
+    .lead-wrapper {
+        padding: 10px;
+    }
 
-    /* HEADER */
+    .lead-card {
+        padding: 10px;
+    }
 
+    /* Header */
     .lead-card .header {
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 8px;
-        padding: 5px;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
     }
 
     .lead-card .title {
-        font-size: 18px;
-        padding: 6px 25px;
-        width: auto;
-        white-space: nowrap;
+        font-size: 20px;
+        width: 100%;
+        text-align: center;
     }
 
     .toggle-btn {
-        padding: 12px 30px;
-        font-size: 18px;
-        border-radius: 6px;
+        width: 100%;
+        font-size: 16px;
+        padding: 12px;
     }
 
-    /* FILTERS */
-
+    /* Filters */
     .lead-card .filters {
-        flex-direction: column !important;
-        align-items: stretch !important;
+        flex-direction: column;
+        align-items: stretch;
+        padding: 10px;
         gap: 12px;
-        padding: 8px;
-        border: none;
-        background: transparent;
     }
 
-    .lead-card .filters>* {
+    .lead-card .filters > * {
         width: 100% !important;
     }
 
-    .lead-card .filters input,
-    .lead-card .filters select,
-    .lead-card {
+    .filters input[type="date"],
+    .filters select,
+    .clear-btn {
         width: 100% !important;
-        height: 48px;
-        font-size: 18px;
+        height: 42px !important;
+        font-size: 16px !important;
     }
 
     .clear-btn {
-        font-size: 25px;
+        font-size: 16px !important;
+        border-radius: 8px;
     }
 
-    /* TABLE SCROLL */
-
-    .table-scroll {
-        width: 100%;
-        overflow-x: auto;
-    }
-
-    .lead-table {
-        min-width: 720px;
-    }
-
-    .lead-table th,
-    .lead-table td {
-        white-space: nowrap;
-        font-size: 17px;
-    }
-
-    /* FORM HEADER */
-
+    /* Form rows stacking */
     .row-header {
         flex-direction: column;
-        gap: 25px;
-    }
-
-    .page-title1 {
-        width: 100%;
-        text-align: center;
-        margin-left: 0;
+        gap: 15px;
     }
 
     .header-right {
@@ -991,60 +969,51 @@ button {
         gap: 12px;
     }
 
-    .header-right .form-field {
-        width: 100%;
-        margin-top: 5px;
-    }
-
-    .form-field label {
-        top: 0px !important;
-    }
-
-    /* FORM GRID → SINGLE COLUMN */
-
     .grid {
         grid-template-columns: 1fr !important;
-        gap: 18px;
+        gap: 15px;
     }
 
-    /* INPUTS */
-
+    /* Form fields */
     .form-field input,
     .form-field select,
     .form-field textarea {
-        width: 100%;
-        font-size: 20px;
+        font-size: 16px;
+        height: 42px;
     }
 
-    /* ACTIONS */
+    .form-field label {
+        font-size: 16px !important;
+    }
 
+    /* Action buttons */
     .actions {
-        flex-direction: row;
-        gap: 10px;
-        align-items: center;
+        flex-direction: column;
+        gap: 12px;
     }
 
     .actions button {
-        width: 60%;
-        font-size: 18px;
+        width: 100%;
+        margin: 0;
+        font-size: 16px;
+        padding: 12px;
     }
 
-    /* PAGINATION */
-
-    .pagination {
-        flex-direction: row;
-        gap: 10px;
-    }
-
-    /* MODAL TABLE */
-
-    .modal-body table,
-    .table1 {
+    /* Table responsiveness */
+    .table-scroll {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
 
+    .lead-table th,
+    .lead-table td {
+        min-width: 120px;
+        font-size: 14px;
+        padding: 10px;
+    }
+
+    /* Modal improvements */
     .modal-footer {
         flex-direction: column;
         gap: 10px;
@@ -1053,56 +1022,4 @@ button {
     .modal-footer .btn {
         width: 100%;
     }
-
-    .lead-wrapper {
-        padding: 10px 2px 40px 2px;
-        min-height: 162vh;
-    }
-
-    .lead-card .date-field.top-label input {
-        height: 48px !important;
-        /* same as select */
-        font-size: 18px !important;
-        padding: 0 14px !important;
-        border-radius: 12px;
-    }
-
-    .lead-card .filters select {
-        height: 48px !important;
-    }
-
-    /* ================= MOBILE HEADER FIX ================= */
-
-    .lead-card .header {
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 12px;
-        padding: 10px 0;
-    }
-
-    .lead-card .title {
-        font-size: 25px;
-        padding: 6px 18px;
-        width: auto;
-        white-space: nowrap;
-        text-align: center;
-        margin: 0 auto;
-    }
-
-    .lead-card .header>div {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-    }
-
-    .toggle-btn {
-        flex: 1;
-        padding: 10px;
-        font-size: 18px;
-        margin: 0 !important;
-        border-radius: 6px;
-        white-space: nowrap;
-    }
-
 }

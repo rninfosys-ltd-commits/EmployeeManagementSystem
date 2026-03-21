@@ -11,7 +11,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .add-btn {
@@ -775,37 +777,53 @@ hr {
     border-radius: 6px;
 }
 
-
-/* ================= WIRE CUTTING MOBILE FIX (MATCH PRODUCTION + CASTING) ================= */
+/* ================= MOBILE FIXES ================= */
 @media (max-width: 768px) {
+    .container {
+        padding: 10px;
+    }
 
-    /* HEADER */
+    .main {
+        padding: 10px;
+    }
+
+    /* Header adjustments */
     .header {
-        flex-direction: row;
-        justify-content: space-between;
-        gap: 8px;
-    }
-
-    .page-title {
-        font-size: 22px;
-        padding: 6px 10px;
-        white-space: nowrap;
-    }
-
-    .add-btn {
-        padding: 12px 20px;
-        font-size: 25px;
-        margin-top: -15px;
-    }
-
-    /* FILTERS */
-
-    .filters {
-        flex-direction: column !important;
-        align-items: stretch !important;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
         gap: 12px;
-        overflow-x: hidden !important;
-        padding: 15px 0px;
+        margin-bottom: 20px;
+    }
+
+    .header > div {
+        display: flex;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .header .add-btn {
+        flex: 1;
+        padding: 10px;
+        font-size: 14px;
+        margin: 0 !important;
+    }
+
+    .page-title, .page-title1 {
+        font-size: 18px;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 15px;
+        border-radius: 6px;
+    }
+
+    /* Filters adjustments */
+    .filters {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+        gap: 12px;
+        margin-bottom: 20px;
     }
 
     .date-field.top-label,
@@ -813,233 +831,75 @@ hr {
     .filters input[type="date"],
     .clear-btn {
         width: 100% !important;
-        min-width: 100% !important;
+        max-width: none !important;
+        min-width: 0 !important;
     }
 
     .clear-btn {
-        font-size: 25px;
-    }
-
-    /* TABLE SCROLL */
-
-    table.custom-table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    table.custom-table thead th,
-    table.custom-table tbody td {
-        min-width: 130px;
-        white-space: nowrap !important;
-    }
-
-    /* MAIN CONTAINER */
-
-    .container {
-        padding: 10px 5px 40px 5px;
-    }
-
-    .main {
-        padding: 8px;
-    }
-
-    /* FORM */
-
-    form.card {
-        padding: 12px;
-    }
-
-    .row-header {
-        grid-template-columns: 1fr !important;
-        gap: 12px;
-    }
-
-    .row-3,
-    .row-4 {
-        grid-template-columns: 1fr !important;
-        gap: 12px;
-    }
-
-    .form-field input,
-    .form-field select,
-    .form-field textarea {
-        width: 100%;
         font-size: 16px;
-        padding: 10px;
+        padding: 12px;
+        border-radius: 8px;
     }
 
-    /* ACTION BUTTONS */
+    /* Form rows stacking */
+    .row-header, .row-1, .row-3, .row-4 {
+        grid-template-columns: 1fr !important;
+        gap: 15px;
+    }
 
+    /* Action buttons consistency */
     .actions {
-        flex-direction: row;
-        gap: 10px;
+        flex-direction: column;
+        gap: 12px;
+        margin-top: 15px;
     }
 
     .actions button {
         width: 100%;
-        font-size: 18px;
-    }
-
-    .modal-header {
-        display: flex !important;
-        justify-content: flex-start !important;
-        /* 🔥 force left */
-        align-items: flex-start !important;
-        padding: 10px 20px !important;
-        /* 🔥 remove bootstrap offset */
-        padding-right: 40px !important;
-        position: relative;
-    }
-
-    .modal-header-big {
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        /* 🔥 text left */
-        justify-content: flex-start;
-
-        width: 100%;
-        margin: 0 !important;
-        /* 🔥 remove centering */
-        padding: 0 !important;
-
-        gap: 6px;
-        white-space: normal;
-        /* 🔥 allow wrap */
-    }
-
-    .modal-header-big .modal-title,
-    .modal-header-big .meta-text {
-        text-align: left;
-        /* 🔥 hard left */
-        width: 100%;
-    }
-
-    /* Close button absolute top-right */
-    .btn-close {
-        position: absolute;
-        right: 10px;
-        top: 10px;
         margin: 0;
+        font-size: 16px;
+        padding: 12px;
     }
 
-    .modal-dialog {
-        margin: 80px 10px 20px 10px;
-    }
-
-    .modal-content {
-        border-radius: 14px;
-    }
-
-    /* ===== HEADER ===== */
-
-    .modal-header {
-        display: flex !important;
-        flex-direction: column !important;
-        align-items: flex-start !important;
-
-        padding: 12px 14px !important;
-        gap: 6px;
-        position: relative;
-    }
-
-    .modal-header-big {
-        width: 100%;
-        margin: 0;
-        padding: 0;
-        gap: 4px;
-    }
-
-    .modal-title {
-        font-size: 18px;
-        font-weight: 600;
-    }
-
-    .meta-text {
-        font-size: 14px;
-    }
-
-    .btn-close {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-    }
-
-    /* ===== BODY ===== */
-
-    .modal-body {
-        padding: 10px;
-    }
-
-    /* Tables scroll */
-
-    .modal-body table {
+    /* Table responsiveness */
+    .custom-table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
 
-    /* ===== FOOTER BUTTONS ===== */
-
-    .modal-footer {
-        display: flex !important;
-        flex-direction: row !important;
-        flex-wrap: nowrap !important;
-
-        gap: 8px;
-        padding: 10px;
-
-        overflow-x: auto;
-    }
-
-    .modal-footer::-webkit-scrollbar {
-        height: 4px;
-    }
-
-    .modal-footer::-webkit-scrollbar-thumb {
-        background: #cbd5e1;
-        border-radius: 4px;
-    }
-
-    .modal-footer .btn {
-        flex-shrink: 0;
-
-        padding: 8px 14px;
+    .custom-table thead th,
+    .custom-table tbody td {
+        min-width: 120px;
         font-size: 14px;
-        border-radius: 10px;
-        min-width: auto;
+        padding: 10px;
     }
 
-    /* ================= MOBILE HEADER FIX ================= */
+    /* Modal improvements */
+    .modal-dialog {
+        margin: 10px;
+    }
 
-    .header {
+    .modal-header {
         flex-direction: column !important;
         align-items: center !important;
-        gap: 12px;
-    }
-
-    .page-title {
-        font-size: 18px;
-        padding: 6px 12px;
-        white-space: nowrap;
         text-align: center;
-        margin: 0 auto;
+        gap: 10px;
+        padding: 15px !important;
     }
 
-    .header>div {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
+    .modal-header-big {
+        flex-direction: column;
         gap: 10px;
     }
 
-    .add-btn {
-        flex: 1;
-        padding: 10px;
-        font-size: 18px;
-        margin: 0 !important;
-        white-space: nowrap;
+    .modal-footer {
+        flex-direction: column;
+        gap: 10px;
+        padding: 15px;
     }
 
+    .modal-footer .btn {
+        width: 100%;
+    }
 }

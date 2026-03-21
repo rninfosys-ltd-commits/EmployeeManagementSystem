@@ -11,8 +11,9 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
-    font-size: 20px;
+    margin-bottom: 20px;
+    gap: 15px;
+    flex-wrap: wrap;
 }
 
 .add-btn {
@@ -684,237 +685,120 @@ hr {
     border-top: 1px solid #e5e7eb;
 }
 
-/* ================= CASTING MOBILE FIX (SAME AS PRODUCTION) ================= */
+/* ================= MOBILE FIXES ================= */
 @media (max-width: 768px) {
-
-    /* FILTER BAR */
-    .filters {
-        flex-direction: column !important;
-        align-items: stretch !important;
-        gap: 12px;
-        overflow-x: hidden !important;
-        margin: -9px -9px;
-        padding: 15px 10px;
+    .container {
+        padding: 10px;
     }
 
+    .main {
+        padding: 10px;
+    }
+
+    /* Header adjustments */
+    .header {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 12px;
+    }
+
+    .header > div {
+        display: flex;
+        width: 100%;
+        gap: 10px;
+    }
+
+    .header .add-btn {
+        flex: 1;
+        padding: 10px;
+        font-size: 16px;
+        margin: 0 !important;
+    }
+
+    .page-title, .page-title1 {
+        font-size: 18px;
+        width: 100%;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    /* Filters adjustments */
+    .filters {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 15px;
+    }
+
+    .date-field.top-label,
     .filters select,
     .filters input[type="date"],
-    .date-field.top-label {
+    .clear-btn {
         width: 100% !important;
-        min-width: 100% !important;
+        max-width: none !important;
+        min-width: 0 !important;
     }
 
     .clear-btn {
-        width: 100%;
-        font-size: 25px;
-    }
-
-    /* TABLE SCROLL */
-    table.custom-table {
-        display: block;
-        overflow-x: auto;
-        white-space: nowrap;
-    }
-
-    table.custom-table thead th,
-    table.custom-table tbody td {
-        min-width: 130px;
-        white-space: nowrap !important;
-    }
-
-    /* HEADER */
-    .header {
-        flex-direction: row;
-        gap: 8px;
-    }
-
-    .page-title {
-        font-size: 18px;
-        padding: 6px 10px;
-    }
-
-    .add-btn {
-        padding: 12px 12px;
-        font-size: 18px;
-        margin-bottom: 15px;
-    }
-
-    /* FORM */
-
-    form.card {
+        font-size: 16px;
         padding: 12px;
     }
 
-    .row-header {
+    /* Form rows stacking */
+    .row-header, .row-1, .row-3, .row-4 {
         grid-template-columns: 1fr !important;
+        gap: 15px;
     }
 
-    .row-3,
-    .row-4 {
-        grid-template-columns: 1fr !important;
-    }
-
-    .form-field input,
-    .form-field select,
-    .form-field textarea {
-        width: 100%;
+    /* Floating labels fix for mobile inputs */
+    .form-field label {
         font-size: 16px;
     }
 
+    .form-field input:focus+label,
+    .form-field input:not(:placeholder-shown)+label,
+    .form-field select:focus+label,
+    .form-field select.has-value+label {
+        font-size: 14px;
+        top: 3px;
+    }
+
+    /* Action buttons consistency */
     .actions {
-        flex-direction: row;
-        gap: 10px;
+        flex-direction: column;
+        gap: 12px;
     }
 
     .actions button {
         width: 100%;
+        margin: 0;
+        font-size: 16px;
+        padding: 12px;
     }
 
-    /* MODAL TABLE */
-
-    .modal-body table {
+    /* Table responsiveness */
+    .custom-table {
         display: block;
         overflow-x: auto;
         white-space: nowrap;
     }
 
-    /* CONTAINER */
-
-    .container {
-        padding: 10px 5px 40px 5px;
+    .custom-table thead th,
+    .custom-table tbody td {
+        min-width: 120px;
+        font-size: 14px;
+        padding: 10px;
     }
 
-    .main {
-        padding: 8px;
-    }
-
-
-    /* LABEL CUTTING BORDER */
-    .date-field.top-label label {
-
-        font-size: 18px;
-
-    }
-
-    /* hr {
-        margin: 5px 0px;
-    } */
-
-    .modal-header {
-        display: flex !important;
-        justify-content: flex-start !important;
-        /* 🔥 force left */
-        align-items: flex-start !important;
-        padding-left: 10px !important;
-        /* 🔥 remove bootstrap offset */
-        padding-right: 40px !important;
-        position: relative;
+    /* Modal improvements */
+    .modal-dialog {
+        margin: 10px;
+        max-width: calc(100% - 20px);
     }
 
     .modal-header-big {
-        display: flex;
+        gap: 15px;
         flex-direction: column;
         align-items: flex-start;
-        /* 🔥 text left */
-        justify-content: flex-start;
-
-        width: 100%;
-        margin: 0 !important;
-        /* 🔥 remove centering */
-        padding: 0 !important;
-
-        gap: 6px;
-        white-space: normal;
-        /* 🔥 allow wrap */
     }
-
-    .modal-header-big .modal-title,
-    .modal-header-big .meta-text {
-        text-align: left;
-        /* 🔥 hard left */
-        width: 100%;
-    }
-
-    /* Close button absolute top-right */
-    .btn-close {
-        position: absolute;
-        right: 10px;
-        top: 10px;
-        margin: 0;
-    }
-
-    .custom-table {
-        border-collapse: collapse;
-        /* important */
-    }
-
-    /* All cells */
-    .custom-table th,
-    .custom-table td {
-        border: 1px solid #2563eb;
-        font-size: 18px;
-        /* 🔥 blue column + row borders */
-    }
-
-    /* Header stronger border */
-    .custom-table thead th {
-        border: 2px solid #2563eb;
-    }
-
-    /* Body cells */
-    .custom-table tbody td {
-        border: 1px solid #93c5fd;
-    }
-
-    .tablehead th {
-        /* font-size: 14px; */
-        font-size: 12px;
-        padding: 6px;
-    }
-
-    .btn {
-        font-size: 14px;
-    }
-
-    .modal-dialog {
-        margin-top: 100px;
-    }
-
-    .custom-table thead th,
-    .section-header th {
-        text-align: left !important;
-    }
-
-
-    /* ================= MOBILE HEADER FIX ================= */
-
-    .header {
-        flex-direction: column !important;
-        align-items: center !important;
-        gap: 12px;
-    }
-
-    .page-title {
-        font-size: 18px;
-        padding: 6px 12px;
-        white-space: nowrap;
-        text-align: center;
-        margin: 0 auto;
-    }
-
-    .header>div {
-        width: 100%;
-        display: flex;
-        justify-content: space-between;
-        gap: 10px;
-    }
-
-    .add-btn {
-        flex: 1;
-        font-size: 18px;
-        padding: 10px;
-        margin: 0 !important;
-        white-space: nowrap;
-    }
-
 }

@@ -256,9 +256,8 @@
     width: 100%;
   }
 
-  /* Title on RIGHT */
   .navbar-brand {
-    margin-left: auto;
+    margin-left: 0;
   }
 
   .desktop-nav {

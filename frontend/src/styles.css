@@ -147,3 +147,57 @@ a {
   background-color: #2e7d32;
   /* Green for Horizontal */
 }
+
+/* ================= COMPONENT-BASED RESPONSIVENESS (FALLBACKS) ================= */
+
+/* Form rows stacking */
+@media (max-width: 768px) {
+  .row, .grid, .row-header, .row-1, .row-2, .row-3, .row-4 {
+    display: grid !important;
+    grid-template-columns: 1fr !important;
+    grid-template-rows: auto !important;
+    gap: 1rem !important;
+  }
+
+  .span-2, .span-3, .span-4 {
+    grid-column: span 1 !important;
+  }
+
+  /* Header scaling */
+  .header, .header-top, .form-header {
+    flex-direction: column !important;
+    align-items: center !important;
+    text-align: center !important;
+    gap: 12px !important;
+  }
+
+  /* Generic Filters */
+  .filters {
+    flex-direction: column !important;
+    align-items: stretch !important;
+    width: 100% !important;
+    gap: 12px !important;
+    padding: 15px !important;
+  }
+
+  .filters > * {
+    width: 100% !important;
+    max-width: none !important;
+    min-width: 0 !important;
+  }
+
+  .clear-btn, .add-btn, .btn-primary, .toggle-btn {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+  }
+
+  /* Table normalization */
+  .custom-table, .lead-table, .inquiry-table, .table1 {
+    display: block !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    -webkit-overflow-scrolling: touch;
+    white-space: nowrap !important;
+  }
+}

@@ -180,15 +180,43 @@
 
 @media (max-width: 768px) {
   .employee-list-container {
-    padding: 1rem;
+    padding: 10px;
   }
 
   .list-wrapper {
-    padding: 1.5rem;
+    padding: 15px;
+  }
+
+  .header-section {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 15px;
+    margin-bottom: 20px;
   }
 
   .page-title {
     font-size: 1.5rem;
+  }
+
+  .btn-primary {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .table-scroll {
+    display: block;
+    width: 100%;
+    overflow-x: auto;
+  }
+
+  .pagination {
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .pagination button {
+    width: 100%;
   }
 
   .lead-table th,

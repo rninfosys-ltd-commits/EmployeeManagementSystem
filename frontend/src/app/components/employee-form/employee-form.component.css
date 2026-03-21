@@ -71,25 +71,33 @@
 .floating-group label {
   position: absolute;
   left: 1rem;
+  top: -8px;
+  background: white;
+  padding: 0 4px;
+  color: var(--primary);
+  font-size: 0.85rem;
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 2;
+  border-radius: 4px;
+}
+
+.floating-group input:placeholder-shown + label {
   top: 50%;
   transform: translateY(-50%);
   color: var(--text-muted);
   font-size: 1rem;
-  pointer-events: none;
-  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  font-weight: 400;
+  background: transparent;
 }
 
-.floating-group input:focus+label,
-.floating-group input:not(:placeholder-shown)+label {
-  top: 0;
-  left: 0.75rem;
+.floating-group input:focus + label {
+  top: -8px;
+  transform: translateY(0);
   font-size: 0.85rem;
   font-weight: 600;
   color: var(--primary);
-  transform: translateY(-50%);
   background: white;
-  padding: 0 4px;
-  border-radius: 4px;
 }
 
 .form-actions {
@@ -143,17 +151,34 @@
   margin-bottom: 2rem;
 }
 
-@media (max-width: 600px) {
+@media (max-width: 768px) {
   .employee-form-container {
-    padding: 1rem;
+    padding: 10px;
   }
 
   .form-card {
-    padding: 1.5rem;
+    padding: 15px;
+  }
+
+  .form-header {
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .form-row-4 {
+    grid-template-columns: 1fr !important;
+    gap: 15px;
   }
 
   .form-actions {
-    flex-direction: column-reverse;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 2rem;
+    padding-top: 1.5rem;
   }
 
   .btn-primary,

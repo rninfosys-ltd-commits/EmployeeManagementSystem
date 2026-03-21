@@ -17,12 +17,12 @@
 
 .title {
     color: white;
-    font-size: 20px;
+    font-size: 18px;
     font-weight: bold;
     background: linear-gradient(135deg, #7f46ff 0%, #9d6bff 100%);
-    padding: 5px 10px;
-    border-radius: 5px;
-    width: 150px;
+    padding: 6px 15px;
+    border-radius: 8px;
+    width: fit-content;
 }
 
 /* -------------------------------------------------- */
@@ -263,104 +263,62 @@ input[type="date"]:not(:focus):not(:valid)::-webkit-datetime-edit {
 /* -------------------------------------------------- */
 /* RESPONSIVE */
 /* -------------------------------------------------- */
-@media (max-width: 900px) {
-    .form-row {
-        grid-template-columns: repeat(2, 1fr);
-    }
-}
-
-@media (max-width: 640px) {
-    .form-row {
-        grid-template-columns: 1fr;
-    }
-
-    .form-card {
-        padding: 24px 16px;
-    }
-}
-
-/* ================= MOBILE FORM FINAL FIX ================= */
-@media (max-width: 600px) {
-
-    /* Container tighter */
+/* ================= MOBILE FIXES ================= */
+@media (max-width: 768px) {
     .employee-form-container {
-        margin: 6px 5px 50px 5px;
-        padding: 8px;
-    }
-
-    .form-card {
-        padding: 12px;
-    }
-
-    /* Title full width */
-    .form-header h2 {
-        width: 100%;
-        font-size: 20px;
-    }
-
-    /* Inputs smaller */
-    .form-group.floating .form-control {
-        font-size: 16px;
-        padding: 14px 12px 6px;
-    }
-
-    .form-group.floating label {
-        font-size: 16px;
-    }
-
-    .form-group.floating.has-value label,
-    .form-group.floating .form-control:focus+label {
-        font-size: 16px;
-    }
-
-    /* Save transaction button */
-    .form-actions {
-        justify-content: center;
-    }
-
-    .form-actions .btn {
-        width: 100%;
-        font-size: 18px;
+        margin: 10px;
         padding: 10px;
     }
 
-    /* ================= CART TABLE ================= */
+    .form-card {
+        padding: 15px;
+    }
+
+    .form-header h2 {
+        width: 100%;
+        font-size: 18px;
+        text-align: center;
+        border-radius: 8px;
+    }
+
+    .form-row {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .form-group.floating .form-control {
+        font-size: 16px;
+        padding: 12px 12px 6px;
+    }
+
+    .form-group.floating label {
+        font-size: 14px;
+    }
+
+    .form-actions {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn {
+        width: 100%;
+        margin: 0 !important;
+        font-size: 16px;
+        padding: 12px;
+    }
 
     .cart-container {
+        display: block;
+        width: 100%;
         overflow-x: auto;
     }
 
     .cart-table {
-        min-width: 900px;
+        min-width: 600px;
     }
 
-    .cart-table th,
-    .cart-table td {
-        font-size: 16px;
-        padding: 6px;
-        white-space: nowrap;
-    }
-
-    /* Status badge */
-    .status-pill {
-        font-size: 14px;
-        padding: 3px 8px;
-    }
-
-    /* Submit buttons stacked */
     .submit-row {
-        flex-direction: row;
-        margin-bottom: 30px;
-    }
-
-    .submit-row .btn {
-        width: 100%;
-        font-size: 20px;
-        padding: 10px;
-    }
-
-    /* Cart title */
-    .cart-title {
-        font-size: 20px;
+        flex-direction: column;
+        gap: 12px;
     }
 }
